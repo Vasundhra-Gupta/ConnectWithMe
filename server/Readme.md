@@ -21,3 +21,11 @@ npm i --save-dev nodemon
 
 - import cookie parser so that u get cookies from req.cookies
 
+#### To DEPLOY backend
+- Heroku
+- digital ocean
+- seenode
+- railway
+- onrender
+- cyclic.sh
+

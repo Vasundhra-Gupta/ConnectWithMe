@@ -6,8 +6,8 @@ import {
 } from "../constants/errorCodes.js";
 import { User } from "../models/User.model.js";
 import { getUser } from "../../utils/functions.js";
-import { generateToken } from "../../utils/authentication.js";
 import bcrypt from "bcrypt";
+import { generateToken } from "../../utils/generateToken.js";
 import { v4 as uuid } from "uuid";
 import { COOKIE_OPTIONS } from "../constants/cookie.js";
 
