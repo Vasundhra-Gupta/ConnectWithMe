@@ -7,14 +7,14 @@ import cookieParser from "cookie-parser";
 
 const app = express();
 const port = process.env.PORT || 4000;
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
+app.use(express.urlencoded({ extended: false }));// for form data
+app.use(cookieParser()); // to parse cookie
 app.use(
     cors({
         origin: "http://localhost:5173",
     })
 );
-app.use(express.json())
+app.use(express.json()) // to convert json object data to js object format.
 app.use("/api/users", userRouter);
 connectToDB();
 app.listen(port, () => {
