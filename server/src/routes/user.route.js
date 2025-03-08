@@ -3,12 +3,10 @@ import { getAUser, loginUser, logoutUser, registerUser } from "../controllers/us
 import { verifyToken } from "../middlewares/authentication.js";
 export const userRouter = express.Router();
 
-userRouter.route("/").get(async (req, res) => {
-    res.send("Hello");
-});
+// userRouter.route("/").get(async (req, res) => {
+//     res.send("Hello");
+// });
 userRouter.route("/register").post(registerUser);
-
-userRouter.route("/user").get(getAUser);
 
 userRouter.route("/login").post(loginUser);
 

@@ -13,11 +13,36 @@ import { COOKIE_OPTIONS } from "../constants/cookie.js";
 
 const registerUser = async (req, res) => {
     try {
-        const { userName, firstName, lastName, password, gender, email } =
-            req.body;
+        const {
+            userName,
+            firstName,
+            lastName,
+            email,
+            password,
+            coverImage,
+            avatar,
+            contact,
+        } = req.body;
 
-        //empty field checks //pending optimised
-        if (!userName || !lastName || !gender || !email || !password) {
+        const data = {
+            userName,
+            firstName,
+            lastName,
+            email,
+            password,
+            coverImage,
+            avatar,
+            contact,
+        };
+
+        const allowedEmptyFields = ["lastName", "coverImage", "contact"];
+        if (
+            Object.entries(data).some(
+                ([key, value]) =>
+                    !value &&
+                    !allowedEmptyFields.includes(key)
+            )
+        ) {
             return res.status(BAD_REQUEST).json({ message: "missing fields" });
         }
 
@@ -28,23 +53,26 @@ const registerUser = async (req, res) => {
                 .json({ message: "user already exists" });
         }
 
-        const avatar = process.env.AVATAR_COMMON_URL;
-        const userAvatar =
-            gender.toLowerCase() === "male"
-                ? avatar + `boy?${userName}`
-                : gender.toLowerCase() === "female"
-                  ? avatar + `girl?${userName}`
-                  : "";
+        // const avatar = process.env.AVATAR_COMMON_URL;
+        // const userAvatar =
+        //     gender.toLowerCase() === "male"
+        //         ? avatar + `boy?${userName}`
+        //         : gender.toLowerCase() === "female"
+        //           ? avatar + `girl?${userName}`
+        //           : "";
 
+        //image handling
         const user = await User.create({
             user_id: uuid(),
             user_name: userName,
-            first_name: firstName,
-            last_name: lastName,
+            user_firstName: firstName,
+            user_lastName: lastName,
             user_password: password,
-            user_avatar: userAvatar,
-            user_gender: gender,
+            user_avatar: avatar,
             user_email: email,
+            user_contact: contact,
+            user_coverImage: coverImage,
+            //token
         });
         await user.save();
 
@@ -61,19 +89,19 @@ const registerUser = async (req, res) => {
 
 const loginUser = async (req, res) => {
     try {
-        const { searchinput, password } = req.body;
-        if (!searchinput || !password) {
+        const { searchInput, password } = req.body;
+        if (!searchInput || !password) {
             return res.status(BAD_REQUEST).json({ message: "missing Fields" });
         }
 
-        const user = await getUser(searchinput);
+        const user = await getUser(searchInput);
         if (!user) {
             return res.status(NOT_FOUND).json({
-                message: "user with this email or username does not exist ",
+                message: "user does not exist ",
             });
         }
 
-        const isValid = await bcrypt.compareSync(password, user.user_password);
+        const isValid = bcrypt.compareSync(password, user.user_password);
         if (!isValid) {
             return res
                 .status(BAD_REQUEST)
@@ -88,7 +116,8 @@ const loginUser = async (req, res) => {
                 $set: {
                     user_token: token,
                 },
-            }
+            },
+            { new: true }
         );
         const { user_token, user_password, ...loggedinUser } = user;
         return res
@@ -132,23 +161,4 @@ const logoutUser = async (req, res) => {
     }
 };
 
-const getAUser = async (req, res) => {
-    try {
-        const { searchinput } = req.body;
-        if (!searchinput) {
-            return res.status(BAD_REQUEST).json({ message: "missing fileds" });
-        }
-        const user = await getUser(searchinput);
-        if (!user) {
-            return res.status(NOT_FOUND).json({ message: "User not found" });
-        }
-        return res.status(OK).json(user);
-    } catch (err) {
-        return res.status(SERVER_ERROR).json({
-            error: err.message,
-            message: "something went wrong while getting the user",
-        });
-    }
-};
-
-export { registerUser, loginUser, logoutUser, getAUser };
+export { registerUser, loginUser, logoutUser };
