@@ -1,5 +1,5 @@
 import { model, Schema } from "mongoose";
-import bcrypt from 'bcrypt'
+import bcrypt from "bcrypt";
 const userSchema = new Schema({
     user_id: {
         type: String,
@@ -10,11 +10,11 @@ const userSchema = new Schema({
         type: String,
         required: true,
     },
-    first_name: {
+    user_firstName: {
         type: String,
         required: true,
     },
-    last_name: {
+    user_lastName: {
         type: String,
     },
     user_password: {
@@ -24,27 +24,35 @@ const userSchema = new Schema({
     },
     user_avatar: {
         type: String,
+        required: true,
+    },
+    user_coverImage: {
+        type: String,
     },
     user_email: {
         type: String,
+        required: true,
     },
-    user_gender: {
+    user_contact: {
         type: String,
-        enum: ["male", "female"],
     },
     user_token: {
         type: String,
-        default: '',
-    }
+        default: "",
+    },
+    user_bio: {
+        type: String,
+        default: "",
+    },
 });
 
 //hooks
 
-userSchema.pre('save', async function (next){
-    if(this.isModified('user_password'))
-        this.user_password = await bcrypt.hash(this.user_password, 10)
+userSchema.pre("save", async function (next) {
+    if (this.isModified("user_password"))
+        this.user_password = await bcrypt.hash(this.user_password, 10);
     next();
-})
+});
 
 // userSchema.post('save', (doc)=>{
 //     console.log(doc, "Document saved successfully!")
