@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { getUser } from "../../utils/functions.js";
+import { getUser } from "../utils/functions.js";
 import { BAD_REQUEST, SERVER_ERROR } from "../constants/errorCodes.js";
 import { COOKIE_OPTIONS } from "../constants/cookie.js";
 
@@ -29,7 +29,7 @@ const verifyToken = async (req, res, next) => {
             .clearCookie("token", COOKIE_OPTIONS)
             .json({
                 error: err.message,
-                message: "some",
+                message: "something went wrong while verifying the token.",
             });
     }
 };

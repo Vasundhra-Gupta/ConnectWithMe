@@ -5,9 +5,9 @@ import {
     SERVER_ERROR,
 } from "../constants/errorCodes.js";
 import { User } from "../models/User.model.js";
-import { getUser } from "../../utils/functions.js";
+import { getUser } from "../utils/functions.js";
 import bcrypt from "bcrypt";
-import { generateToken } from "../../utils/generateToken.js";
+import { generateToken } from "../utils/generateToken.js";
 import { v4 as uuid } from "uuid";
 import { COOKIE_OPTIONS } from "../constants/cookie.js";
 
@@ -77,7 +77,7 @@ const loginUser = async (req, res) => {
         if (!isValid) {
             return res
                 .status(BAD_REQUEST)
-                .json({ message: "wrong Credentials" });
+                .json({ message: "wrong credentials" });
         }
         //token fn generates a promise so frst let it resolve
         const token = await generateToken(user);

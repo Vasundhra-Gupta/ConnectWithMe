@@ -21,6 +21,7 @@ npm i --save-dev nodemon
 
 - import cookie parser so that u get cookies from req.cookies
 
+- on backend we use js object but while transering we exchange it in form of json string object, bcz http is text based protocol 
 #### To DEPLOY backend
 - Heroku
 - digital ocean
