@@ -44,6 +44,14 @@ const userSchema = new Schema({
         type: String,
         default: "",
     },
+    user_createdAt: {
+        type: Date,
+        default: now(),
+    },
+    user_updatedAt: {
+        type: Date,
+        default: now(),
+    }
 });
 
 //hooks
