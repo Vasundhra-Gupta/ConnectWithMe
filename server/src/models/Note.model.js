@@ -28,11 +28,11 @@ const notesSchema = new Schema({
     },
     note_createdAt: {
         type: Date,
-        default: now(),
+        default: Date.now(),
     },
     note_updatedAt: {
         type: Date,
-        default: now(),
+        default: Date.now(),
     },
 })
 
