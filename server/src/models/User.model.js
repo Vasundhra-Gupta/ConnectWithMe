@@ -46,11 +46,11 @@ const userSchema = new Schema({
     },
     user_createdAt: {
         type: Date,
-        default: now(),
+        default: Date.now(),
     },
     user_updatedAt: {
         type: Date,
-        default: now(),
+        default: Date.now(),
     }
 });
 
