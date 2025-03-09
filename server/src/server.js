@@ -1,6 +1,7 @@
 import "./config/envLoader.js";
 import express from "express";
 import { userRouter } from "./routes/user.route.js";
+import { categoryRouter } from "./routes/category.route.js";
 import { connectToDB } from "./db/connectDB.js";
 import cors from "cors";
 import cookieParser from "cookie-parser";
@@ -15,7 +16,9 @@ app.use(
     })
 );
 app.use(express.json()) // to convert json object data to js object format.
+
 app.use("/api/users", userRouter);
+app.use("/api/categories", categoryRouter);
 connectToDB();
 app.listen(port, () => {
     console.log(`Server is listening on the port ${port}`);
