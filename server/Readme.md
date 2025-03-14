@@ -30,3 +30,12 @@ npm i --save-dev nodemon
 - onrender
 - cyclic.sh
 
+### Full Request and Response Flow
+✅ Frontend se backend: JSON.stringify() → Converts JavaScript object → JSON string
+✅ Backend pe receive: express.json() → Converts JSON string → JavaScript object
+✅ Backend se frontend: res.json() → Converts JavaScript object → JSON string
+✅ Frontend pe receive: res.json() → Converts JSON string → JavaScript object
+
+### Headers
+- Headers are sent to clarify the format of data sent (Content-Type) , or to tell whether the response is to be stored or not(Cache-Control) or token bhejne ke liye (Authorization)
+
