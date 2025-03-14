@@ -6,10 +6,14 @@ import {
 } from "../constants/errorCodes.js";
 import { User } from "../models/User.model.js";
 import { getUser } from "../utils/functions.js";
-import bcrypt from "bcrypt";
+import bcryptjs from "bcryptjs";
 import { generateToken } from "../utils/generateToken.js";
 import { v4 as uuid } from "uuid";
 import { COOKIE_OPTIONS } from "../constants/cookie.js";
+
+const getCurrentUser = async(req, res)=>{
+    return res.status(OK).json(req.user);
+}
 
 const registerUser = async (req, res) => {
     try {
@@ -101,7 +105,7 @@ const loginUser = async (req, res) => {
             });
         }
 
-        const isValid = bcrypt.compareSync(password, user.user_password);
+        const isValid = bcryptjs.compareSync(password, user.user_password);
         if (!isValid) {
             return res
                 .status(BAD_REQUEST)
@@ -161,4 +165,4 @@ const logoutUser = async (req, res) => {
     }
 };
 
-export { registerUser, loginUser, logoutUser };
+export { getCurrentUser, registerUser, loginUser, logoutUser };

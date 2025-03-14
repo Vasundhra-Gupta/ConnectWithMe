@@ -1,0 +1,36 @@
+**Create a Task**
+
+***Endpoint***:
+POST /v1/tasks
+
+***Description***:
+Creates a new task in the system.
+
+***Path Parameters***:
+None
+
+***Request Body***:
+Send a JSON object containing task details:
+
+{
+  "title": "Buy groceries",
+  "description": "Milk, Bread, Eggs",
+  "dueDate": "2025-03-15"
+}
+
+***Response***:
+On success, returns a JSON object with task details:
+
+{
+  "taskId": "12345",
+  "title": "Buy groceries",
+  "description": "Milk, Bread, Eggs",
+  "dueDate": "2025-03-15",
+  "status": "pending"
+}
+
+***Response Codes***:
+
+200 OK – Task created successfully
+400 Bad Request – Invalid input
+500 Internal Server Error – Server-side error

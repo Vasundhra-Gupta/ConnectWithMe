@@ -1,5 +1,5 @@
 import { model, Schema } from "mongoose";
-import bcrypt from "bcrypt";
+import bcryptjs from "bcryptjs";
 const userSchema = new Schema({
     user_id: {
         type: String,
@@ -58,7 +58,7 @@ const userSchema = new Schema({
 
 userSchema.pre("save", async function (next) {
     if (this.isModified("user_password"))
-        this.user_password = await bcrypt.hash(this.user_password, 10);
+        this.user_password = await bcryptjs.hash(this.user_password, 10);
     next();
 });
 

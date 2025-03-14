@@ -1,4 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+/* poppins to be involved */
 
+::-webkit-scrollbar{
+    scrollbar-width: none;
+}

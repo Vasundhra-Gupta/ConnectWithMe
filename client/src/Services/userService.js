@@ -1,3 +1,24 @@
+const getUser = async () => {
+    try {
+        const response = await fetch("/api/users/current-user", {
+            method: "GET",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+        const res = await response.json(); //JSON to js
+        console.log(res);
+        if (res.status === 500) {
+            throw new Error(res.message);
+        }
+        return res;
+    } catch (err) {
+        console.log(`error in get current user service ${err}`);
+        throw err;
+    }
+};
+
 const loginUser = async (loginInputs) => {
     try {
         const response = await fetch("/api/users/login", {
@@ -6,10 +27,9 @@ const loginUser = async (loginInputs) => {
             body: JSON.stringify(loginInputs),
         });
         const res = await response.json();
-        if (res.status===500) {
+        if (res.status === 500) {
             throw new Error(res.message);
         }
-        console.log(res);
         return res;
     } catch (err) {
         console.log(`error in logic service ${err}`);
@@ -25,10 +45,9 @@ const registerUser = async (loginInputs) => {
             body: JSON.stringify(loginInputs),
         });
         const res = await response.json();
-        if (res.status===500) {
+        if (res.status === 500) {
             throw new Error(res.message);
         }
-        console.log(res);
         return res;
     } catch (err) {
         console.log(`error in logic service ${err}`);
@@ -36,4 +55,4 @@ const registerUser = async (loginInputs) => {
     }
 };
 
-export { loginUser, registerUser };
+export { getUser, loginUser, registerUser };

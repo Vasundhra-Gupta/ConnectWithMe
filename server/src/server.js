@@ -14,6 +14,7 @@ app.use(cookieParser()); // to parse cookie
 app.use(
     cors({
         origin: "http://localhost:5173",
+        credentials: true
     })
 );
 app.use(express.json()) // to convert json object data to js object format.
