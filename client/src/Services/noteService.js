@@ -1,3 +1,24 @@
+const getAllNotes = async()=>{
+    try {
+        const response = await fetch(`/api/notes/`, {
+            method: "GET",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+        const res = await response.json(); 
+        if (res.status === 500) {
+            throw new Error(res.message);
+        }
+        return res;
+    } catch (err) {
+        console.log(`error in get all notes service ${err}`);
+        throw err;
+    }
+}
+
+
 const getNotes = async (ownerId) => {
     try {
         const response = await fetch(`/api/notes/${ownerId}`, {
