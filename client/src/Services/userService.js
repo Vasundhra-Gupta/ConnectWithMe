@@ -55,4 +55,22 @@ const registerUser = async (loginInputs) => {
     }
 };
 
-export { getUser, loginUser, registerUser };
+const logoutUser = async () => {
+   try {
+     const response = await fetch("/api/users/logout", {
+         method: "POST",
+     });
+     const res = response.json();
+     console.log(res);
+     if(!response.ok){
+         throw new Error(res.message);
+     }
+ 
+     return res;
+   } catch (error) {
+    console.log(`error in logout service . ${error.message}`)
+   }
+
+}
+
+export { getUser, loginUser, logoutUser,  registerUser };
