@@ -1,6 +1,6 @@
 const getAllNotes = async()=>{
     try {
-        const response = await fetch(`/api/notes/`, {
+        const response = await fetch(`/api/notes/all`, {
             method: "GET",
             credentials: "include",
             headers: {
@@ -58,4 +58,4 @@ const addNote = async (inputs) => {
     }
 };
 
-export { getNotes , addNote};
+export { getAllNotes, getNotes , addNote};

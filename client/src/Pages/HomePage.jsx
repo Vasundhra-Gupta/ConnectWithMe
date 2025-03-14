@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getNotes } from "../Services/noteService";
+import { getAllNotes } from "../Services/noteService";
 import { useNavigate } from "react-router-dom";
 import { useUserContext } from "../Context/UserContext";
 
@@ -18,9 +18,7 @@ export default function HomePage() {
         (async () => {
             try {
                 setLoading(true);
-                console.log(user);
-
-                const notes = await getNotes(user?.user_id);
+                const notes = await getAllNotes();
                 if (notes && !notes.message) {
                     setNotes(notes);
                 }
