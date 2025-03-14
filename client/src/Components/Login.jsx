@@ -1,15 +1,19 @@
 import { useState } from "react";
 import { loginUser } from "../Services/userService.js";
+import { Link, useNavigate } from "react-router-dom";
+import Button from "./General/Button.jsx";
+import { useUserContext } from "../Context/UserContext.jsx";
 
 export default function Login() {
-    const [user, setUser] = useState("");
+   const {setUser} = useUserContext();
     const [disabled, setDisabled] = useState(false);
     const [error, setError] = useState(null);
     const [inputs, setInputs] = useState({
-        searchinput: "",
+        searchInput: "",
         password: "",
     });
     const [loading, setLoading] = useState(false);
+    const navigate = useNavigate();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -20,12 +24,13 @@ export default function Login() {
     };
 
     const handleMouseOver = () => {
-        if (!inputs.searchinput || !inputs.password) {
+        if (!inputs.searchInput || !inputs.password) {
             setDisabled(true);
         } else {
             setDisabled(false);
         }
     };
+
     const handleSubmit = async (e) => {
         try {
             e.preventDefault();
@@ -41,13 +46,15 @@ export default function Login() {
             }
         } catch (err) {
             console.log("server error", err);
+            navigate("/error");
         } finally {
             setLoading(false);
             setDisabled(false);
         }
     };
+
     return (
-        <div className="min-h-screen w-screen flex justify-center items-center bg-gray-100">
+        <div className="flex justify-center items-center">
             <form
                 className="shadow-lg px-5 py-3 w-[270px]"
                 onSubmit={handleSubmit}
@@ -59,14 +66,14 @@ export default function Login() {
                 )}
                 <div>
                     <div>
-                        <label htmlFor="searchinput" className="font-semibold">
+                        <label htmlFor="searchInput" className="font-semibold">
                             Username or Email:
                         </label>
                     </div>
                     <input
                         type="text"
-                        name="searchinput"
-                        id="searchinput"
+                        name="searchInput"
+                        id="searchInput"
                         onChange={handleChange}
                         className="w-full border-gray-400 shadow-md rounded-md outline-none p-[5px] indent-2"
                         required
@@ -88,17 +95,19 @@ export default function Login() {
                     />
                 </div>
                 <div className="text-center m-2">
-                    <button
+                    <Button
                         type="submit"
-                        onMouseOver={handleMouseOver}
+                        className="bg-violet-400"
+                        BtnText={loading ? "Loading" : "Login"}
                         disabled={disabled}
-                        className="rounded-md bg-violet-400 font-semibold px-6 py-[5px] mt-2 disabled:cursor-not-allowed"
-                    >
-                        {loading ? "Loading" : "Login"}
-                    </button>
+                        onMouseOver={handleMouseOver}
+                    ></Button>
                 </div>
-                <div className="text-sm text-blue-500">
-                    Don't have an account? Register here
+                <div className="text-sm">
+                    Don't have an account?{" "}
+                    <Link to={"/register"} className="text-blue-500">
+                        Register here
+                    </Link>
                 </div>
             </form>
         </div>

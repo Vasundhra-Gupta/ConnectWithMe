@@ -1,56 +1,26 @@
 import { useState } from "react";
 import { registerUser } from "../Services/userService.js";
+import { Link } from "react-router-dom";
+import Button from "./General/Button.jsx";
+import { useUserContext } from "../Context/UserContext.jsx";
+
 export default function Register() {
-    const [user, setUser] = useState("");
+    const {setUser} = useUserContext();
     const [disabled, setDisabled] = useState(false);
     const [error, setError] = useState(null);
     const [inputs, setInputs] = useState({
         userName: "",
         firstName: "",
         lastName: "",
-        password: "",
-        gender: "",
         email: "",
+        password: "",
+        coverImage: "",
+        avatar: "",
+        contact: "",
     });
+    const allowedEmptyFields = ["lastName", "coverImage"];
     const [loading, setLoading] = useState(false);
 
-    const inputFields = [
-        {
-            type: "text",
-            name:"userName",
-            id:"userName",
-            required: true,
-            label: "Username"
-        },
-        {
-            type: "text",
-            name:"userName",
-            id:"userName",
-            required: true,
-            label: "Username"
-        },
-        {
-            type: "text",
-            name:"userName",
-            id:"userName",
-            required: true,
-            label: "Username"
-        },
-        {
-            type: "text",
-            name:"userName",
-            id:"userName",
-            required: true,
-            label: "Username"
-        },
-        {
-            type: "text",
-            name:"userName",
-            id:"userName",
-            required: true,
-            label: "Username"
-        },
-    ]
     const handleChange = (e) => {
         const { name, value } = e.target;
         setInputs((prev) => ({
@@ -59,13 +29,18 @@ export default function Register() {
         }));
     };
 
-    // const handleMouseOver = () => {
-    //     if (Object.keys()) {
-    //         setDisabled(true);
-    //     } else {
-    //         setDisabled(false);
-    //     }
-    // };
+    const handleMouseOver = () => {
+        if (
+            Object.entries(inputs).some(
+                ([key, value]) => !value && !allowedEmptyFields.includes(key)
+            ) ||
+            error
+        ) {
+            setDisabled(true);
+        } else {
+            setDisabled(false);
+        }
+    };
 
     const handleSubmit = async (e) => {
         try {
@@ -87,10 +62,86 @@ export default function Register() {
             setDisabled(false);
         }
     };
+
+    const inputFields = [
+        {
+            type: "text",
+            name: "userName",
+            id: "userName",
+            required: true,
+            label: "Username",
+        },
+        {
+            type: "text",
+            name: "firstName",
+            id: "firstName",
+            required: true,
+            label: "First Name",
+        },
+        {
+            type: "text",
+            name: "lastName",
+            id: "lastName",
+            label: "Last Name",
+        },
+        {
+            type: "email",
+            name: "email",
+            id: "email",
+            required: true,
+            label: "Email",
+        },
+        {
+            type: "password",
+            name: "password",
+            id: "password",
+            required: true,
+            label: "Password",
+        },
+        {
+            type: "file",
+            name: "avatar",
+            id: "avatar",
+            required: true,
+            label: "Avatar",
+        },
+        {
+            type: "file",
+            name: "coverImage",
+            id: "coverImage",
+            label: "Cover Image",
+        },
+        {
+            type: "text",
+            name: "contact",
+            id: "contact",
+            required: true,
+            label: "Contact",
+        },
+    ];
+
+    const inputElements = inputFields.map((field) => (
+        <div key={field.name}>
+            <div >
+                <label htmlFor={field.name}>{field.label}</label>
+            </div>
+            <div>
+                <input
+                    type={field.type}
+                    name={field.name}
+                    id={field.id}
+                    required={field.required}
+                    onChange={handleChange}
+                    className="w-full border-gray-400 shadow-md rounded-md outline-none p-[5px] indent-2"
+                    />
+            </div>
+        </div>
+    ));
+
     return (
-        <div className="min-h-screen w-screen flex justify-center items-center bg-gray-100">
+        <div className="min-h-screen w-screen flex justify-center items-center">
             <form
-                className="shadow-lg px-5 py-3 w-[270px]"
+                className="shadow-lg px-6 py-3 w-[270px]"
                 onSubmit={handleSubmit}
             >
                 {error && (
@@ -98,48 +149,22 @@ export default function Register() {
                         {error}
                     </div>
                 )}
-                <div>
-                    <div>
-                        <label htmlFor="searchinput" className="font-semibold">
-                            Username or Email:
-                        </label>
-                    </div>
-                    <input
-                        type="text"
-                        name="searchinput"
-                        id="searchinput"
-                        onChange={handleChange}
-                        className="w-full border-gray-400 shadow-md rounded-md outline-none p-[5px] indent-2"
-                        required
-                    />
-                </div>
-                <div>
-                    <div>
-                        <label htmlFor="password" className="font-semibold">
-                            Password:
-                        </label>
-                    </div>
-                    <input
-                        type="password"
-                        name="password"
-                        id="password"
-                        onChange={handleChange}
-                        className="w-full border-gray-400 shadow-md rounded-md outline-none p-[5px] indent-2"
-                        required
-                    />
-                </div>
+                {inputElements}
                 <div className="text-center m-2">
-                    <button
+                    <Button
                         type="submit"
-                        // onMouseOver={handleMouseOver}
+                        onMouseOver={handleMouseOver}
                         disabled={disabled}
-                        className="rounded-md bg-violet-400 font-semibold px-6 py-[5px] mt-2 disabled:cursor-not-allowed"
+                        className=" bg-violet-400"
+                        BtnText={loading ? "Loading" : "Register"}
                     >
-                        {loading ? "Loading" : "Login"}
-                    </button>
+                    </Button>
                 </div>
-                <div className="text-sm text-blue-500">
-                    Don't have an account? Register here
+                <div className="text-sm">
+                    Already have an account?{" "}
+                    <Link to={"/login"} className="text-blue-500">
+                        Login here
+                    </Link>
                 </div>
             </form>
         </div>
