@@ -3,6 +3,7 @@ import { v4 as uuid } from "uuid";
 import { Note } from "../models/Note.model.js";
 import { getUser } from "../utils/functions.js";
 
+//just a find query
 const getNote = async (noteId) => {
     try {
         return await Note.findOne({
@@ -12,6 +13,23 @@ const getNote = async (noteId) => {
         throw err;
     }
 };
+
+const getAllNotes= async(req, res)=>{
+    try {
+        const notes = await Note.find();
+        if(!notes.length){
+            return res.status(BAD_REQUEST).json({
+                message: "no notes found"
+            })
+        }
+        return res.status(OK).json(notes);
+    } catch (error) {
+        return res.status(SERVER_ERROR).json({
+            error: error.message,
+            message: "something went wrong while getting all notes",
+        })
+    }
+}
 
 const getNotes = async (req, res) => {
     try {
@@ -176,4 +194,4 @@ const editNote = async (req, res) => {
     }
 };
 
-export { addNote, deleteNote, getNotes, getANote, editNote };
+export { addNote, deleteNote, getNotes, getANote, editNote, getAllNotes };
