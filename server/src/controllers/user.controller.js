@@ -5,18 +5,20 @@ import {
     SERVER_ERROR,
 } from "../constants/errorCodes.js";
 import { User } from "../models/User.model.js";
+import fs from "fs"
 import { getUser } from "../utils/functions.js";
 import bcryptjs from "bcryptjs";
 import { generateToken } from "../utils/generateToken.js";
 import { v4 as uuid } from "uuid";
 import { COOKIE_OPTIONS } from "../constants/cookie.js";
+import { deleteFromCloudinary, uploadOnCloudinary } from "../utils/cloudinary.js";
 
 const getCurrentUser = async (req, res) => {
     return res.status(OK).json(req.user);
 };
 
 const registerUser = async (req, res) => {
-    let coverImage, avatar;
+    let coverImageURL, avatarURL;
     try {
         const { userName, firstName, lastName, email, password, contact } =
             req.body;
@@ -31,36 +33,51 @@ const registerUser = async (req, res) => {
             contact,
         };
 
-        avatar = data.avatar;
-        coverImage = data.coverImage;
-
         const allowedEmptyFields = ["lastName", "coverImage", "contact"];
         if (
             Object.entries(data).some(
                 ([key, value]) => !value && !allowedEmptyFields.includes(key)
             )
         ) {
+            if(data.avatar){
+                fs.unlinkSync(data.avatar)
+            }
+            if(data.coverImage){
+                fs.unlinkSync(data.coverImage);
+            }
             return res.status(BAD_REQUEST).json({ message: "missing fields" });
         }
 
         const existingUser = await getUser(userName);
         if (existingUser) {
+            if(data.avatar){
+                fs.unlinkSync(data.avatar)
+            }
+            if(data.coverImage){
+                fs.unlinkSync(data.coverImage);
+            }
             return res
                 .status(BAD_REQUEST)
                 .json({ message: "user already exists" });
         }
 
-        //image handling
+        data.avatar = await uploadOnCloudinary(data.avatar);
+        avatarURL = data.avatar;
+        if(data.coverImage){
+            data.coverImage = await uploadOnCloudinary(data.coverImage);
+            coverImageURL = data.coverImage;
+        }
+        console.log(data);
         const user = await User.create({
             user_id: uuid(),
             user_name: userName,
             user_firstName: firstName,
             user_lastName: lastName,
             user_password: password,
-            user_avatar: avatar,
+            user_avatar: avatarURL,
             user_email: email,
             user_contact: contact,
-            user_coverImage: coverImage,
+            user_coverImage: coverImageURL,
             //token
         });
         await user.save();
@@ -69,6 +86,12 @@ const registerUser = async (req, res) => {
 
         return res.status(OK).json(createdUser);
     } catch (err) {
+        if(avatarURL){
+            await deleteFromCloudinary(avatarURL)
+        }
+        if(coverImageURL){
+            await deleteFromCloudinary(coverImageURL)
+        }
         return res.status(SERVER_ERROR).json({
             message: "Something went wrong while registering user",
             error: err.message,

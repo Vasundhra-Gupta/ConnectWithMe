@@ -5,41 +5,68 @@ import Button from "../Components/General/Button";
 export default function ChannelProfilePage() {
     const { user } = useUserContext();
     console.log(user);
+
     const tabs = [
-      { 
-        name: "Notes", 
-        to: "notes" 
-      },
-      { 
-        name: "About", 
-        to: "about" 
-      },
+        { name: "Notes", to: "notes" },
+        { name: "About", to: "about" },
     ];
 
-    const tabElements = tabs.map((tab)=>
-    <Link key={tab.name} to={tab.to}>{tab.name}</Link>)
     return (
-        <div>
-            {/* upper */}
-            <div>{user?.user_coverImage}</div>
-            {/* mid */}
-            <div className="flex justify-center">
-                <div>{user?.user_avatar}</div>
-                <div>@{user?.user_name}</div>
-                <div>
-                    {user?.user_firstName}
-                    {user?.user_lastName}
+        <div className="min-h-screen">
+            {/* Upper Section: Cover Image */}
+            <div className="relative w-full h-52 bg-gray-200">
+                {user?.user_coverImage && (
+                    <img 
+                        src={user?.user_coverImage} 
+                        alt="Cover" 
+                        className="w-full h-full object-cover"
+                    />
+                )}
+            </div>
+
+            {/* Profile Section */}
+            <div className="flex flex-col items-center mt-[-50px]">
+                <div className="w-24 h-24 rounded-full border-4 border-white bg-gray-200 overflow-hidden z-10">
+                    {user?.user_avatar && (
+                        <img 
+                            src={user.user_avatar} 
+                            alt="Avatar" 
+                            className="w-full h-full object-cover"
+                        />
+                    )}
                 </div>
-                <div>
-                  <Link to={"/settings"}>
-                    <Button BtnText={"Edit"}/>
-                  </Link>
+                <div className="text-xl font-bold mt-2">@{user?.user_name}</div>
+                <div className="text-gray-600">
+                    {user?.user_firstName} {user?.user_lastName}
+                </div>
+                
+                {/* Edit Button */}
+                <div className="mt-3">
+                    <Link to="/settings">
+                        <Button BtnText="Edit" className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg shadow-md transition-all"/>
+                    </Link>
                 </div>
             </div>
-            {/* lower */}
-            <div>
-                <div>{tabElements}</div>
-                <Outlet/>
+
+            {/* Tabs Section */}
+            <div className="mt-6 flex justify-around border-b pb-2">
+                {tabs.map((tab) => (
+                    <Link 
+                        key={tab.name} 
+                        to={tab.to} 
+                        className={({isActive})=>
+                        `${isActive? "text-blue-500 bg-blue-200 border-blue-500":"px-4 py-2 transition-all text-center w-full text-gray-700 font-medium border-b-2 border-transparent" } `
+                      }
+                        //    hover: hover: "
+                    >
+                        {tab.name}
+                    </Link>
+                ))}
+            </div>
+
+            {/* Page Content */}
+            <div className="px-6 py-4">
+                <Outlet />
             </div>
         </div>
     );

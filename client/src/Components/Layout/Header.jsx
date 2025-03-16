@@ -40,7 +40,13 @@ export default function Header() {
                     </Link>
                     <Logout />
                     <Link to={`/channel/${user.user_id}`}>
-                        {user.user_avatar}
+                        <div className="w-12 h-12 overflow-hidden">
+                            <img
+                                src={user.user_avatar}
+                                alt="avatar"
+                                className="w-full h-full object-cover rounded-full"
+                            />
+                        </div>
                     </Link>
                 </div>
             ) : (

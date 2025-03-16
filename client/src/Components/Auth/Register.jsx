@@ -44,8 +44,7 @@ export default function Register() {
         if (
             Object.entries(inputs).some(
                 ([key, value]) => !value && !allowedEmptyFields.includes(key)
-            ) ||
-            error
+            ) 
         ) {
             setDisabled(true);
         } else {

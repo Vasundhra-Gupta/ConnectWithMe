@@ -41,3 +41,11 @@ npm i --save-dev nodemon
 
 
 ## we can't directly parse file data so we use a middleware (library) like multer to upload and parse upcoming files. 
+
+200 - OK. Successful.
+400 - Bad request. Invalid request parameters.
+401 - Authorization required.
+403 - Not allowed.
+404 - Not found.
+420 - Rate limited.
+500 - Internal error. Contact support.

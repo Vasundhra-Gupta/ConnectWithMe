@@ -51,8 +51,15 @@ const registerUser = async (inputs) => {
         if (res.status === 500) {
             console.log(res.message);
             throw new Error(res.message);
+        }else if(res.status === 400){
+            return res;
+        }else{
+            const data = await loginUser({
+                searchInput: inputs.userName,
+                password: inputs.password,
+            });
+            return data;
         }
-        return res;
     } catch (err) {
         console.log(`error in logic service ${err}`);
         throw err;
