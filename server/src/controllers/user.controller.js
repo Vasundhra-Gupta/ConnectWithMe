@@ -67,7 +67,6 @@ const registerUser = async (req, res) => {
             data.coverImage = await uploadOnCloudinary(data.coverImage);
             coverImageURL = data.coverImage;
         }
-        console.log(data);
         const user = await User.create({
             user_id: uuid(),
             user_name: userName,

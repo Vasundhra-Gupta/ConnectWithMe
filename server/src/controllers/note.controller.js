@@ -3,6 +3,39 @@ import { v4 as uuid } from "uuid";
 import { Note } from "../models/Note.model.js";
 import { getUser } from "../utils/functions.js";
 
+const commonpipeline = [
+    {
+        $lookup: {
+            from: "users",
+            localField: "note_ownerId",
+            foreignField: "user_id",
+            as: "user",
+        },
+    },
+    {
+        $unwind: "$user",
+    },
+    {
+        $addFields: {
+            userName: "$user.user_name",
+            firstName: "$user.user_firstName",
+            lastName: "$user.user_lastName",
+            avatar: "$user.user_avatar",
+            coverImage: "$user.user_coverImage",
+        },
+    },
+    {
+        $sort: {
+            note_createdAt: -1,
+            note_updatedAt: -1,
+        },
+    },
+    {
+        $project: {
+            user: 0,
+        },
+    },
+];
 //just a find query
 const getNote = async (noteId) => {
     try {
@@ -16,40 +49,6 @@ const getNote = async (noteId) => {
 
 const getAllNotes = async (req, res) => {
     try {
-        const commonpipeline = [
-            {
-                $lookup: {
-                    from: "users",
-                    localField: "note_ownerId",
-                    foreignField: "user_id",
-                    as: "user",
-                },
-            },
-            {
-                $unwind: "$user",
-            },
-            {
-                $addFields: {
-                    userName: "$user.user_name",
-                    firstName: "$user.user_firstName",
-                    lastName: "$user.user_lastName",
-                    avatar: "$user.user_avatar",
-                    coverImage: "$user.user_coverImage",
-                },
-            },
-            {
-                $sort: {
-                    note_createdAt: -1,
-                    note_updatedAt: -1,
-                },
-            },
-            {
-                $project: {
-                    user: 0,
-                },
-            },
-        ];
-
         const notes = await Note.aggregate(commonpipeline);
         if (!notes.length) {
             return res.status(BAD_REQUEST).json({
@@ -100,6 +99,7 @@ const getNotes = async (req, res) => {
                 message: "no notes found",
             });
         }
+        console.log(111, notes);
         return res.status(OK).json(notes);
     } catch (err) {
         return res.status(SERVER_ERROR).json({
