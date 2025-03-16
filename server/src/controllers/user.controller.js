@@ -11,40 +11,33 @@ import { generateToken } from "../utils/generateToken.js";
 import { v4 as uuid } from "uuid";
 import { COOKIE_OPTIONS } from "../constants/cookie.js";
 
-const getCurrentUser = async(req, res)=>{
+const getCurrentUser = async (req, res) => {
     return res.status(OK).json(req.user);
-}
+};
 
 const registerUser = async (req, res) => {
+    let coverImage, avatar;
     try {
-        const {
-            userName,
-            firstName,
-            lastName,
-            email,
-            password,
-            coverImage,
-            avatar,
-            contact,
-        } = req.body;
-
+        const { userName, firstName, lastName, email, password, contact } =
+            req.body;
         const data = {
             userName,
             firstName,
             lastName,
             email,
             password,
-            coverImage,
-            avatar,
+            coverImage: req.files?.coverImage?.[0].path,
+            avatar: req.files?.avatar?.[0].path,
             contact,
         };
+
+        avatar = data.avatar;
+        coverImage = data.coverImage;
 
         const allowedEmptyFields = ["lastName", "coverImage", "contact"];
         if (
             Object.entries(data).some(
-                ([key, value]) =>
-                    !value &&
-                    !allowedEmptyFields.includes(key)
+                ([key, value]) => !value && !allowedEmptyFields.includes(key)
             )
         ) {
             return res.status(BAD_REQUEST).json({ message: "missing fields" });
@@ -56,14 +49,6 @@ const registerUser = async (req, res) => {
                 .status(BAD_REQUEST)
                 .json({ message: "user already exists" });
         }
-
-        // const avatar = process.env.AVATAR_COMMON_URL;
-        // const userAvatar =
-        //     gender.toLowerCase() === "male"
-        //         ? avatar + `boy?${userName}`
-        //         : gender.toLowerCase() === "female"
-        //           ? avatar + `girl?${userName}`
-        //           : "";
 
         //image handling
         const user = await User.create({

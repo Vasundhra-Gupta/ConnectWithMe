@@ -14,22 +14,56 @@ const getNote = async (noteId) => {
     }
 };
 
-const getAllNotes= async(req, res)=>{
+const getAllNotes = async (req, res) => {
     try {
-        const notes = await Note.find();
-        if(!notes.length){
+        const commonpipeline = [
+            {
+                $lookup: {
+                    from: "users",
+                    localField: "note_ownerId",
+                    foreignField: "user_id",
+                    as: "user",
+                },
+            },
+            {
+                $unwind: "$user",
+            },
+            {
+                $addFields: {
+                    userName: "$user.user_name",
+                    firstName: "$user.user_firstName",
+                    lastName: "$user.user_lastName",
+                    avatar: "$user.user_avatar",
+                    coverImage: "$user.user_coverImage",
+                },
+            },
+            {
+                $sort: {
+                    note_createdAt: -1,
+                    note_updatedAt: -1,
+                },
+            },
+            {
+                $project: {
+                    user: 0,
+                },
+            },
+        ];
+
+        const notes = await Note.aggregate(commonpipeline);
+        if (!notes.length) {
             return res.status(BAD_REQUEST).json({
-                message: "no notes found"
-            })
+                message: "no notes found",
+            });
         }
         return res.status(OK).json(notes);
     } catch (error) {
         return res.status(SERVER_ERROR).json({
             error: error.message,
             message: "something went wrong while getting all notes",
-        })
+        });
     }
-}
+};
 
 const getNotes = async (req, res) => {
     try {
@@ -46,9 +80,21 @@ const getNotes = async (req, res) => {
                 message: "owner not found",
             });
         }
-        const notes = await Note.find({
-            note_ownerId: ownerId,
-        });
+        const pipeline = [
+            {
+                $match: {
+                    note_id: ownerId,
+                },
+            },
+            {
+                $sort: {
+                    note_createdAt: -1,
+                    note_updatedAt: -1,
+                },
+            },
+            ...commonpipeline,
+        ];
+        const notes = await Note.aggregate(pipeline);
         if (!notes.length) {
             return res.status(OK).json({
                 message: "no notes found",
@@ -152,9 +198,9 @@ const deleteNote = async (req, res) => {
 };
 
 const editNote = async (req, res) => {
-    try{
+    try {
         const { noteId } = req.params;
-        const {title, content} = req.body;
+        const { title, content } = req.body;
         if (!noteId) {
             return res.status(BAD_REQUEST).json({
                 message: "note id missing",
@@ -166,31 +212,31 @@ const editNote = async (req, res) => {
             });
         }
         const note = await getNote(noteId);
-    
-        if(!note){
+
+        if (!note) {
             return res.status(BAD_REQUEST).json({
                 message: "note not found",
             });
         }
-    
+
         await Note.updateOne(
-            {note_id: noteId},
+            { note_id: noteId },
             {
                 $set: {
                     note_title: title,
-                    note_content: content
-                }
+                    note_content: content,
+                },
             },
-            {new: true}
-        )
+            { new: true }
+        );
         return res.status(OK).json({
-            message: "note edited successfully"
+            message: "note edited successfully",
         });
-    }catch(err){
+    } catch (err) {
         return res.status(SERVER_ERROR).json({
             error: err.message,
-            message: "something went wrong while editing notes."
-        })
+            message: "something went wrong while editing notes.",
+        });
     }
 };
 
