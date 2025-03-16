@@ -1,9 +1,9 @@
-import Register from "../Components/Register";
+import Register from "../Components/Auth/Register";
 
 export default function RegisterPage() {
-  return (
-    <div>
-      <Register/>
-    </div>
-  )
+    return (
+        <div>
+            <Register />
+        </div>
+    );
 }

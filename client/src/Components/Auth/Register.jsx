@@ -1,13 +1,14 @@
 import { useState } from "react";
-import { registerUser } from "../Services/userService.js";
-import { Link } from "react-router-dom";
-import Button from "./General/Button.jsx";
-import { useUserContext } from "../Context/UserContext.jsx";
+import { registerUser } from "../../Services/userService.js";
+import { Link, useNavigate } from "react-router-dom";
+import Button from "../General/Button.jsx";
+import { useUserContext } from "../../Context/UserContext.jsx";
 
 export default function Register() {
-    const {setUser} = useUserContext();
+    const { setUser } = useUserContext();
     const [disabled, setDisabled] = useState(false);
     const [error, setError] = useState(null);
+    const navigate = useNavigate();
     const [inputs, setInputs] = useState({
         userName: "",
         firstName: "",
@@ -29,6 +30,16 @@ export default function Register() {
         }));
     };
 
+    const handleFileChange = (e) => {
+        const { name, files } = e.target;
+        if (files && files[0]) {
+            setInputs((prev) => ({
+                ...prev,
+                [name]: files[0],
+            }));
+        }
+    };
+
     const handleMouseOver = () => {
         if (
             Object.entries(inputs).some(
@@ -43,20 +54,21 @@ export default function Register() {
     };
 
     const handleSubmit = async (e) => {
+        e.preventDefault();
         try {
-            e.preventDefault();
             setLoading(true);
             setDisabled(true);
             setError(null);
             const res = await registerUser(inputs);
             if (res && !res.message) {
                 setUser(res);
+                navigate("/");
             } else {
                 setUser(null);
                 setError(res.message);
             }
         } catch (err) {
-            console.log("server error", err);
+            console.log("server error", err.message);
         } finally {
             setLoading(false);
             setDisabled(false);
@@ -99,6 +111,34 @@ export default function Register() {
             label: "Password",
         },
         {
+            type: "text",
+            name: "contact",
+            id: "contact",
+            required: true,
+            label: "Contact",
+        },
+    ];
+
+    const inputElements = inputFields.map((field) => (
+        <div key={field.name}>
+            <div>
+                <label htmlFor={field.name}>{field.label}</label>
+            </div>
+            <div>
+                <input
+                    type={field.type}
+                    name={field.name}
+                    id={field.id}
+                    required={field.required}
+                    onChange={handleChange}
+                    className="w-full border-gray-400 shadow-md rounded-md outline-none p-[5px] indent-2"
+                />
+            </div>
+        </div>
+    ));
+
+    const fileFields = [
+        {
             type: "file",
             name: "avatar",
             id: "avatar",
@@ -111,18 +151,10 @@ export default function Register() {
             id: "coverImage",
             label: "Cover Image",
         },
-        {
-            type: "text",
-            name: "contact",
-            id: "contact",
-            required: true,
-            label: "Contact",
-        },
     ];
-
-    const inputElements = inputFields.map((field) => (
+    const fileElements = fileFields.map((field) => (
         <div key={field.name}>
-            <div >
+            <div>
                 <label htmlFor={field.name}>{field.label}</label>
             </div>
             <div>
@@ -131,9 +163,9 @@ export default function Register() {
                     name={field.name}
                     id={field.id}
                     required={field.required}
-                    onChange={handleChange}
+                    onChange={handleFileChange}
                     className="w-full border-gray-400 shadow-md rounded-md outline-none p-[5px] indent-2"
-                    />
+                />
             </div>
         </div>
     ));
@@ -150,6 +182,7 @@ export default function Register() {
                     </div>
                 )}
                 {inputElements}
+                {fileElements}
                 <div className="text-center m-2">
                     <Button
                         type="submit"
@@ -157,8 +190,7 @@ export default function Register() {
                         disabled={disabled}
                         className=" bg-violet-400"
                         BtnText={loading ? "Loading" : "Register"}
-                    >
-                    </Button>
+                    ></Button>
                 </div>
                 <div className="text-sm">
                     Already have an account?{" "}

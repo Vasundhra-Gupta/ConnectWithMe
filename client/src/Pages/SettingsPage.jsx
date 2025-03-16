@@ -1,18 +1,21 @@
 import { Link, Outlet } from "react-router-dom";
 import { useUserContext } from "../Context/UserContext";
-import Button from "../Components/General/Button";
 
-export default function ChannelProfilePage() {
+export default function SettingPage() {
     const { user } = useUserContext();
     console.log(user);
     const tabs = [
       { 
-        name: "Notes", 
-        to: "notes" 
+        name: "Personal Details", 
+        to: "update-personal" 
       },
       { 
-        name: "About", 
-        to: "about" 
+        name: "Password", 
+        to: "update-password" 
+      },
+      { 
+        name: "Channel Details", 
+        to: "update-channel" 
       },
     ];
 
@@ -25,15 +28,10 @@ export default function ChannelProfilePage() {
             {/* mid */}
             <div className="flex justify-center">
                 <div>{user?.user_avatar}</div>
-                <div>@{user?.user_name}</div>
+                <div>@{user.user_name}</div>
                 <div>
-                    {user?.user_firstName}
-                    {user?.user_lastName}
-                </div>
-                <div>
-                  <Link to={"/settings"}>
-                    <Button BtnText={"Edit"}/>
-                  </Link>
+                    {user.user_firstName}
+                    {user.user_lastName}
                 </div>
             </div>
             {/* lower */}

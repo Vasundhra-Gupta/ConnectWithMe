@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { getAllNotes } from "../Services/noteService";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 export default function HomePage() {
     const [notes, setNotes] = useState(null);
@@ -32,7 +32,7 @@ export default function HomePage() {
             <div className="flex items-center gap-4 mb-4">
                 <img src={note.avatar} alt="Avatar" className="w-12 h-12 rounded-full border border-gray-300" />
                 <div>
-                    <p className="font-semibold text-gray-800 text-lg">{note.userName}</p>
+                    <Link to={`/channel/${note.note_ownerId}`}><p className="font-semibold text-gray-800 text-lg">@{note.userName}</p></Link>
                     <p className="text-gray-500 text-sm">{note.firstName} {note.lastName}</p>
                 </div>
             </div>
@@ -46,7 +46,7 @@ export default function HomePage() {
     ));
 
     return (
-        <div className="flex flex-col items-center w-full min-h-screen bg-gradient-to-b from-white to-blue-50 p-5">
+        <div className="flex flex-col items-center w-full min-h-screen px-4">
             {loading ? (
                 <p className="text-lg font-semibold text-gray-700">Loading...</p>
             ) : notes ? (

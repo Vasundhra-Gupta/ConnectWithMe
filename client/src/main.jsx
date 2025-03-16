@@ -19,6 +19,14 @@ import {
 } from "./Pages/index.js";
 import "./Styles/index.css";
 import { UserContextProvider } from "./Context/UserContext.jsx";
+import Logout from "./Components/Auth/Logout.jsx";
+import UpdatePersonalDetails from "./Components/User/UpdatePersonalDetails.jsx";
+import UpdateChannelDetails from "./Components/User/UpdateChannelDetails.jsx";
+import UpdatePassword from "./Components/User/UpdatePassword.jsx";
+import SettingPage from "./Pages/SettingsPage.jsx";
+import AboutPage from "./Pages/AboutPage.jsx";
+import ChannelAbout from "./Components/Channel/ChannelAbout.jsx";
+import ChannelNotes from "./Components/Channel/ChannelNotes.jsx";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -27,12 +35,36 @@ const router = createBrowserRouter(
             <Route path="/login" element={<LoginPage />}></Route>
             <Route path="/register" element={<RegisterPage />}></Route>
             <Route path="/error" element={<ErrorPage />}></Route>
+            <Route path="/about" element={<AboutPage />}></Route>
             <Route
                 path="/channel/:channelId"
-                element={<ChannelProfilePage/>}
-            ></Route>
+                element={<ChannelProfilePage />}
+            >
+                <Route
+                    path="notes"
+                    element={<ChannelNotes />}
+                ></Route>
+                <Route
+                    path="about"
+                    element={<ChannelAbout />}
+                ></Route>
+            </Route>
+            <Route path="/settings" element={<SettingPage />}>
+                <Route
+                    path="update-personal"
+                    element={<UpdatePersonalDetails />}
+                ></Route>
+                <Route
+                    path="update-channel"
+                    element={<UpdateChannelDetails />}
+                ></Route>
+                <Route
+                    path="update-password"
+                    element={<UpdatePassword />}
+                ></Route>
+            </Route>
             <Route path="/note" element={<NotePage />}></Route>
-            <Route path="/note/add" element={<AddNotePage />}></Route>
+            <Route path="/add" element={<AddNotePage />}></Route>
             <Route path="/chat" element={<ChatPage />}></Route>
         </Route>
     )
@@ -40,10 +72,10 @@ const router = createBrowserRouter(
 
 createRoot(document.getElementById("root")).render(
     // <StrictMode>
-        <UserContextProvider>
-            <RouterProvider router={router}>
-                <App />
-            </RouterProvider>
-        </UserContextProvider>
+    <UserContextProvider>
+        <RouterProvider router={router}>
+            <App />
+        </RouterProvider>
+    </UserContextProvider>
     // </StrictMode>
 );

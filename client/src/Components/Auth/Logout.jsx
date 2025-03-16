@@ -1,9 +1,8 @@
 import { useState } from "react";
-import { useUserContext } from "../Context/UserContext";
-import { logoutUser } from "../Services/userService";
+import { useUserContext } from "../../Context/UserContext";
+import { logoutUser } from "../../Services/userService";
 import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
-import Button from "./General/Button";
+import Button from "../General/Button";
 
 export default function Logout() {
     const navigate = useNavigate();
@@ -15,7 +14,8 @@ export default function Logout() {
             const response = await logoutUser();
             if (response.message == "user logged out successfully") {
                 setUser(null);
-            }else{
+                navigate("/");
+            } else {
                 throw new Error(response.message);
             }
         } catch (error) {
@@ -26,8 +26,9 @@ export default function Logout() {
     }
 
     return (
-        <Link to={"/logout"}>
-            <Button BtnText={loading? "Loading": "Logout"} onClick={handleClick} />
-        </Link>
+        <Button
+            BtnText={loading ? "Loading" : "Logout"}
+            onClick={handleClick}
+        />
     );
 }

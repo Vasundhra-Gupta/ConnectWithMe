@@ -10,7 +10,7 @@ const getAllNotes = async()=>{
         const res = await response.json(); 
         if (res.status === 500) {
             throw new Error(res.message);
-        }
+        }   
         return res;
     } catch (err) {
         console.log(`error in get all notes service ${err}`);
@@ -28,6 +28,7 @@ const getNotes = async (ownerId) => {
                 "Content-Type": "application/json",
             },
         });
+        console.log(response);
         const res = await response.json(); 
         if (res.status === 500) {
             throw new Error(res.message);

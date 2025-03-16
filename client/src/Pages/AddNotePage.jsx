@@ -45,6 +45,7 @@ export default function AddNotePage() {
             const res = await addNote(inputs);
             if (res && !res.message) {
                 setNote(res);
+                navigate("/")
             } else {
                 setNote(null);
                 setError(res.message);

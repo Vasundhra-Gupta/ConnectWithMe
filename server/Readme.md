@@ -39,3 +39,5 @@ npm i --save-dev nodemon
 ### Headers
 - Headers are sent to clarify the format of data sent (Content-Type) , or to tell whether the response is to be stored or not(Cache-Control) or token bhejne ke liye (Authorization)
 
+
+## we can't directly parse file data so we use a middleware (library) like multer to upload and parse upcoming files. 
