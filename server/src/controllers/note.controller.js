@@ -82,7 +82,7 @@ const getNotes = async (req, res) => {
         const pipeline = [
             {
                 $match: {
-                    note_id: ownerId,
+                    note_ownerId: ownerId,
                 },
             },
             {
@@ -99,7 +99,6 @@ const getNotes = async (req, res) => {
                 message: "no notes found",
             });
         }
-        console.log(111, notes);
         return res.status(OK).json(notes);
     } catch (err) {
         return res.status(SERVER_ERROR).json({

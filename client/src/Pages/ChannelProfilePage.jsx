@@ -1,4 +1,4 @@
-import { Link, Outlet } from "react-router-dom";
+import { Link, NavLink, Outlet } from "react-router-dom";
 import { useUserContext } from "../Context/UserContext";
 import Button from "../Components/General/Button";
 
@@ -7,7 +7,7 @@ export default function ChannelProfilePage() {
     console.log(user);
 
     const tabs = [
-        { name: "Notes", to: "notes" },
+        { name: "Notes", to: "" },
         { name: "About", to: "about" },
     ];
 
@@ -16,9 +16,9 @@ export default function ChannelProfilePage() {
             {/* Upper Section: Cover Image */}
             <div className="relative w-full h-52 bg-gray-200">
                 {user?.user_coverImage && (
-                    <img 
-                        src={user?.user_coverImage} 
-                        alt="Cover" 
+                    <img
+                        src={user?.user_coverImage}
+                        alt="Cover"
                         className="w-full h-full object-cover"
                     />
                 )}
@@ -26,11 +26,11 @@ export default function ChannelProfilePage() {
 
             {/* Profile Section */}
             <div className="flex flex-col items-center mt-[-50px]">
-                <div className="w-24 h-24 rounded-full border-4 border-white bg-gray-200 overflow-hidden z-10">
+                <div className="w-36 h-36 rounded-full border-4 border-white bg-gray-200 overflow-hidden z-10">
                     {user?.user_avatar && (
-                        <img 
-                            src={user.user_avatar} 
-                            alt="Avatar" 
+                        <img
+                            src={user.user_avatar}
+                            alt="Avatar"
                             className="w-full h-full object-cover"
                         />
                     )}
@@ -39,28 +39,33 @@ export default function ChannelProfilePage() {
                 <div className="text-gray-600">
                     {user?.user_firstName} {user?.user_lastName}
                 </div>
-                
+
                 {/* Edit Button */}
                 <div className="mt-3">
                     <Link to="/settings">
-                        <Button BtnText="Edit" className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg shadow-md transition-all"/>
+                        <Button
+                            BtnText="Edit"
+                            className=" text-white shadow-md transition-all"
+                        />
                     </Link>
                 </div>
             </div>
 
             {/* Tabs Section */}
-            <div className="mt-6 flex justify-around border-b pb-2">
+            <div className="mt-10 mx-10 flex justify-around border-b-4">
                 {tabs.map((tab) => (
-                    <Link 
-                        key={tab.name} 
-                        to={tab.to} 
-                        className={({isActive})=>
-                        `${isActive? "text-blue-500 bg-blue-200 border-blue-500":"px-4 py-2 transition-all text-center w-full text-gray-700 font-medium border-b-2 border-transparent" } `
-                      }
-                        //    hover: hover: "
+                    <NavLink
+                        end //so that partial match na ho , comoplete match ho
+                        key={tab.name}
+                        to={tab.to}
+                        className={({ isActive }) =>
+                            isActive
+                                ? "text-blue-500 bg-blue-200 border-blue-500 w-full font-medium border-b-2 px-4 py-2 transition-all text-center"
+                                : "text-gray-700 w-full font-medium border-b-2 border-transparent px-4 py-2 transition-all text-center"
+                        }
                     >
                         {tab.name}
-                    </Link>
+                    </NavLink>
                 ))}
             </div>
 

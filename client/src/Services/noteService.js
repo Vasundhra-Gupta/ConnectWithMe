@@ -29,7 +29,6 @@ const getNotes = async (ownerId) => {
             },
         });
         const res = await response.json(); 
-        console.log(res);
         if (res.status === 500) {
             throw new Error(res.message);
         }

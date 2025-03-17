@@ -27,6 +27,7 @@ import SettingPage from "./Pages/SettingsPage.jsx";
 import AboutPage from "./Pages/AboutPage.jsx";
 import ChannelAbout from "./Components/Channel/ChannelAbout.jsx";
 import ChannelNotes from "./Components/Channel/ChannelNotes.jsx";
+import EditNotePage from "./Pages/EditNotePage.jsx";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -41,7 +42,7 @@ const router = createBrowserRouter(
                 element={<ChannelProfilePage />}
             >
                 <Route
-                    path="notes"
+                    path=""
                     element={<ChannelNotes />}
                 ></Route>
                 <Route
@@ -51,7 +52,7 @@ const router = createBrowserRouter(
             </Route>
             <Route path="/settings" element={<SettingPage />}>
                 <Route
-                    path="update-personal"
+                    path=""
                     element={<UpdatePersonalDetails />}
                 ></Route>
                 <Route
@@ -65,6 +66,7 @@ const router = createBrowserRouter(
             </Route>
             <Route path="/note" element={<NotePage />}></Route>
             <Route path="/add" element={<AddNotePage />}></Route>
+            <Route path="/edit" element={<EditNotePage />}></Route>
             <Route path="/chat" element={<ChatPage />}></Route>
         </Route>
     )

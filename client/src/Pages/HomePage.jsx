@@ -46,11 +46,11 @@ export default function HomePage() {
     ));
 
     return (
-        <div className="flex flex-col items-center w-full min-h-screen px-4">
+        <div className="flex flex-col items-center w-full min-h-screen px-6">
             {loading ? (
                 <p className="text-lg font-semibold text-gray-700">Loading...</p>
             ) : notes ? (
-                <div className="w-full grid grid-cols-2 gap-x-4">{noteElements}</div>
+                <div className="w-full grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-4">{noteElements}</div>
             ) : (
                 <p className="text-xl text-gray-800">No notes found</p>
             )}
