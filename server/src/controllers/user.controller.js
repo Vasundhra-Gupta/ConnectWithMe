@@ -160,6 +160,9 @@ const deleteAccount = async (req, res) => {
     }
 };
 
+//update avatar
+//update coverimage
+
 export {
     updateChanneltDetails,
     getChannelProfile,
