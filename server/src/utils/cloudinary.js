@@ -31,7 +31,6 @@ const deleteFromCloudinary = async (URL) => {
         if (!URL) {
             throw new Error("URL is missing");
         }
-        console.log(URL);
         const publicId= URL.split("/").pop().split(".")[0]
         const resourceType = URL.split("/")[4];
         const res = await cloudinary.uploader.destroy(publicId, {

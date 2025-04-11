@@ -1,10 +1,11 @@
 import bcryptjs from "bcryptjs";
 import { OK, BAD_REQUEST, SERVER_ERROR } from "../constants/errorCodes.js";
 import { User } from "../models/User.model.js";
+import { deleteFromCloudinary } from "../utils/cloudinary.js";
 
 const updateChanneltDetails = async (req, res) => {
+    const user = req.user;
     try {
-        const user = req.user;
         const { userName, bio, password } = req.body;
         if (user.user_bio == bio && user.user_name == userName) {
             return res.status(BAD_REQUEST).json({
@@ -12,6 +13,7 @@ const updateChanneltDetails = async (req, res) => {
                     "Please enter new details for updating channel details",
             });
         }
+
         const isValid = bcryptjs.compareSync(password, user.user_password);
         if (!isValid) {
             return res.status(BAD_REQUEST).json({
@@ -31,6 +33,8 @@ const updateChanneltDetails = async (req, res) => {
             { $new: true }
         );
 
+        await deleteFromCloudinary(user?.user_avatar);
+        await deleteFromCloudinary(user?.user_coverImage);
         return res.status(OK).json({
             message: "channel details updated successfully",
         });
@@ -42,9 +46,7 @@ const updateChanneltDetails = async (req, res) => {
     }
 };
 
-const getChannelProfile = async()=>{
-    
-}
+const getChannelProfile = async () => {};
 
 const updatePersonalDetails = async (req, res) => {
     try {
@@ -95,7 +97,7 @@ const updatePersonalDetails = async (req, res) => {
 const updatePassword = async (req, res) => {
     try {
         const user = req.user;
-        const {oldPassword, newPassword} = req.body;
+        const { oldPassword, newPassword } = req.body;
         const isValid = bcryptjs.compareSync(oldPassword, user.user_password);
         if (!isValid) {
             return res.status(BAD_REQUEST).json({
@@ -138,6 +140,11 @@ const deleteAccount = async (req, res) => {
                 message: "wrong password",
             });
         }
+        await deleteFromCloudinary(user?.user_avatar);
+        if (user?.user_coverImage) {
+            await deleteFromCloudinary(user?.user_coverImage);
+        }
+
         await User.deleteOne({
             user_id: user.user_id,
         });

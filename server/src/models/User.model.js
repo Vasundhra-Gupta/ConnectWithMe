@@ -57,9 +57,13 @@ const userSchema = new Schema({
 //hooks
 
 userSchema.pre("save", async function (next) {
-    if (this.isModified("user_password"))
-        this.user_password = await bcryptjs.hash(this.user_password, 10);
-    next();
+    try {
+        if (this.isModified("user_password"))
+            this.user_password = await bcryptjs.hash(this.user_password, 10);
+        next();
+    } catch (error) {
+        throw err;
+    }
 });
 
 // userSchema.post('save', (doc)=>{

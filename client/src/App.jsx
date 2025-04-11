@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Layout from "./Components/Layout/Layout";
 import { useNavigate } from "react-router-dom";
-import { getUser } from "./Services/userService";
+import { getUser } from "./Services/authService";
 import { useUserContext } from "./Context/UserContext";
 
 export default function App() {

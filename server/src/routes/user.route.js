@@ -6,6 +6,9 @@ import {
     updatePersonalDetails,
     deleteAccount,
 } from "../controllers/user.controller.js";
+import { verifyToken } from "../middlewares/authentication.js";
+
+userRouter.use(verifyToken);
 
 userRouter.route("/update-channel").patch(updateChanneltDetails);
 userRouter.route("/update-password").patch(updatePassword);

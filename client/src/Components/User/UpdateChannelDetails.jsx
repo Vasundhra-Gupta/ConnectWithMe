@@ -1,8 +1,60 @@
+import { useState } from "react";
 import Button from "../General/Button";
+import { useUserContext } from "../../Context/UserContext";
+import { updateChannelDetails } from "../../Services/userService";
+import { useNavigate } from "react-router-dom";
 
 export default function UpdateChannelDetails() {
-    const handleChange = async () => {};
-    const handleSubmit = async () => {};
+    const { user } = useUserContext();
+    const navigate = useNavigate();
+    const [inputs, setInputs] = useState({
+        userName: user?.user_name,
+        bio: user?.user_bio,
+        password: "",
+    });
+    const [loading, setLoading] = useState(false);
+    const [disabled, setDisabled] = useState(false);
+    const [message, setMessage] = useState("");
+
+    const handleChange = async (e) => {
+        const { name, value } = e.target;
+        setInputs((prev) => ({ ...prev, [name]: value }));
+    };
+
+    const handleMouseOver = () => {
+        if (
+            inputs.bio === user.user_bio &&
+            inputs.userName === user.user_name &&
+            !inputs.password
+        ) {
+            setDisabled(true);
+        } else {
+            setDisabled(false);
+        }
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            setLoading(true);
+            setDisabled(true);
+            const res = await updateChannelDetails(inputs);
+            if (res && res.message === "channel details updated successfully") {
+                console.log(res.message);
+                setMessage(res.message);
+                // setInputs(prev=>({...prev, password:""}))
+            } else {
+                setInputs(null);
+            }
+        } catch (err) {
+            console.log("server error", err);
+            navigate("/error");
+        } finally {
+            setLoading(false);
+            setDisabled(false);
+        }
+    };
+
     const inputFields = [
         {
             type: "text",
@@ -10,6 +62,7 @@ export default function UpdateChannelDetails() {
             id: "userName",
             name: "userName",
             label: "Username",
+            defaultValue: `${inputs?.userName}`,
             required: true,
         },
         {
@@ -17,6 +70,7 @@ export default function UpdateChannelDetails() {
             placeholder: "Enter channel bio",
             id: "bio",
             name: "bio",
+            defaultValue: `${inputs?.bio}`,
             label: "Bio",
             required: true,
         },
@@ -30,7 +84,7 @@ export default function UpdateChannelDetails() {
         },
     ];
     const inputElements = inputFields.map((field) => (
-        <div key={field.name} className="mb-4">
+        <div key={field.name} className="my-4">
             {/* Label */}
             <label
                 htmlFor={field.name}
@@ -45,6 +99,7 @@ export default function UpdateChannelDetails() {
                     type={field.type}
                     name={field.name}
                     id={field.id}
+                    defaultValue={field.defaultValue}
                     placeholder={field.placeholder}
                     onChange={handleChange}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-gray-900 bg-white"
@@ -55,8 +110,14 @@ export default function UpdateChannelDetails() {
 
     return (
         <form className="lg:w-[60%] p-10" onSubmit={handleSubmit}>
+            {message}
             {inputElements}
-            <Button type={"submit"} BtnText={"Update"} />
+            <Button
+                type={"submit"}
+                disabled={disabled}
+                onMouseOver={handleMouseOver}
+                BtnText={loading ? "loading" : "Update"}
+            />
         </form>
     );
 }

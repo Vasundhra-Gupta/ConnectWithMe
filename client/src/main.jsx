@@ -19,15 +19,17 @@ import {
 } from "./Pages/index.js";
 import "./Styles/index.css";
 import { UserContextProvider } from "./Context/UserContext.jsx";
-import Logout from "./Components/Auth/Logout.jsx";
-import UpdatePersonalDetails from "./Components/User/UpdatePersonalDetails.jsx";
-import UpdateChannelDetails from "./Components/User/UpdateChannelDetails.jsx";
-import UpdatePassword from "./Components/User/UpdatePassword.jsx";
 import SettingPage from "./Pages/SettingsPage.jsx";
 import AboutPage from "./Pages/AboutPage.jsx";
 import ChannelAbout from "./Components/Channel/ChannelAbout.jsx";
 import ChannelNotes from "./Components/Channel/ChannelNotes.jsx";
 import EditNotePage from "./Pages/EditNotePage.jsx";
+import {
+    DeleteAccount,
+    UpdateChannelDetails,
+    UpdatePassword,
+    UpdatePersonalDetails,
+} from "./Components/index.js";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -37,23 +39,15 @@ const router = createBrowserRouter(
             <Route path="/register" element={<RegisterPage />}></Route>
             <Route path="/error" element={<ErrorPage />}></Route>
             <Route path="/about" element={<AboutPage />}></Route>
-            <Route
-                path="/channel/:channelId"
-                element={<ChannelProfilePage />}
-            >
-                <Route
-                    path=""
-                    element={<ChannelNotes />}
-                ></Route>
-                <Route
-                    path="about"
-                    element={<ChannelAbout />}
-                ></Route>
+            <Route path="/channel/:channelId" element={<ChannelProfilePage />}>
+                <Route path="" element={<ChannelNotes />}></Route>
+                <Route path="about" element={<ChannelAbout />}></Route>
             </Route>
             <Route path="/settings" element={<SettingPage />}>
+                <Route path="" element={<UpdatePersonalDetails />}></Route>
                 <Route
-                    path=""
-                    element={<UpdatePersonalDetails />}
+                    path="delete-account"
+                    element={<DeleteAccount />}
                 ></Route>
                 <Route
                     path="update-channel"

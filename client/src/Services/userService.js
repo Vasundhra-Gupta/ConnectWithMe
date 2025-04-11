@@ -1,86 +1,87 @@
-const getUser = async () => {
+const updateChannelDetails = async (inputs) => {
     try {
-        const response = await fetch("/api/users/current-user", {
-            method: "GET",
-            credentials: "include",
+        const res = await fetch("/api/users/update-channel", {
+            method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
             },
+            body: JSON.stringify(inputs),
         });
-        const res = await response.json(); //JSON to js
-        console.log(res);
         if (res.status === 500) {
             throw new Error(res.message);
         }
-        return res;
-    } catch (err) {
-        console.log(`error in get current user service ${err}`);
-        throw err;
-    }
-};
-
-const loginUser = async (loginInputs) => {
-    try {
-        const response = await fetch("/api/users/login", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(loginInputs),
-        });
-        const res = await response.json();
-        if (res.status === 500) {
-            throw new Error(res.message);
-        }
-        return res;
-    } catch (err) {
-        console.log(`error in logic service ${err}`);
-        throw err;
-    }
-};
-
-const registerUser = async (inputs) => {
-    try {
-        const formData = new FormData();
-        Object.entries(inputs).forEach(([key, value]) => {
-            formData.append(key, value);
-        });
-        const response = await fetch("/api/users/register", {
-            method: "POST",
-            body: formData,
-        });
-        const res = await response.json();
-        if (res.status === 500) {
-            console.log(res.message);
-            throw new Error(res.message);
-        }else if(res.status === 400){
-            return res;
-        }else{
-            const data = await loginUser({
-                searchInput: inputs.userName,
-                password: inputs.password,
-            });
-            return data;
-        }
-    } catch (err) {
-        console.log(`error in logic service ${err}`);
-        throw err;
-    }
-};
-
-const logoutUser = async () => {
-    try {
-        const response = await fetch("/api/users/logout", {
-            method: "POST",
-        });
-        const res = response.json();
-        console.log(res);
-        if (!response.ok) {
-            throw new Error(res.message);
-        }
-
-        return res;
+        const response = res.json();
+        return response;
     } catch (error) {
-        console.log(`error in logout service . ${error.message}`);
+        console.log("error in updateChannelDetails service", error);
+        throw error;
     }
 };
 
-export { getUser, loginUser, logoutUser, registerUser };
+const updatePersonalDetails = async (inputs) => {
+    try {
+        const res = await fetch("/api/users/update-personal", {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(inputs),
+        });
+        if (res.status === 500) {
+            throw new Error(res.message);
+        }
+        const response = res.json();
+        return response;
+    } catch (error) {
+        console.log("error in updatePersonalDetails service", error);
+        throw error;
+    }
+};
+
+const updatePassword = async (inputs) => {
+    try {
+        const res = await fetch("/api/users/update-password", {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(inputs),
+        });
+        console.log(res);
+        if (res.status === 500) {
+            throw new Error(res.message);
+        }
+        const response = res.json();
+        return response;
+    } catch (error) {
+        console.log("error in updatePassword service", error);
+        throw error;
+    }
+};
+
+const deleteAccount = async (password) => {
+    try {
+        const res = await fetch("/api/users/delete-account", {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ password }),
+        });
+        if (res.status === 500) {
+            throw new Error(res.message);
+        }
+        const response = res.json();
+        return response;
+    } catch (error) {
+        console.log("error in deleteAccount service", error);
+        throw error;
+    }
+};
+
+export {
+    updateChannelDetails,
+    updatePassword,
+    updatePersonalDetails,
+    deleteAccount,
+};

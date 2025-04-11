@@ -1,10 +1,13 @@
 import { NavLink, Outlet } from "react-router-dom";
 import { useUserContext } from "../Context/UserContext";
 import Button from "../Components/General/Button";
+import { useState } from "react";
+import { DeleteAccount } from "../Components";
 
 export default function SettingPage() {
     const { user } = useUserContext();
-    console.log(user);
+    const [showPopup, setShowPopup] = useState(false);
+    // console.log(user);
 
     const tabs = [
         { name: "Personal Details", to: "" },
@@ -33,8 +36,12 @@ export default function SettingPage() {
                         {user?.user_firstName} {user?.user_lastName}
                     </div>
                     <div>{user?.user_bio}</div>
-                    <Button BtnText={"Delete Account"} />
+                    <Button
+                        BtnText={"Delete Account"}
+                        onClick={() => setShowPopup(true)}
+                    />
                 </div>
+                {showPopup && <DeleteAccount />}
             </div>
 
             {/* Right Section (Settings & Tabs) */}

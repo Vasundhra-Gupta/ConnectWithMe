@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useUserContext } from "../../Context/UserContext";
-import { logoutUser } from "../../Services/userService";
+import { logoutUser } from "../../Services/authService";
 import { useNavigate } from "react-router-dom";
 import Button from "../General/Button";
 

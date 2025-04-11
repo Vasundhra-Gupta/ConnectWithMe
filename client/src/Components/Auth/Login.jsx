@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { loginUser } from "../../Services/userService.js";
+import { loginUser } from "../../Services/authService.js";
 import { Link, useNavigate } from "react-router-dom";
 import Button from "../General/Button.jsx";
 import { useUserContext } from "../../Context/UserContext.jsx";
