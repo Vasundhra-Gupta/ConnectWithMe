@@ -2,6 +2,20 @@ import { BAD_REQUEST, OK, SERVER_ERROR } from "../constants/errorCodes.js";
 import { Category } from "../models/Category.model.js";
 import { v4 as uuid } from "uuid";
 
+//find query
+const getCategory = async (filterOption) => {
+    try {
+        return await Category.find({
+            $or: [
+                { category_id: filterOption },
+                { category_name: filterOption },
+            ],
+        });
+    } catch (err) {
+        throw err;
+    }
+};
+
 const getCategories = async (req, res) => {
     try {
         const categories = await Category.find();
@@ -16,19 +30,6 @@ const getCategories = async (req, res) => {
             error: err.message,
             message: "something went wrong while getting categories",
         });
-    }
-};
-
-const getCategory = async (filterOption) => {
-    try {
-        return await Category.find({
-            $or: [
-                { category_id: filterOption },
-                { category_name: filterOption },
-            ],
-        });
-    } catch (err) {
-        throw err;
     }
 };
 

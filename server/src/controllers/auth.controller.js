@@ -35,6 +35,7 @@ const registerUser = async (req, res) => {
             avatar: req.files?.avatar?.[0].path,
             contact,
         };
+        console.log(data.avatar)
 
         const allowedEmptyFields = ["lastName", "coverImage", "contact"];
         if (
