@@ -6,7 +6,6 @@ import ChannelProfilePage from "./ChannelProfilePage";
 import NotePage from "./NotePage";
 import ChatPage from "./ChatPage";
 import ErrorPage from "./ErrorPage"
-
 export {
     LoginPage,
     RegisterPage,

@@ -1,6 +1,9 @@
+import { url } from ".";
+
 const getAllNotes = async()=>{
     try {
-        const response = await fetch(`/api/notes/all`, {
+        // const response = await fetch(`/api/notes/all`, {
+        const response = await fetch(`${url}/notes/all`, {
             method: "GET",
             credentials: "include",
             headers: {
@@ -21,7 +24,8 @@ const getAllNotes = async()=>{
 
 const getNotes = async (ownerId) => {
     try {
-        const response = await fetch(`/api/notes/${ownerId}`, {
+        // const response = await fetch(`/api/notes/${ownerId}`, {
+        const response = await fetch(`${url}/notes/${ownerId}`, {
             method: "GET",
             credentials: "include",
             headers: {
@@ -41,7 +45,8 @@ const getNotes = async (ownerId) => {
 
 const addNote = async (inputs) => {
     try {
-        const response = await fetch("/api/notes/add", {
+        // const response = await fetch("/api/notes/add", {
+        const response = await fetch(`${url}/notes/add`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(inputs),

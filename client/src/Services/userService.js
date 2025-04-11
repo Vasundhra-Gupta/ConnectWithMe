@@ -1,6 +1,9 @@
+import { url } from ".";
+
 const updateChannelDetails = async (inputs) => {
     try {
-        const res = await fetch("/api/users/update-channel", {
+        // const res = await fetch(`/api/users/update-channel`, {
+        const res = await fetch(`${url}/users/update-channel`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
@@ -20,7 +23,8 @@ const updateChannelDetails = async (inputs) => {
 
 const updatePersonalDetails = async (inputs) => {
     try {
-        const res = await fetch("/api/users/update-personal", {
+        // const res = await fetch(`/api/users/update-personal`, {
+        const res = await fetch(`${url}/users/update-personal`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
@@ -40,7 +44,8 @@ const updatePersonalDetails = async (inputs) => {
 
 const updatePassword = async (inputs) => {
     try {
-        const res = await fetch("/api/users/update-password", {
+        // const res = await fetch(`/api/users/update-password`, {
+        const res = await fetch(`${url}/users/update-password`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
@@ -61,7 +66,8 @@ const updatePassword = async (inputs) => {
 
 const deleteAccount = async (password) => {
     try {
-        const res = await fetch("/api/users/delete-account", {
+        // const res = await fetch("/api/users/delete-account", {
+        const res = await fetch(`${url}/users/delete-account`, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",

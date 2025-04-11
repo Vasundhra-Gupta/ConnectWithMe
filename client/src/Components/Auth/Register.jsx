@@ -188,7 +188,7 @@ export default function Register() {
                         onMouseOver={handleMouseOver}
                         disabled={disabled}
                         className=" bg-violet-400"
-                        BtnText={loading ? "Loading" : "Register"}
+                        BtnText={loading ? "Loading..." : "Register"}
                     ></Button>
                 </div>
                 <div className="text-sm">
