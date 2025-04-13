@@ -30,6 +30,7 @@ import {
     UpdatePassword,
     UpdatePersonalDetails,
 } from "./Components/index.js";
+import DeleteNote from "./Components/Note/DeleteNote.jsx";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -60,7 +61,8 @@ const router = createBrowserRouter(
             </Route>
             <Route path="/note" element={<NotePage />}></Route>
             <Route path="/add" element={<AddNotePage />}></Route>
-            <Route path="/edit" element={<EditNotePage />}></Route>
+            <Route path="/edit/:noteId" element={<EditNotePage />}></Route>
+            <Route path="/delete" element={<DeleteNote />}></Route>
             <Route path="/chat" element={<ChatPage />}></Route>
         </Route>
     )

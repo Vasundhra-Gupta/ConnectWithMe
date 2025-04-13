@@ -1,9 +1,12 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Button from "../Components/General/Button.jsx";
-import { addNote } from "../Services/noteService.js";
+import { editNote } from "../Services/noteService.js";
+import { useUserContext } from "../Context/UserContext.jsx";
 
 export default function EditNotePage() {
+    const {user} = useUserContext();
+    const {noteId} = useParams()
     const [note, setNote] = useState("");
     const [disabled, setDisabled] = useState(false);
     const [error, setError] = useState(null);
@@ -42,10 +45,10 @@ export default function EditNotePage() {
             setLoading(true);
             setDisabled(true);
             setError(null);
-            const res = await addNote(inputs);
-            if (res && !res.message) {
+            const res = await editNote(inputs, noteId);
+            if (res && res.message === "note edited successfully") {
                 setNote(res);
-                navigate("/")
+                navigate(`/channel/${user?.user_id}`)
             } else {
                 setNote(null);
                 setError(res.message);
@@ -118,7 +121,7 @@ export default function EditNotePage() {
                         onMouseOver={handleMouseOver}
                         disabled={disabled}
                         className=" bg-violet-400"
-                        BtnText={loading ? "Loading" : "Add Note"}
+                        BtnText={loading ? "Loading" : "Edit Note"}
                     ></Button>
                 </div>
             </form>

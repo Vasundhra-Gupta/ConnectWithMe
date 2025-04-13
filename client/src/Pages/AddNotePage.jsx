@@ -2,8 +2,10 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../Components/General/Button.jsx";
 import { addNote } from "../Services/noteService.js";
+import { useUserContext } from "../Context/UserContext.jsx";
 
 export default function AddNotePage() {
+    const {user} = useUserContext();
     const [note, setNote] = useState("");
     const [disabled, setDisabled] = useState(false);
     const [error, setError] = useState(null);
@@ -45,7 +47,7 @@ export default function AddNotePage() {
             const res = await addNote(inputs);
             if (res && !res.message) {
                 setNote(res);
-                navigate("/")
+                navigate(`/channel/${user?.user_id}`)
             } else {
                 setNote(null);
                 setError(res.message);

@@ -9,30 +9,26 @@ export default function Header() {
         <div className="fixed top-0 w-full h-[60px] bg-lime-100 flex items-center justify-between px-6 shadow-md">
             {/* Left: Logo */}
             <Link to={"/"} className="flex items-center gap-3">
-                <img
-                    src="https://images.pexels.com/photos/674010/pexels-photo-674010.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
-                    alt="Logo"
-                    className="h-8 w-8 rounded-full"
-                />
-                <p className="text-xl font-bold">MyDiary</p>
+                <div>
+                    <img
+                        src="https://images.pexels.com/photos/674010/pexels-photo-674010.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                        alt="Logo"
+                        className="h-8 w-8 rounded-full"
+                    />
+                </div>
+                <p className="text-xl font-bold">connectWithMe</p>
             </Link>
 
-            <div className="flex-grow mx-4 max-w-lg">
+            <div className="hidden md:block flex-grow mx-4 max-w-lg">
                 <input
                     type="text"
                     placeholder="Search..."
                     className="w-full px-3 py-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-500"
                 />
             </div>
-            <div className="md:hidden">
-                <Button BtnText={"||"}/>
-            </div>
             {/* Right: Navigation Buttons */}
             {user ? (
-                <div className="hidden md:flex md:items-center md:gap-8">
-                    <Link to={"/"}>
-                        <Button BtnText={"Home"} />
-                    </Link>
+                <div className="flex items-center gap-4">
                     <Link to={"/add"}>
                         <Button BtnText={"+"} />
                     </Link>

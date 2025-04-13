@@ -5,7 +5,6 @@ const getAllNotes = async()=>{
         // const response = await fetch(`/api/notes/all`, {
         const response = await fetch(`${url}/notes/all`, {
             method: "GET",
-            credentials: "include",
             headers: {
                 "Content-Type": "application/json",
             },
@@ -16,11 +15,10 @@ const getAllNotes = async()=>{
         }   
         return res;
     } catch (err) {
-        console.log(`error in get all notes service ${err}`);
+        console.log(`error in get all notes service ${err.message}`);
         throw err;
     }
 }
-
 
 const getNotes = async (ownerId) => {
     try {
@@ -38,7 +36,7 @@ const getNotes = async (ownerId) => {
         }
         return res;
     } catch (err) {
-        console.log(`error in get notes service ${err}`);
+        console.log(`error in get notes service ${err.message}`);
         throw err;
     }
 };
@@ -49,6 +47,7 @@ const addNote = async (inputs) => {
         const response = await fetch(`${url}/notes/add`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
+            credentials: "include",
             body: JSON.stringify(inputs),
         });
         const res = await response.json();
@@ -58,9 +57,50 @@ const addNote = async (inputs) => {
         console.log(res);
         return res;
     } catch (err) {
-        console.log(`error in add note service ${err}`);
+        console.log(`error in add note service ${err.message}`);
         throw err;
     }
 };
 
-export { getAllNotes, getNotes , addNote};
+const editNote = async (inputs, noteId) => {
+    try {
+        // const response = await fetch("/api/notes/add", {
+        const response = await fetch(`${url}/notes/edit/${noteId}`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+            body: JSON.stringify(inputs),
+        });
+        const res = await response.json();
+        if (res.status === 500) {
+            throw new Error(res.message);
+        }
+        console.log(res);
+        return res;
+    } catch (err) {
+        console.log(`error in edit note service ${err.message}`);
+        throw err;
+    }
+};
+
+const deleteNote = async (ownerId) => {
+    try {
+        // const response = await fetch("/api/notes/add", {
+        const response = await fetch(`${url}/notes/delete/${ownerId}`, {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+        });
+        const res = await response.json();
+        if (res.status === 500) {
+            throw new Error(res.message);
+        }
+        console.log(res);
+        return res;
+    } catch (err) {
+        console.log(`error in delete note service ${err.message}`);
+        throw err;
+    }
+};
+
+export { getAllNotes, getNotes , addNote, editNote, deleteNote};

@@ -26,6 +26,7 @@ const loginUser = async (loginInputs) => {
         // const response = await fetch("/api/users/login", {
         const response = await fetch(`${url}/users/login`, {
             method: "POST",
+            credentials: "include",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(loginInputs),
         });
@@ -49,6 +50,7 @@ const registerUser = async (inputs) => {
         // const response = await fetch("/api/users/register", {
         const response = await fetch(`${url}/users/register`, {
             method: "POST",
+            credentials: "include",
             body: formData,
         });
         const res = await response.json();
@@ -75,6 +77,7 @@ const logoutUser = async () => {
         // const response = await fetch("/api/users/logout", {
         const response = await fetch(`${url}/users/logout`, {
             method: "POST",
+            credentials: "include",
         });
         const res = response.json();
         console.log(res);

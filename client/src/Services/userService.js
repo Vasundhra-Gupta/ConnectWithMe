@@ -5,6 +5,7 @@ const updateChannelDetails = async (inputs) => {
         // const res = await fetch(`/api/users/update-channel`, {
         const res = await fetch(`${url}/users/update-channel`, {
             method: "PATCH",
+            credentials: "include",
             headers: {
                 "Content-Type": "application/json",
             },
@@ -26,6 +27,7 @@ const updatePersonalDetails = async (inputs) => {
         // const res = await fetch(`/api/users/update-personal`, {
         const res = await fetch(`${url}/users/update-personal`, {
             method: "PATCH",
+            credentials: "include",
             headers: {
                 "Content-Type": "application/json",
             },
@@ -47,6 +49,7 @@ const updatePassword = async (inputs) => {
         // const res = await fetch(`/api/users/update-password`, {
         const res = await fetch(`${url}/users/update-password`, {
             method: "PATCH",
+            credentials: "include",
             headers: {
                 "Content-Type": "application/json",
             },
@@ -69,6 +72,7 @@ const deleteAccount = async (password) => {
         // const res = await fetch("/api/users/delete-account", {
         const res = await fetch(`${url}/users/delete-account`, {
             method: "DELETE",
+            credentials: "include",
             headers: {
                 "Content-Type": "application/json",
             },

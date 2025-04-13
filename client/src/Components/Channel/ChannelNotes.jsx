@@ -3,6 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { useUserContext } from "../../Context/UserContext";
 import { getNotes } from "../../Services/noteService";
 import Button from "../General/Button";
+import DeleteNote from "../Note/DeleteNote";
 
 export default function ChannelNotes() {
     const { user } = useUserContext();
@@ -65,18 +66,13 @@ export default function ChannelNotes() {
                                         note.note_updatedAt
                                     ).toLocaleString()}
                                 </p>
-                                <Link to={"/edit"}>
+                                <Link to={ `/edit/${note?.note_id}`}>
                                     <Button
                                         BtnText={"Edit"}
                                         className=" text-white "
                                     />
                                 </Link>
-                                <Link>
-                                    <Button
-                                        BtnText={"Delete"}
-                                        className="bg-red-500 hover:bg-red-600 text-white "
-                                    />
-                                </Link>
+                                <DeleteNote noteId={note?.note_id} setNotes={setNotes}/>
                             </div>
                         </div>
                     ))}

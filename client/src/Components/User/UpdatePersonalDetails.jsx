@@ -25,8 +25,8 @@ export default function UpdatePersonalDetails() {
 
     const handleMouseOver = () => {
         if (
-            inputs.firstName === user.user_firstName &&
-            inputs.email === user.user_email
+            inputs.firstName === user?.user_firstName &&
+            inputs.email === user?.user_email
         ) {
             setDisabled(true);
         } else {
