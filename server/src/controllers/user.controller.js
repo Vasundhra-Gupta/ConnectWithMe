@@ -3,7 +3,7 @@ import { OK, BAD_REQUEST, SERVER_ERROR } from "../constants/errorCodes.js";
 import { User } from "../models/User.model.js";
 import { deleteFromCloudinary } from "../utils/cloudinary.js";
 
-const updateChanneltDetails = async (req, res) => {
+const updateChannelDetails = async (req, res) => {
     const user = req.user;
     try {
         const { userName, bio, password } = req.body;
@@ -33,8 +33,6 @@ const updateChanneltDetails = async (req, res) => {
             { $new: true }
         );
 
-        await deleteFromCloudinary(user?.user_avatar);
-        await deleteFromCloudinary(user?.user_coverImage);
         return res.status(OK).json({
             message: "channel details updated successfully",
         });
@@ -164,7 +162,7 @@ const deleteAccount = async (req, res) => {
 //update coverimage
 
 export {
-    updateChanneltDetails,
+    updateChannelDetails,
     getChannelProfile,
     updatePassword,
     updatePersonalDetails,
