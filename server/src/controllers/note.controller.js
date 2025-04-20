@@ -326,7 +326,13 @@ const toggleNoteVisibility = async (req, res) => {
     }
 };
 
-const pinANote = async (req, res) => {};
+const pinANote = async (req, res) => {
+    try {
+        
+    } catch (error) {
+        
+    }
+};
 
 export {
     addNote,
