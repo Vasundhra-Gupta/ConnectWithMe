@@ -52,7 +52,7 @@ export default function ChannelProfilePage() {
             </div>
 
             {/* Tabs Section */}
-            <div className="mt-10 mx-10 flex justify-around border-b-4">
+            <div className="mt-10 mx-2 md:mx-10 flex justify-around border-b-4">
                 {tabs.map((tab) => (
                     <NavLink
                         end //so that partial match na ho , comoplete match ho
@@ -70,7 +70,7 @@ export default function ChannelProfilePage() {
             </div>
 
             {/* Page Content */}
-            <div className="px-6 py-4">
+            <div className=" py-2">
                 <Outlet />
             </div>
         </div>

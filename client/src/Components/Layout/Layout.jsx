@@ -8,7 +8,7 @@ export default function Layout() {
         <div className="h-full w-full overflow-y-scroll">
             <Header />
             <SideBar />
-            <div className="min-h-[calc(100%-70px)] w-full py-3 px-1 bg-slate-100 mt-[65px]">
+            <div className="min-h-[calc(100%-70px)] w-full py-3 bg-slate-100 mt-[65px]">
                 <Outlet />
             </div>
             <Footer />

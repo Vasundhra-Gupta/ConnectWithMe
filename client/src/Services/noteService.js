@@ -1,6 +1,6 @@
 import { url } from ".";
 
-const getAllNotes = async()=>{
+const getAllNotes = async () => {
     try {
         // const response = await fetch(`/api/notes/all`, {
         const response = await fetch(`${url}/notes/all`, {
@@ -9,35 +9,80 @@ const getAllNotes = async()=>{
                 "Content-Type": "application/json",
             },
         });
-        const res = await response.json(); 
+        const res = await response.json();
         if (res.status === 500) {
             throw new Error(res.message);
-        }   
+        }
         return res;
     } catch (err) {
         console.log(`error in get all notes service ${err.message}`);
         throw err;
     }
-}
+};
 
-const getNotes = async (ownerId) => {
+const getPublicNotes = async (ownerId) => {
     try {
         // const response = await fetch(`/api/notes/${ownerId}`, {
-        const response = await fetch(`${url}/notes/${ownerId}`, {
+        const response = await fetch(`${url}/notes/public/${ownerId}`, {
             method: "GET",
             credentials: "include",
             headers: {
                 "Content-Type": "application/json",
             },
         });
-        const res = await response.json(); 
+        const res = await response.json();
         if (res.status === 500) {
             throw new Error(res.message);
         }
         return res;
     } catch (err) {
-        console.log(`error in get notes service ${err.message}`);
+        console.log(`error in get public notes service ${err.message}`);
         throw err;
+    }
+};
+
+const getPrivateNotes = async (ownerId) => {
+    try {
+        // const response = await fetch(`/api/notes/${ownerId}`, {
+        const response = await fetch(`${url}/notes/private/${ownerId}`, {
+            method: "GET",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+        const res = await response.json();
+        if (res.status === 500) {
+            throw new Error(res.message);
+        }
+        return res;
+    } catch (err) {
+        console.log(`error in get private notes service ${err.message}`);
+        throw err;
+    }
+};
+
+const toggleVisibility = async (noteId) => {
+    try {
+        const response = await fetch(
+            `${url}/notes/toggleVisibility/${noteId}`,
+            {
+                method: "PATCH",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }
+        );
+
+        const res = await response.json();
+        console.log(res);
+        if (res.status === 500) {
+            throw new Error(res.message);
+        }
+        return res;
+    } catch (error) {
+        throw error;
     }
 };
 
@@ -103,4 +148,21 @@ const deleteNote = async (ownerId) => {
     }
 };
 
-export { getAllNotes, getNotes , addNote, editNote, deleteNote};
+const pinANote = async () => {
+    try {
+        
+    } catch (error) {
+        throw err;
+    }
+}
+
+export {
+    getAllNotes,
+    getPublicNotes,
+    getPrivateNotes,
+    addNote,
+    editNote,
+    deleteNote,
+    pinANote,
+    toggleVisibility,
+};

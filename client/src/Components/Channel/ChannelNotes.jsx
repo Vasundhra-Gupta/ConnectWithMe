@@ -1,81 +1,34 @@
-import { useState, useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import { useUserContext } from "../../Context/UserContext";
-import { getNotes } from "../../Services/noteService";
-import Button from "../General/Button";
-import DeleteNote from "../Note/DeleteNote";
+import AddNote from "../Note/AddNote";
+import PrivateNotes from "../Note/PrivateNotes";
+import PublicNotes from "../Note/PublicNotes";
+import { useState } from "react";
 
 export default function ChannelNotes() {
-    const { user } = useUserContext();
-    const [notes, setNotes] = useState(null);
-    const [loading, setLoading] = useState(false);
-    const navigate = useNavigate();
-
-    useEffect(() => {
-        (async function () {
-            try {
-                setLoading(true);
-                const response = await getNotes(user?.user_id);
-                if (response && !response.message) {
-                    setNotes(response);
-                }
-            } catch (error) {
-                navigate("/error");
-                setNotes(null);
-            } finally {
-                setLoading(false);
-            }
-        })();
-    }, []);
-
+    const [selectedType, setSelectedType] = useState("private");
+    const [showAddNote, setShowAddNote] = useState(false);
     return (
-        <div className="min-h-screen bg-gray-100 p-6">
-            {loading ? (
-                <p className="text-center text-gray-500">Loading...</p>
-            ) : !notes?.length ? (
-                <p className="text-center text-gray-500">No notes found</p>
+        <div className="min-h-screen bg-gray-100 px-4">
+            <select
+                value={selectedType}
+                onChange={(e) => setSelectedType(e.target.value)}
+                className="border-gray-800 border-2 rounded-lg py-1 text-lg outline-none"
+            >
+                <option value="public">Public</option>
+                <option value="private">Private</option>
+            </select>
+
+            {selectedType == "public" ? (
+                <PublicNotes />
             ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2  gap-6">
-                    {notes.map((note, index) => (
-                        <div
-                            key={index}
-                            className="bg-white p-6 rounded-xl shadow-md border border-gray-200 hover:scale-[1.02] transition flex justify-between items-start"
-                        >
-                            <div className="w-[60%]">
-                                <div className="mb-2">
-                                    <p className="text-gray-500 text-sm">
-                                        <span className="font-medium">
-                                            {note.userName}
-                                        </span>{" "}
-                                        - {note.firstName} {note.lastName}
-                                    </p>
-                                </div>
-
-                                <h2 className="text-lg font-semibold text-gray-800 mb-2">
-                                    {note.note_title}
-                                </h2>
-                                <p className="text-gray-600 text-sm mb-3 line-clamp-2 overflow-hidden">
-                                    {note.note_content}
-                                </p>
-                            </div>
-
-                            <div className="w-[40%] flex flex-col items-end space-y-2">
-                                <p className="text-gray-400 text-xs text-right">
-                                    Last updated:{" "}
-                                    {new Date(
-                                        note.note_updatedAt
-                                    ).toLocaleString()}
-                                </p>
-                                <Link to={ `/edit/${note?.note_id}`}>
-                                    <Button
-                                        BtnText={"Edit"}
-                                        className=" text-white "
-                                    />
-                                </Link>
-                                <DeleteNote noteId={note?.note_id} setNotes={setNotes}/>
-                            </div>
-                        </div>
-                    ))}
+                <div className="relative">
+                    <p
+                        onClick={() => setShowAddNote(!showAddNote)}
+                        className="absolute pr-5 text-2xl -top-12 right-0 "
+                    >
+                        {showAddNote? "-": "+"}
+                    </p>
+                    {showAddNote && <AddNote />}
+                    <PrivateNotes />
                 </div>
             )}
         </div>

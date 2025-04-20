@@ -1,23 +1,24 @@
-import { useEffect, useState } from "react";
-import { getAllNotes } from "../Services/noteService";
-import { useNavigate, Link } from "react-router-dom";
+import React from "react";
+import { getPublicNotes } from "../../Services/noteService";
+import { useState, useEffect } from "react";
+import { useUserContext } from "../../Context/UserContext";
+import { Link } from "react-router-dom";
 
-export default function HomePage() {
-    const [notes, setNotes] = useState(null);
+export default function PublicNotes() {
+    const { user } = useUserContext();
+    const [publicNotes, setPublicNotes] = useState();
     const [loading, setLoading] = useState(false);
-    const navigate = useNavigate();
-
     useEffect(() => {
         (async () => {
             try {
                 setLoading(true);
-                const response = await getAllNotes();
+                const response = await getPublicNotes(user?.user_id);
                 console.log(response);
                 if (response && !response.message) {
-                    setNotes(response);
+                    setPublicNotes(response);
                 }
             } catch (error) {
-                setNotes(null);
+                setPublicNotes(null);
                 console.log(error.message);
                 navigate("/error");
             } finally {
@@ -26,10 +27,10 @@ export default function HomePage() {
         })();
     }, []);
 
-    const noteElements = notes?.map((note) => (
+    const noteElements = publicNotes?.map((note) => (
         <div
             key={note.note_id}
-            className="bg-white shadow-lg rounded-2xl p-5 my-3 w-full transition-transform hover:scale-[1.02]"
+            className="bg-white shadow-lg rounded-2xl p-5 w-full transition-transform hover:scale-[1.02]"
         >
             {/* User Info */}
             <div className="flex items-center gap-4 mb-4">
@@ -61,22 +62,13 @@ export default function HomePage() {
             </div>
         </div>
     ));
-
     return (
-        <div className="flex flex-col items-center w-full min-h-screen px-6">
-            {loading ? (
-                <p className="text-lg font-semibold text-gray-700">
-                    Loading...
-                </p>
-            ) : notes ? (
-                <div>
-                    <div className="w-full grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-4">
-                        {noteElements}
-                    </div>
-                </div>
-            ) : (
-                <p className="text-xl text-gray-800">No notes found</p>
-            )}
+        <div className="my-4">
+            {loading
+                ? "Loading..."
+                : !publicNotes?.length
+                ? "No notes Found"
+                : noteElements}
         </div>
     );
 }

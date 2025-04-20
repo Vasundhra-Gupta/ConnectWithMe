@@ -8,7 +8,6 @@ import {
 } from "react-router-dom";
 import App from "./App.jsx";
 import {
-    AddNotePage,
     ChannelProfilePage,
     HomePage,
     LoginPage,
@@ -29,8 +28,12 @@ import {
     UpdateChannelDetails,
     UpdatePassword,
     UpdatePersonalDetails,
+    DeleteNote,
+    AddNote,
+    PublicNotes,
+    PrivateNotes,
+
 } from "./Components/index.js";
-import DeleteNote from "./Components/Note/DeleteNote.jsx";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -60,7 +63,9 @@ const router = createBrowserRouter(
                 ></Route>
             </Route>
             <Route path="/note" element={<NotePage />}></Route>
-            <Route path="/add" element={<AddNotePage />}></Route>
+            <Route path="/public/:noteId" element={<PublicNotes />}></Route>
+            <Route path="/private/:noteId" element={<PrivateNotes />}></Route>
+            <Route path="/add" element={<AddNote/>}></Route>
             <Route path="/edit/:noteId" element={<EditNotePage />}></Route>
             <Route path="/delete" element={<DeleteNote />}></Route>
             <Route path="/chat" element={<ChatPage />}></Route>
