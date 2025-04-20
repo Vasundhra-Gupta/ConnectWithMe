@@ -6,7 +6,7 @@ import Logout from "../Auth/Logout";
 export default function Header() {
     const { user } = useUserContext();
     return (
-        <div className="fixed top-0 w-full h-[60px] bg-lime-100 flex items-center justify-between px-4 shadow-md">
+        <div className="fixed top-0 w-full h-[60px] bg-lime-100 flex items-center justify-between px-6 shadow-md">
             {/* Logo */}
             <Link to={"/"} className="flex justify-center items-center">
                 <div>
