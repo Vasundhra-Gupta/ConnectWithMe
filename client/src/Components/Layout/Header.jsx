@@ -6,38 +6,39 @@ import Logout from "../Auth/Logout";
 export default function Header() {
     const { user } = useUserContext();
     return (
-        <div className="fixed top-0 w-full h-[60px] bg-lime-100 flex items-center justify-between px-6 shadow-md">
-            {/* Left: Logo */}
-            <Link to={"/"} className="flex items-center gap-3">
+        <div className="fixed top-0 w-full h-[60px] bg-lime-100 flex items-center justify-between px-4 shadow-md">
+            {/* Logo */}
+            <Link to={"/"} className="flex justify-center items-center">
                 <div>
                     <img
                         src="https://images.pexels.com/photos/674010/pexels-photo-674010.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
                         alt="Logo"
-                        className="h-8 w-8 rounded-full"
+                        className="h-9 w-9 rounded-full"
                     />
                 </div>
-                <p className="text-xl font-bold">connectWithMe</p>
+                <p className="hidden md:block text-xl font-bold">connectWithMe</p>
             </Link>
 
-            <div className="hidden md:block flex-grow mx-4 max-w-lg">
+            {/* Searchbar */}
+            <div className="hidden md:block flex-grow mx-4 max-w-xl">
                 <input
                     type="text"
                     placeholder="Search..."
                     className="w-full px-3 py-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-lime-500"
                 />
             </div>
-            {/* Right: Navigation Buttons */}
+            {/* Navigation Buttons */}
             {user ? (
                 <div className="flex items-center gap-4">
                     <Link to={"/add"}>
                         <Button BtnText={"+"} />
                     </Link>
-                    <Link to={"/chat"}>
+                    {/* <Link to={"/chat"}>
                         <Button BtnText={"Chat"} />
-                    </Link>
+                    </Link> */}
                     <Logout />
                     <Link to={`/channel/${user.user_id}`}>
-                        <div className="w-12 h-12 overflow-hidden">
+                        <div className="w-9 h-9 overflow-hidden">
                             <img
                                 src={user.user_avatar}
                                 alt="avatar"
