@@ -47,9 +47,18 @@ const getNote = async (noteId) => {
     }
 };
 
-const getAllNotes = async (req, res) => {
+//public
+const getAllPublicNotes = async (req, res) => {
     try {
-        const notes = await Note.aggregate(commonpipeline);
+        const pipeline = [
+            {
+                $match: {
+                    note_visibility: true,
+                },
+            },
+            ...commonpipeline,
+        ];
+        const notes = await Note.aggregate(pipeline);
         if (!notes.length) {
             return res.status(BAD_REQUEST).json({
                 message: "no notes found",
@@ -64,7 +73,7 @@ const getAllNotes = async (req, res) => {
     }
 };
 
-const getNotes = async (req, res) => {
+const getPrivateNotes = async (req, res) => {
     try {
         const { ownerId } = req.params;
         //isValidUUID and data
@@ -83,6 +92,52 @@ const getNotes = async (req, res) => {
             {
                 $match: {
                     note_ownerId: ownerId,
+                    note_visibility: false,
+                },
+            },
+            {
+                $sort: {
+                    note_createdAt: -1,
+                    note_updatedAt: -1,
+                },
+            },
+            ...commonpipeline,
+        ];
+        const notes = await Note.aggregate(pipeline);
+        if (!notes.length) {
+            return res.status(OK).json({
+                message: "no notes found",
+            });
+        }
+        return res.status(OK).json(notes);
+    } catch (err) {
+        return res.status(SERVER_ERROR).json({
+            error: err.message,
+            message: "something went wrong while getting notes",
+        });
+    }
+};
+
+const getPublicNotes = async (req, res) => {
+    try {
+        const { ownerId } = req.params;
+        //isValidUUID and data
+        if (!ownerId) {
+            return res
+                .status(BAD_REQUEST)
+                .json({ message: "owner id missing" });
+        }
+        const owner = await getUser(ownerId);
+        if (!owner) {
+            return res.status(BAD_REQUEST).json({
+                message: "owner not found",
+            });
+        }
+        const pipeline = [
+            {
+                $match: {
+                    note_ownerId: ownerId,
+                    note_visibility: true,
                 },
             },
             {
@@ -239,4 +294,48 @@ const editNote = async (req, res) => {
     }
 };
 
-export { addNote, deleteNote, getNotes, getANote, editNote, getAllNotes };
+const toggleNoteVisibility = async (req, res) => {
+    try {
+        const { noteId } = req.params;
+
+        const note = await getNote(noteId);
+        if (!note) {
+            return res.status(BAD_REQUEST).json({
+                message: "note not found",
+            });
+        }
+        await Note.updateOne(
+            {
+                note_id: noteId,
+            },
+            {
+                $set: {
+                    note_visibility: !note.note_visibility,
+                },
+            },
+            { new: true }
+        );
+        return res.status(OK).json({
+            message: "note visibility toggled successfully",
+        });
+    } catch (error) {
+        return res.status(SERVER_ERROR).json({
+            error: error.message,
+            message: "something went wrong while toggling note visibility",
+        });
+    }
+};
+
+const pinANote = async (req, res) => {};
+
+export {
+    addNote,
+    deleteNote,
+    getPublicNotes,
+    getPrivateNotes,
+    getANote,
+    editNote,
+    getAllPublicNotes,
+    toggleNoteVisibility,
+    pinANote,
+};
