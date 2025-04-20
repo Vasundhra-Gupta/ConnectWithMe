@@ -76,6 +76,7 @@ const getAllPublicNotes = async (req, res) => {
 const getPrivateNotes = async (req, res) => {
     try {
         const { ownerId } = req.params;
+
         //isValidUUID and data
         if (!ownerId) {
             return res
@@ -166,6 +167,7 @@ const getPublicNotes = async (req, res) => {
 const getANote = async (req, res) => {
     try {
         const { noteId } = req.params;
+
         if (!noteId) {
             return res.status(BAD_REQUEST).json({
                 message: "note id missing",
@@ -328,10 +330,7 @@ const toggleNoteVisibility = async (req, res) => {
 
 const pinANote = async (req, res) => {
     try {
-        
-    } catch (error) {
-        
-    }
+    } catch (error) {}
 };
 
 export {

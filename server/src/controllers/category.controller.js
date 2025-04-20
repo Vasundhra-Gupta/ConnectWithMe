@@ -2,7 +2,7 @@ import { BAD_REQUEST, OK, SERVER_ERROR } from "../constants/errorCodes.js";
 import { Category } from "../models/Category.model.js";
 import { v4 as uuid } from "uuid";
 
-//find query
+//just a find query to help functions
 const getCategory = async (filterOption) => {
     try {
         return await Category.find({
