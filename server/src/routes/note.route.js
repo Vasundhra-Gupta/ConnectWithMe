@@ -18,7 +18,7 @@ noteRouter.use(verifyToken);
 
 noteRouter.route("/note/:noteId").get(getANote);
 noteRouter.route("/public/:ownerId").get(getPublicNotes); //getNotes
-noteRouter.route("/private/:ownerId").get(getPrivateNotes); //getNotes
+noteRouter.route("/private").get(getPrivateNotes); //getNotes
 noteRouter.route("/add").post(addNote);
 noteRouter.route("/delete/:noteId").delete(deleteNote);
 noteRouter.route("/edit/:noteId").patch(editNote);

@@ -1,7 +1,13 @@
 import bcryptjs from "bcryptjs";
-import { OK, BAD_REQUEST, SERVER_ERROR } from "../constants/errorCodes.js";
+import {
+    OK,
+    BAD_REQUEST,
+    SERVER_ERROR,
+    NOT_FOUND,
+} from "../constants/errorCodes.js";
 import { User } from "../models/User.model.js";
 import { deleteFromCloudinary } from "../utils/cloudinary.js";
+import { getUser } from "../utils/functions.js";
 
 const updateChannelDetails = async (req, res) => {
     const user = req.user;
@@ -44,7 +50,23 @@ const updateChannelDetails = async (req, res) => {
     }
 };
 
-const getChannelProfile = async () => {};
+const getChannelProfile = async (req, res) => {
+    try {
+        const { channelId } = req.params;
+        if (!channelId) {
+            return res.status(NOT_FOUND).json({
+                message: "channelId not found",
+            });
+        }
+        const channel = await getUser(channelId);
+        return res.status(OK).json(channel);
+    } catch (error) {
+        return res.status(SERVER_ERROR).json({
+            message: "something went wrong while getting channel profile.",
+            errror: error.message,
+        });
+    }
+};
 
 const updatePersonalDetails = async (req, res) => {
     try {
@@ -127,6 +149,18 @@ const updatePassword = async (req, res) => {
     }
 };
 
+const updateAvatar = async (req, res) => {
+    try {
+    } catch (err) {
+        return res.status(SERVER_ERROR).json({
+            message: "something went wrong while updating avatar",
+            error: err.message,
+        });
+    }
+};
+
+const updateCoverImage = async (req, res) => {};
+
 const deleteAccount = async (req, res) => {
     try {
         const user = req.user;
@@ -163,6 +197,8 @@ const deleteAccount = async (req, res) => {
 
 export {
     updateChannelDetails,
+    updateAvatar,
+    updateCoverImage,
     getChannelProfile,
     updatePassword,
     updatePersonalDetails,

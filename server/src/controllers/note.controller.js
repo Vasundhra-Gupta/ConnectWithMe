@@ -75,8 +75,7 @@ const getAllPublicNotes = async (req, res) => {
 
 const getPrivateNotes = async (req, res) => {
     try {
-        const { ownerId } = req.params;
-
+        const ownerId = req.user?.user_id;
         //isValidUUID and data
         if (!ownerId) {
             return res

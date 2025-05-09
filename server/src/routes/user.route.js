@@ -5,8 +5,11 @@ import {
     updatePassword,
     updatePersonalDetails,
     deleteAccount,
+    getChannelProfile,
 } from "../controllers/user.controller.js";
 import { verifyToken } from "../middlewares/authentication.js";
+
+userRouter.route("/channel/:channelId").get(getChannelProfile);
 
 userRouter.use(verifyToken);
 
