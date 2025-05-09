@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { getPrivateNotes, toggleVisibility } from "../../Services/noteService";
-import { useUserContext } from "../../Context/UserContext";
 import { useNavigate, Link } from "react-router-dom";
+import { useUserContext } from "../Context/UserContext";
 
 export default function PrivateNotes() {
     const { user } = useUserContext();

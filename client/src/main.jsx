@@ -17,7 +17,7 @@ import {
     ErrorPage,
 } from "./Pages/index.js";
 import "./Styles/index.css";
-import { UserContextProvider } from "./Context/UserContext.jsx";
+import { UserContextProvider } from "./Components/Context/UserContext.jsx";
 import SettingPage from "./Pages/SettingsPage.jsx";
 import AboutPage from "./Pages/AboutPage.jsx";
 import ChannelAbout from "./Components/Channel/ChannelAbout.jsx";

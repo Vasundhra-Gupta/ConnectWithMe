@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Button from "../Components/General/Button.jsx";
 import { editNote } from "../Services/noteService.js";
-import { useUserContext } from "../Context/UserContext.jsx";
+import { useUserContext } from "../Components/Context/UserContext.jsx";
 
 export default function EditNotePage() {
     const {user} = useUserContext();

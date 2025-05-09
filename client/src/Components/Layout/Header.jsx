@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import Button from "../General/Button";
-import { useUserContext } from "../../Context/UserContext";
 import Logout from "../Auth/Logout";
+import { useUserContext } from "../Context/UserContext";
 
 export default function Header() {
     const { user } = useUserContext();

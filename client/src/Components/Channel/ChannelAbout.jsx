@@ -1,5 +1,4 @@
-import { useUserContext } from "../../Context/UserContext"
-
+import { useUserContext } from "../Context/UserContext"
 
 export default function ChannelAbout() {
   const {user} = useUserContext()

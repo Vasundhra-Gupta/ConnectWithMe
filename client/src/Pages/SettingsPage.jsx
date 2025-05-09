@@ -1,5 +1,5 @@
 import { NavLink, Outlet } from "react-router-dom";
-import { useUserContext } from "../Context/UserContext";
+import { useUserContext } from "../Components/Context/UserContext";
 import Button from "../Components/General/Button";
 import { useState } from "react";
 import { DeleteAccount } from "../Components";

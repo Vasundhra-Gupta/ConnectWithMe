@@ -1,8 +1,8 @@
 import Button from "../General/Button";
-import { useUserContext } from "../../Context/UserContext";
 import { useState } from "react";
 import { updatePersonalDetails } from "../../Services/userService";
 import { useNavigate } from "react-router-dom";
+import { useUserContext } from "../Context/UserContext";
 
 export default function UpdatePersonalDetails() {
     const { user } = useUserContext();

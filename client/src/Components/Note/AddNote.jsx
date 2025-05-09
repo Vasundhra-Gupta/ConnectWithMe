@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../General/Button.jsx";
 import { addNote } from "../../Services/noteService.js";
-import { useUserContext } from "../../Context/UserContext.jsx";
+import { useUserContext } from "../Context/UserContext.jsx";
 // import { getCategories } from "../../Services/CategoryService.js";
 
 export default function AddNote() {

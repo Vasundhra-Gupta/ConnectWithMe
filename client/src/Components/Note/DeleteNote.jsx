@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import Button from "../General/Button";
 import { useNavigate, useParams } from "react-router-dom";
 import { deleteNote } from "../../Services/noteService";
-import { useUserContext } from "../../Context/UserContext";
+import { useUserContext } from "../Context/UserContext";
 
 export default function DeleteNote({noteId,setNotes}) {
     const { user } = useUserContext();

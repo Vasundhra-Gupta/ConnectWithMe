@@ -1,8 +1,8 @@
 import { useState } from "react";
 import Button from "../General/Button";
-import { useUserContext } from "../../Context/UserContext";
 import { updateChannelDetails } from "../../Services/userService";
 import { useNavigate } from "react-router-dom";
+import { useUserContext } from "../Context/UserContext";
 
 export default function UpdateChannelDetails() {
     const { user } = useUserContext();

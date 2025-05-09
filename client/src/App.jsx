@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Layout from "./Components/Layout/Layout";
 import { useNavigate } from "react-router-dom";
 import { getUser } from "./Services/authService";
-import { useUserContext } from "./Context/UserContext";
+import { useUserContext } from "./Components/Context/UserContext";
 
 export default function App() {
     const navigate = useNavigate();

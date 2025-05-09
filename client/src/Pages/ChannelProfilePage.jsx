@@ -1,6 +1,6 @@
 import { Link, NavLink, Outlet } from "react-router-dom";
-import { useUserContext } from "../Context/UserContext";
 import Button from "../Components/General/Button";
+import { useUserContext } from "../Components/Context/UserContext";
 
 export default function ChannelProfilePage() {
     const { user } = useUserContext();
