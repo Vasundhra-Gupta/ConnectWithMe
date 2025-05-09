@@ -1,8 +1,24 @@
 import { url } from ".";
 
+const getChannelProfile = async (channelId) => {
+    try {
+        const response = await fetch(`${url}/users/channel/${channelId}`, {
+            method: "GET",
+            credentials: "include",
+        })
+
+        if(response.status===500){
+            throw new Error(res.message);
+        }
+        const res = await response.json();
+        return res;
+    } catch (error) {
+        console.log("error in updateChannelDetails service", error);
+        throw error;
+    }
+}
 const updateChannelDetails = async (inputs) => {
     try {
-        // const res = await fetch(`/api/users/update-channel`, {
         const res = await fetch(`${url}/users/update-channel`, {
             method: "PATCH",
             credentials: "include",
@@ -24,7 +40,6 @@ const updateChannelDetails = async (inputs) => {
 
 const updatePersonalDetails = async (inputs) => {
     try {
-        // const res = await fetch(`/api/users/update-personal`, {
         const res = await fetch(`${url}/users/update-personal`, {
             method: "PATCH",
             credentials: "include",
@@ -46,7 +61,6 @@ const updatePersonalDetails = async (inputs) => {
 
 const updatePassword = async (inputs) => {
     try {
-        // const res = await fetch(`/api/users/update-password`, {
         const res = await fetch(`${url}/users/update-password`, {
             method: "PATCH",
             credentials: "include",
@@ -69,7 +83,6 @@ const updatePassword = async (inputs) => {
 
 const deleteAccount = async (password) => {
     try {
-        // const res = await fetch("/api/users/delete-account", {
         const res = await fetch(`${url}/users/delete-account`, {
             method: "DELETE",
             credentials: "include",
@@ -90,6 +103,7 @@ const deleteAccount = async (password) => {
 };
 
 export {
+    getChannelProfile,
     updateChannelDetails,
     updatePassword,
     updatePersonalDetails,

@@ -1,7 +1,6 @@
 import { url } from ".";
 const getUser = async () => {
     try {
-        // const response = await fetch("/api/users/current-user", {
         const response = await fetch(`${url}/users/current-user`, {
             method: "GET",
             credentials: "include",
@@ -23,7 +22,6 @@ const getUser = async () => {
 
 const loginUser = async (loginInputs) => {
     try {
-        // const response = await fetch("/api/users/login", {
         const response = await fetch(`${url}/users/login`, {
             method: "POST",
             credentials: "include",
@@ -47,7 +45,6 @@ const registerUser = async (inputs) => {
         Object.entries(inputs).forEach(([key, value]) => {
             formData.append(key, value);
         });
-        // const response = await fetch("/api/users/register", {
         const response = await fetch(`${url}/users/register`, {
             method: "POST",
             credentials: "include",
@@ -74,7 +71,6 @@ const registerUser = async (inputs) => {
 
 const logoutUser = async () => {
     try {
-        // const response = await fetch("/api/users/logout", {
         const response = await fetch(`${url}/users/logout`, {
             method: "POST",
             credentials: "include",

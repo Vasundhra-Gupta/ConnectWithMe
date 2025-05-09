@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { getPrivateNotes, toggleVisibility } from "../../Services/noteService";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useParams } from "react-router-dom";
 import { useUserContext } from "../Context/UserContext";
 
 export default function PrivateNotes() {
@@ -12,7 +12,7 @@ export default function PrivateNotes() {
         (async () => {
             try {
                 setLoading(true);
-                const response = await getPrivateNotes(user?.user_id);
+                const response = await getPrivateNotes();
                 console.log(response);
                 if (response && !response.message) {
                     setPrivateNotes(response);
@@ -46,7 +46,7 @@ export default function PrivateNotes() {
     const noteElements = privateNotes?.map((note) => (
         <div
             key={note.note_id}
-            className="bg-white shadow-lg rounded-2xl p-5 mb-4 w-full transition-transform hover:scale-[1.02] relative"
+            className="bg-white shadow-lg rounded-2xl p-5 w-full transition-transform hover:scale-[1.02] relative"
         >
             {/* Buttons */}
             <div className="absolute top-3 right-3 flex flex-col gap-2">
@@ -98,7 +98,7 @@ export default function PrivateNotes() {
                 ? "Loading..."
                 : !privateNotes?.length
                 ? "No notes Found"
-                : noteElements}
+                : <div className="grid md:grid-cols-2 gap-4 lg:grid-cols-3">{noteElements}</div>}
         </div>
     );
 }

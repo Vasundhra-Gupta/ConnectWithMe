@@ -27,4 +27,13 @@ Currently, two official plugins are available:
 
 -   manifest.json provides meta data used when web app is installed on a mobile device oe desktop.
 
-    - How react 
+###  Context-API
+```js
+export const demoContext = createContext();
+<demoContext>
+    <comp1/>
+    <comp2/>
+    <comp2/>
+</demoContext>
+//Now this demoContext act as a provider for each of these components!!! means these components have access to all states and data provided by demoContext
+```

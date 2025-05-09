@@ -2,7 +2,6 @@ import { url } from ".";
 
 const getAllNotes = async () => {
     try {
-        // const response = await fetch(`/api/notes/all`, {
         const response = await fetch(`${url}/notes/all`, {
             method: "GET",
             headers: {
@@ -22,7 +21,6 @@ const getAllNotes = async () => {
 
 const getPublicNotes = async (ownerId) => {
     try {
-        // const response = await fetch(`/api/notes/${ownerId}`, {
         const response = await fetch(`${url}/notes/public/${ownerId}`, {
             method: "GET",
             credentials: "include",
@@ -41,10 +39,9 @@ const getPublicNotes = async (ownerId) => {
     }
 };
 
-const getPrivateNotes = async (ownerId) => {
+const getPrivateNotes = async () => {
     try {
-        // const response = await fetch(`/api/notes/${ownerId}`, {
-        const response = await fetch(`${url}/notes/private/${ownerId}`, {
+        const response = await fetch(`${url}/notes/private`, {
             method: "GET",
             credentials: "include",
             headers: {
@@ -74,7 +71,6 @@ const toggleVisibility = async (noteId) => {
                 },
             }
         );
-
         const res = await response.json();
         console.log(res);
         if (res.status === 500) {

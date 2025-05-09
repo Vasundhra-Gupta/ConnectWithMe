@@ -1,18 +1,19 @@
 import React from "react";
 import { getPublicNotes } from "../../Services/noteService";
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useUserContext } from "../Context/UserContext";
 
 export default function PublicNotes() {
     const { user } = useUserContext();
+    const {channelId} = useParams()
     const [publicNotes, setPublicNotes] = useState();
     const [loading, setLoading] = useState(false);
     useEffect(() => {
         (async () => {
             try {
                 setLoading(true);
-                const response = await getPublicNotes(user?.user_id);
+                const response = await getPublicNotes(channelId);
                 console.log(response);
                 if (response && !response.message) {
                     setPublicNotes(response);

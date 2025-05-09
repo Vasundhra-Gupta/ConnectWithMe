@@ -1,23 +1,48 @@
-import { Link, NavLink, Outlet } from "react-router-dom";
+import {
+    Link,
+    NavLink,
+    Outlet,
+    useParams,
+    useNavigate,
+} from "react-router-dom";
 import Button from "../Components/General/Button";
+import { useEffect } from "react";
+import { getChannelProfile } from "../Services/userService";
 import { useUserContext } from "../Components/Context/UserContext";
+import { useChannelContext } from "../Components/Context/ChannelContext";
 
 export default function ChannelProfilePage() {
+    const { channelId } = useParams();
     const { user } = useUserContext();
-    console.log(user);
-
+    const {channel, setChannel} = useChannelContext();
+    const navigate = useNavigate();
     const tabs = [
         { name: "Notes", to: "" },
         { name: "About", to: "about" },
     ];
 
+    useEffect(() => {
+        (async () => {
+            try {
+                const channel = await getChannelProfile(channelId);
+                if (channel && !channel.message) {
+                    setChannel(channel);
+                }
+            } catch (error) {
+                setChannel(null);
+                navigate("/error");
+                console.log(error.message);
+            }
+        })();
+    }, []);
+
     return (
         <div className="min-h-screen">
             {/* Upper Section: Cover Image */}
             <div className="relative w-full h-52 bg-gray-200">
-                {user?.user_coverImage && (
+                {channel?.user_coverImage && (
                     <img
-                        src={user?.user_coverImage}
+                        src={channel?.user_coverImage}
                         alt="Cover"
                         className="w-full h-full object-cover"
                     />
@@ -27,28 +52,32 @@ export default function ChannelProfilePage() {
             {/* Profile Section */}
             <div className="flex flex-col items-center mt-[-50px]">
                 <div className="w-36 h-36 rounded-full border-4 border-white bg-gray-200 overflow-hidden z-10">
-                    {user?.user_avatar && (
+                    {channel?.user_avatar && (
                         <img
-                            src={user.user_avatar}
+                            src={channel.user_avatar}
                             alt="Avatar"
                             className="w-full h-full object-cover"
                         />
                     )}
                 </div>
-                <div className="text-xl font-bold mt-2">@{user?.user_name}</div>
+                <div className="text-xl font-bold mt-2">
+                    @{channel?.user_name}
+                </div>
                 <div className="text-gray-600">
-                    {user?.user_firstName} {user?.user_lastName}
+                    {channel?.user_firstName} {channel?.user_lastName}
                 </div>
 
                 {/* Edit Button */}
-                <div className="mt-3">
-                    <Link to="/settings">
-                        <Button
-                            BtnText="Edit"
-                            className=" text-white shadow-md transition-all"
-                        />
-                    </Link>
-                </div>
+                {user?.user_id === channelId && (
+                    <div className="mt-3">
+                        <Link to="/settings">
+                            <Button
+                                BtnText="Edit"
+                                className=" text-white shadow-md transition-all"
+                            />
+                        </Link>
+                    </div>
+                )}
             </div>
 
             {/* Tabs Section */}

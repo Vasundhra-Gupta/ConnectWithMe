@@ -5,8 +5,8 @@ import { editNote } from "../Services/noteService.js";
 import { useUserContext } from "../Components/Context/UserContext.jsx";
 
 export default function EditNotePage() {
-    const {user} = useUserContext();
-    const {noteId} = useParams()
+    const { user } = useUserContext();
+    const { noteId } = useParams();
     const [note, setNote] = useState("");
     const [disabled, setDisabled] = useState(false);
     const [error, setError] = useState(null);
@@ -48,7 +48,7 @@ export default function EditNotePage() {
             const res = await editNote(inputs, noteId);
             if (res && res.message === "note edited successfully") {
                 setNote(res);
-                navigate(`/channel/${user?.user_id}`)
+                navigate(`/channel/${user?.user_id}`);
             } else {
                 setNote(null);
                 setError(res.message);

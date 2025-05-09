@@ -17,7 +17,6 @@ import {
     ErrorPage,
 } from "./Pages/index.js";
 import "./Styles/index.css";
-import { UserContextProvider } from "./Components/Context/UserContext.jsx";
 import SettingPage from "./Pages/SettingsPage.jsx";
 import AboutPage from "./Pages/AboutPage.jsx";
 import ChannelAbout from "./Components/Channel/ChannelAbout.jsx";
@@ -32,8 +31,8 @@ import {
     AddNote,
     PublicNotes,
     PrivateNotes,
-
 } from "./Components/index.js";
+import { UserContextProvider, ChannelContextProvider } from "./Components/Context/index.js";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -65,7 +64,7 @@ const router = createBrowserRouter(
             <Route path="/note" element={<NotePage />}></Route>
             <Route path="/public/:noteId" element={<PublicNotes />}></Route>
             <Route path="/private/:noteId" element={<PrivateNotes />}></Route>
-            <Route path="/add" element={<AddNote/>}></Route>
+            <Route path="/add" element={<AddNote />}></Route>
             <Route path="/edit/:noteId" element={<EditNotePage />}></Route>
             <Route path="/delete" element={<DeleteNote />}></Route>
             <Route path="/chat" element={<ChatPage />}></Route>
@@ -76,9 +75,11 @@ const router = createBrowserRouter(
 createRoot(document.getElementById("root")).render(
     // <StrictMode>
     <UserContextProvider>
-        <RouterProvider router={router}>
-            <App />
-        </RouterProvider>
+        <ChannelContextProvider>
+            <RouterProvider router={router}>
+                <App />
+            </RouterProvider>
+        </ChannelContextProvider>
     </UserContextProvider>
     // </StrictMode>
 );

@@ -1,8 +1,8 @@
 import { NavLink, Outlet } from "react-router-dom";
-import { useUserContext } from "../Components/Context/UserContext";
 import Button from "../Components/General/Button";
 import { useState } from "react";
 import { DeleteAccount } from "../Components";
+import { useUserContext } from "../Components/Context/UserContext";
 
 export default function SettingPage() {
     const { user } = useUserContext();
