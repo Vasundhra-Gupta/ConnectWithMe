@@ -4,15 +4,14 @@ import Button from "../Components/General/Button.jsx";
 import { editNote } from "../Services/noteService.js";
 import { useUserContext } from "../Components/Context/UserContext.jsx";
 
-export default function EditNotePage({noteId, setNotess}) {
+export default function EditNotePage({ note, setNotes }) {
     const { user } = useUserContext();
-    const [ setNotes] = useState("");
     const [disabled, setDisabled] = useState(false);
     const [error, setError] = useState(null);
     const [inputs, setInputs] = useState({
-        title: "",
-        content: "",
-        category: "",
+        title: note?.note_title || "",
+        content: note?.note_content || "",
+        category: note?.note_category || "",
     });
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
@@ -44,9 +43,11 @@ export default function EditNotePage({noteId, setNotess}) {
             setLoading(true);
             setDisabled(true);
             setError(null);
-            const res = await editNote(inputs, noteId);
+            const res = await editNote(inputs, note?.note_id);
             if (res && res.message === "note edited successfully") {
-                setNotes(res);
+                setNotes((prev) =>
+                    prev.map((n) => (n.note_id === note.note_id ? res : n))
+                );
                 navigate(`/channel/${user?.user_id}`);
             } else {
                 setNotes(null);
@@ -103,41 +104,38 @@ export default function EditNotePage({noteId, setNotess}) {
     // ));
 
     return (
-            <div className="my-4">
-                <form
-                    className="shadow-lg border border-gray-400 rounded-lg p-4 bg-white"
-                    onSubmit={handleSubmit}
-                >
-                    {error && (
-                        <div className="text-red-500 text-sm mb-3 text-center">
-                            {error}
-                        </div>
-                    )}
-    
-                    <input
-                        type="text"
-                        name="title"
-                        value={inputs?.title}
-                        onChange={handleChange}
-                        placeholder="Title"
-                        className="w-full border-b border-gray-400 outline-none text-lg mb-4 p-1"
-                    />
-    
-                    <textarea
-                        name="content"
-                        value={inputs?.content}
-                        onChange={handleChange}
-                        placeholder="Write your insights"
-                        className="w-full h-32 p-2 border border-gray-300 rounded-lg outline-none resize-none mb-4"
-                    />
-                    <Button
-                        type="submit"
-                        onMouseOver={handleMouseOver}
-                        disabled={disabled}
-                        className="rounded-full bg-violet-500 text-white px-4 py-2 hover:bg-violet-600"
-                        BtnText={loading ? "Editing..." : "Edit Note"}
-                    />
-                </form>
-            </div>
-        );
+        <div className=" bg-white px-4 py-2">
+            <form className="shadow-lg rounded-lg " onSubmit={handleSubmit}>
+                {error && (
+                    <div className="text-red-500 text-sm mb-2 text-center">
+                        {error}
+                    </div>
+                )}
+
+                <input
+                    type="text"
+                    name="title"
+                    value={inputs?.title}
+                    onChange={handleChange}
+                    placeholder="Title"
+                    className="w-full border-b border-gray-400 outline-none text-lg mb-4"
+                />
+
+                <textarea
+                    name="content"
+                    value={inputs?.content}
+                    onChange={handleChange}
+                    placeholder="Write your insights"
+                    className="w-full rounded-lg outline-none"
+                />
+                <Button
+                    type="submit"
+                    onMouseOver={handleMouseOver}
+                    disabled={disabled}
+                    className="rounded-full bg-violet-500 text-white px-4 py-2 hover:bg-violet-600"
+                    BtnText={loading ? "Editing..." : "Edit"}
+                />
+            </form>
+        </div>
+    );
 }

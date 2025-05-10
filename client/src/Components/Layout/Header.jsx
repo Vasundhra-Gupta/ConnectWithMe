@@ -6,7 +6,7 @@ import { useUserContext } from "../Context/UserContext";
 export default function Header() {
     const { user } = useUserContext();
     return (
-        <div className="fixed top-0 w-full h-[60px] bg-lime-100 flex items-center justify-between px-5 shadow-md">
+        <div className="fixed top-0 w-full h-[60px] bg-lime-100 flex items-center justify-between px-5 shadow-md z-20">
             {/* Logo */}
             <Link to={"/"} className="flex justify-center gap-3 items-center">
                 <div>
@@ -30,9 +30,9 @@ export default function Header() {
             {/* Navigation Buttons */}
             {user ? (
                 <div className="flex items-center gap-4">
-                    <Link to={"/add"}>
+                    {/* <Link to={"/add"}>
                         <Button BtnText={"+"} />
-                    </Link>
+                    </Link> */}
                     {/* <Link to={"/chat"}>
                         <Button BtnText={"Chat"} />
                     </Link> */}

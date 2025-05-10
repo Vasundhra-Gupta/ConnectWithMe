@@ -29,9 +29,14 @@ export default function PrivateNotes() {
         })();
     }, []);
 
-    const noteElements = privateNotes?.map((note) => (
-        <NoteCard key={note.note_id} note={note} />
-    ));
+    const noteElements = privateNotes?.map((note, index) => (
+        <NoteCard
+          key={note.note_id || `${note.note_title}-${index}`}
+          note={note}
+          setNotes={setPrivateNotes}
+        />
+      ))
+      
 
     return (
         <div className="my-4">

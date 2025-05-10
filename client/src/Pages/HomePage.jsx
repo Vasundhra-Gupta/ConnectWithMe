@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { getAllNotes } from "../Services/noteService";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import NoteCard from "../Components/Note/NoteCard";
 
 export default function HomePage() {
@@ -28,7 +28,7 @@ export default function HomePage() {
     }, []);
 
     const noteElements = notes?.map((note) => (
-        <NoteCard note={note}/>
+        <NoteCard key={note?.note_id} note={note}/>
     ));
 
     return (

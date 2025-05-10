@@ -78,7 +78,10 @@ export default function AddNote() {
             if (res && !res.message) {
                 setNote(res);
                 navigate(`/channel/${user?.user_id}`);
-                setInputs(null);
+                setInputs({
+                    title: "",
+                    content: "",
+                });
             } else {
                 setNote(null);
                 setError(res.message);

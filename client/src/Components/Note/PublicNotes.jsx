@@ -29,7 +29,7 @@ export default function PublicNotes() {
         })();
     }, []);
 
-    const noteElements = publicNotes?.map((note) => <NoteCard note={note} />);
+    const noteElements = publicNotes?.map((note) => <NoteCard key={note?.note_id} note={note} setNotes={setPublicNotes} />);
     return (
         <div className="my-4">
             {loading ? (

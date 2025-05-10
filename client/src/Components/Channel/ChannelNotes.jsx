@@ -32,7 +32,7 @@ export default function ChannelNotes() {
                             >
                                 {showAddNote ? "-" : "+"}
                             </p>
-                            {showAddNote && <AddNote />}
+                            {showAddNote && <AddNote /> }                            
                             <PrivateNotes />
                         </div>
                     )}
