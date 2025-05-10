@@ -16,11 +16,20 @@ export default function SettingPage() {
     ];
 
     return (
-        <div className="flex min-h-screen bg-gray-100">
+        <div className="flex relative min-h-screen bg-gray-100">
             {/* Left Sidebar (Profile Info) */}
-            <div className="w-1/3 bg-white p-6 shadow-lg">
+            <div className="w-1/4 bg-gray-200 p-6 rounded-lg ml-3 shadow-lg">
                 <div className="flex flex-col items-center">
-                    <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-gray-300">
+                    <div className="w-full rounded-lg overflow-hidden h-36">
+                        {user?.user_coverImage && (
+                            <img
+                                src={user.user_coverImage}
+                                alt="coverImage"
+                                className="w-full h-full object-cover"
+                            />
+                        )}
+                    </div>
+                    <div className="absolute top-[140px]  w-24 h-24 rounded-full overflow-hidden border-4 border-gray-300">
                         {user?.user_avatar && (
                             <img
                                 src={user.user_avatar}
@@ -29,13 +38,13 @@ export default function SettingPage() {
                             />
                         )}
                     </div>
-                    <div className="text-xl font-bold mt-3">
+                    <div className="text-xl font-bold mt-[4.75rem]">
                         @{user?.user_name}
                     </div>
-                    <div className="text-gray-600">
+                    <div className="text-gray-600 mb-1">
                         {user?.user_firstName} {user?.user_lastName}
                     </div>
-                    <div>{user?.user_bio}</div>
+                    <div className="mb-2">{user?.user_bio}</div>
                     <Button
                         BtnText={"Delete Account"}
                         onClick={() => setShowPopup(true)}
