@@ -4,10 +4,9 @@ import Button from "../Components/General/Button.jsx";
 import { editNote } from "../Services/noteService.js";
 import { useUserContext } from "../Components/Context/UserContext.jsx";
 
-export default function EditNotePage() {
+export default function EditNotePage({noteId, setNotess}) {
     const { user } = useUserContext();
-    const { noteId } = useParams();
-    const [note, setNote] = useState("");
+    const [ setNotes] = useState("");
     const [disabled, setDisabled] = useState(false);
     const [error, setError] = useState(null);
     const [inputs, setInputs] = useState({
@@ -47,10 +46,10 @@ export default function EditNotePage() {
             setError(null);
             const res = await editNote(inputs, noteId);
             if (res && res.message === "note edited successfully") {
-                setNote(res);
+                setNotes(res);
                 navigate(`/channel/${user?.user_id}`);
             } else {
-                setNote(null);
+                setNotes(null);
                 setError(res.message);
             }
         } catch (err) {
@@ -62,69 +61,83 @@ export default function EditNotePage() {
         }
     };
 
-    const inputFields = [
-        {
-            type: "text",
-            name: "title",
-            id: "title",
-            required: true,
-            label: "Title",
-        },
-        {
-            type: "text",
-            name: "content",
-            id: "content",
-            required: true,
-            label: "Content",
-        },
-        {
-            type: "text",
-            name: "category",
-            id: "category",
-            label: "Category",
-        },
-    ];
+    // const inputFields = [
+    //     {
+    //         type: "text",
+    //         name: "title",
+    //         id: "title",
+    //         required: true,
+    //         label: "Title",
+    //     },
+    //     {
+    //         type: "text",
+    //         name: "content",
+    //         id: "content",
+    //         required: true,
+    //         label: "Content",
+    //     },
+    //     {
+    //         type: "text",
+    //         name: "category",
+    //         id: "category",
+    //         label: "Category",
+    //     },
+    // ];
 
-    const inputElements = inputFields.map((field) => (
-        <div key={field.name}>
-            <div>
-                <label htmlFor={field.name}>{field.label}</label>
-            </div>
-            <div>
-                <input
-                    type={field.type}
-                    name={field.name}
-                    id={field.id}
-                    required={field.required}
-                    onChange={handleChange}
-                    className="w-full border-gray-400 shadow-md rounded-md outline-none p-[5px] indent-2"
-                />
-            </div>
-        </div>
-    ));
+    // const inputElements = inputFields.map((field) => (
+    //     <div key={field.name}>
+    //         <div>
+    //             <label htmlFor={field.name}>{field.label}</label>
+    //         </div>
+    //         <div>
+    //             <input
+    //                 type={field.type}
+    //                 name={field.name}
+    //                 id={field.id}
+    //                 required={field.required}
+    //                 onChange={handleChange}
+    //                 className="w-full border-gray-400 shadow-md rounded-md outline-none p-[5px] indent-2"
+    //             />
+    //         </div>
+    //     </div>
+    // ));
 
     return (
-        <div className="min-h-screen w-screen flex justify-center items-center">
-            <form
-                className="shadow-lg px-6 py-3 w-[270px]"
-                onSubmit={handleSubmit}
-            >
-                {error && (
-                    <div className="text-red-500 text-center text-sm mb-3">
-                        {error}
-                    </div>
-                )}
-                {inputElements}
-                <div className="text-center m-2">
+            <div className="my-4">
+                <form
+                    className="shadow-lg border border-gray-400 rounded-lg p-4 bg-white"
+                    onSubmit={handleSubmit}
+                >
+                    {error && (
+                        <div className="text-red-500 text-sm mb-3 text-center">
+                            {error}
+                        </div>
+                    )}
+    
+                    <input
+                        type="text"
+                        name="title"
+                        value={inputs?.title}
+                        onChange={handleChange}
+                        placeholder="Title"
+                        className="w-full border-b border-gray-400 outline-none text-lg mb-4 p-1"
+                    />
+    
+                    <textarea
+                        name="content"
+                        value={inputs?.content}
+                        onChange={handleChange}
+                        placeholder="Write your insights"
+                        className="w-full h-32 p-2 border border-gray-300 rounded-lg outline-none resize-none mb-4"
+                    />
                     <Button
                         type="submit"
                         onMouseOver={handleMouseOver}
                         disabled={disabled}
-                        className=" bg-violet-400"
-                        BtnText={loading ? "Loading" : "Edit Note"}
-                    ></Button>
-                </div>
-            </form>
-        </div>
-    );
+                        className="rounded-full bg-violet-500 text-white px-4 py-2 hover:bg-violet-600"
+                        BtnText={loading ? "Editing..." : "Edit Note"}
+                    />
+                </form>
+            </div>
+        );
 }

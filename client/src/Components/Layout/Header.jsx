@@ -8,7 +8,7 @@ export default function Header() {
     return (
         <div className="fixed top-0 w-full h-[60px] bg-lime-100 flex items-center justify-between px-5 shadow-md">
             {/* Logo */}
-            <Link to={"/"} className="flex justify-center items-center">
+            <Link to={"/"} className="flex justify-center gap-3 items-center">
                 <div>
                     <img
                         src="https://images.pexels.com/photos/674010/pexels-photo-674010.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"

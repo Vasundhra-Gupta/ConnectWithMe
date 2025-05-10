@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getAllNotes } from "../Services/noteService";
 import { useNavigate, Link } from "react-router-dom";
+import NoteCard from "../Components/Note/NoteCard";
 
 export default function HomePage() {
     const [notes, setNotes] = useState(null);
@@ -27,39 +28,7 @@ export default function HomePage() {
     }, []);
 
     const noteElements = notes?.map((note) => (
-        <div
-            key={note.note_id}
-            className="bg-white shadow-lg rounded-2xl p-5 my-3 w-full transition-transform hover:scale-[1.02]"
-        >
-            {/* User Info */}
-            <div className="flex items-center gap-4 mb-4">
-                <img
-                    src={note.avatar}
-                    alt="Avatar"
-                    className="w-12 h-12 rounded-full border border-gray-300"
-                />
-                <div>
-                    <Link to={`/channel/${note.note_ownerId}`}>
-                        <p className="font-semibold text-gray-800 text-lg">
-                            @{note.userName}
-                        </p>
-                    </Link>
-                    <p className="text-gray-500 text-sm">
-                        {note.firstName} {note.lastName}
-                    </p>
-                </div>
-            </div>
-
-            {/* Note Content */}
-            <div className="border-t border-gray-200 pt-3">
-                <h2 className="text-xl font-bold text-blue-700">
-                    {note.note_title}
-                </h2>
-                <p className="text-gray-600 mt-1 line-clamp-2 overflow-hidden">
-                    {note.note_content}
-                </p>
-            </div>
-        </div>
+        <NoteCard note={note}/>
     ));
 
     return (

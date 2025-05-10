@@ -13,7 +13,7 @@ export default function ChannelNotes() {
     return (
         <>
             {user?.user_id == channelId ? (
-                <div className="relative mx-6">
+                <div className="relative">
                     <select
                         value={selectedType}
                         onChange={(e) => setSelectedType(e.target.value)}
@@ -25,10 +25,10 @@ export default function ChannelNotes() {
                     {selectedType === "public" ? (
                         <PublicNotes />
                     ) : (
-                        <div className="min-h-screen bg-gray-100 px-4">
+                        <div className="relative min-h-screen bg-gray-100 px-4">
                             <p
                                 onClick={() => setShowAddNote(!showAddNote)}
-                                className="absolute pr-5 text-2xl -top-12 right-0 "
+                                className="absolute pr-5 text-3xl -top-[55px] left-28 "
                             >
                                 {showAddNote ? "-" : "+"}
                             </p>

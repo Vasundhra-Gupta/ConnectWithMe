@@ -5,7 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { deleteNote } from "../../Services/noteService";
 import { useUserContext } from "../Context/UserContext";
 
-export default function DeleteNote({noteId,setNotes}) {
+export default function DeleteNote({noteId}) {
     const { user } = useUserContext();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
@@ -15,9 +15,7 @@ export default function DeleteNote({noteId,setNotes}) {
             setLoading(true);
             const response = await deleteNote(noteId);
             if (response && response.message == "note deleted succesfully") {
-                setNotes(prev => prev.filter(note => note.note_id !== noteId));
                 console.log(response.message);
-                navigate(`channel/${user?.user_id}`);
             }
         } catch (error) {
             navigate("/error");
@@ -29,8 +27,8 @@ export default function DeleteNote({noteId,setNotes}) {
         <div>
             <Button
                 onClick={handleSubmit}
-                className={"text-white"}
-                BtnText={loading ? "Loading..." : "Delete"}
+                className={"text-[#333] bg-inherit hover:bg-inherit"}
+                BtnText={loading ? "Loading..." : "✂"}
             />
         </div>
     );

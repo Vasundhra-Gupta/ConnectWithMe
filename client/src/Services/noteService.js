@@ -105,7 +105,6 @@ const addNote = async (inputs) => {
 
 const editNote = async (inputs, noteId) => {
     try {
-        // const response = await fetch("/api/notes/add", {
         const response = await fetch(`${url}/notes/edit/${noteId}`, {
             method: "PATCH",
             headers: { "Content-Type": "application/json" },

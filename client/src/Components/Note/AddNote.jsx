@@ -107,7 +107,7 @@ export default function AddNote() {
                 <input
                     type="text"
                     name="title"
-                    value={inputs.title}
+                    value={inputs?.title}
                     onChange={handleChange}
                     placeholder="Title"
                     className="w-full border-b border-gray-400 outline-none text-lg mb-4 p-1"
@@ -115,7 +115,7 @@ export default function AddNote() {
 
                 <textarea
                     name="content"
-                    value={inputs.content}
+                    value={inputs?.content}
                     onChange={handleChange}
                     placeholder="Write your insights"
                     className="w-full h-32 p-2 border border-gray-300 rounded-lg outline-none resize-none mb-4"
