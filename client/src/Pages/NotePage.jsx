@@ -1,14 +1,6 @@
-import { useLocation } from "react-router-dom";
-import { useUserContext } from "../Components/Context/UserContext";
 import { Link } from "react-router-dom";
-import { useChannelContext } from "../Components/Context/ChannelContext";
 
 export default function NotePage({ note, onClose }) {
-    const { channel } = useChannelContext();
-    const { user } = useUserContext();
-    const location = useLocation();
-    const isProfilePage = location.pathname.includes("/channel");
-
 
     return (
         <div className="relative bg-white rounded-xl shadow-xl p-6 w-[40%] z-50">
@@ -35,7 +27,7 @@ export default function NotePage({ note, onClose }) {
                     </div>
                 </div>
             </Link>
-            <h2 className="text-2xl font-bold text-blue-700 mb-2">
+            <h2 className="text-2xl font-bold border-b border-gray-300 pb-2 text-blue-700 mb-2">
                 {note.note_title}
             </h2>
             <p className="text-gray-800 text-md whitespace-pre-line">
