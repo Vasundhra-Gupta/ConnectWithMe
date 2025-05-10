@@ -32,7 +32,10 @@ import {
     PublicNotes,
     PrivateNotes,
 } from "./Components/index.js";
-import { UserContextProvider, ChannelContextProvider } from "./Components/Context/index.js";
+import {
+    UserContextProvider,
+    ChannelContextProvider,
+} from "./Components/Context/index.js";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -43,7 +46,10 @@ const router = createBrowserRouter(
             <Route path="/error" element={<ErrorPage />}></Route>
             <Route path="/about" element={<AboutPage />}></Route>
             <Route path="/channel/:channelId" element={<ChannelProfilePage />}>
-                <Route path="" element={<ChannelNotes />}></Route>
+                <Route path="" element={<ChannelNotes />}>
+                    {/* <Route path="public" element={<PublicNotes />}></Route>
+                    <Route path="private" element={<PrivateNotes />}></Route> */}
+                </Route>
                 <Route path="about" element={<ChannelAbout />}></Route>
             </Route>
             <Route path="/settings" element={<SettingPage />}>

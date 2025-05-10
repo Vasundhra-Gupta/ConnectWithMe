@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import Button from "../General/Button";
 import DeleteNote from "./DeleteNote";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -11,17 +11,25 @@ import { NotePage } from "../../Pages";
 export default function NoteCard({ note, setNotes }) {
     const { channel } = useChannelContext();
     const { user } = useUserContext();
-    const navigate = useNavigate();
-    const location = useLocation();
     const [editing, setEditing] = useState(false);
     const [showNote, setShowNote] = useState(false);
-    const isProfilePage = location.pathname.includes("/channel");
+
+    //it ensured no rerendereing
+    const isOwner = useMemo(
+        () => user?.user_id === note?.note_ownerId,
+        [user, note]
+    );
+
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    const isProfilePage = location.pathname.startsWith("/channel");
 
     const handleToggleVisibility = async (noteId) => {
         try {
             const res = await toggleVisibility(noteId);
             if (res && res.message === "note visibility toggled successfully") {
-                navigate("/")
+                setNotes((prev) => [...prev]);
             }
         } catch (error) {
             console.log(error.message);
@@ -29,7 +37,7 @@ export default function NoteCard({ note, setNotes }) {
         }
     };
 
-    const handleEdit = () => {};
+    if (!note) return null;
 
     return (
         <>
@@ -37,10 +45,10 @@ export default function NoteCard({ note, setNotes }) {
                 className="bg-white shadow-lg rounded-2xl p-5 mb-3 w-full transition-transform hover:scale-[1.02] relative"
                 onClick={() => !editing && setShowNote(true)}
             >
-                {!isProfilePage && channel?.user_id !== user?.user_id && (
+                {!isProfilePage && (
                     // user info
                     <Link to={`/channel/${note?.note_ownerId}`}>
-                        <div className="flex items-center gap-4 mb-4">
+                        <div className="flex items-center border-b pb-4 mb-4 border-gray-200 gap-4">
                             <img
                                 src={note?.avatar}
                                 alt="Avatar"
@@ -58,56 +66,65 @@ export default function NoteCard({ note, setNotes }) {
                     </Link>
                 )}
 
-                {/* Buttons */}
-                {channel?.user_id === user?.user_id && (
-                    <div className="absolute top-3 right-3 flex flex-col gap-2">
-                        {editing ? (
+                <div
+                    className={`flex justify-between items-center ${
+                        isProfilePage && "border-b border-gray-200 pb-2"
+                    } `}
+                >
+                    <h2 className="text-xl font-bold text-blue-700">
+                        {note?.note_title}
+                    </h2>
+
+                    {/* Controls only for owner on profile page */}
+                    {isOwner &&
+                        isProfilePage &&
+                        (editing ? (
                             <div className="fixed inset-0 bg-black bg-opacity-40 backdrop-blur-sm flex justify-center items-center z-50">
                                 <EditNotePage note={note} setNotes={setNotes} />
                             </div>
                         ) : (
-                            <>
+                            <div className="flex gap-3 items-center">
+                                {/* Edit Button */}
                                 <Button
-                                    BtnText={"Edit"}
+                                    BtnText="Edit"
                                     onClick={(e) => {
                                         e.stopPropagation();
                                         setEditing(!editing);
                                     }}
-                                    className="text-sm px-2 py-1 rounded bg-blue-500 text-white hover:bg-blue-600"
+                                    className="text-sm px-3 py-1 rounded bg-blue-500 text-white hover:bg-blue-600 transition"
                                 />
+
+                                {/* Delete Button */}
                                 <DeleteNote noteId={note?.note_id} />
 
+                                {/* Visibility Toggle */}
                                 <button
                                     onClick={(e) => {
                                         e.stopPropagation();
                                         handleToggleVisibility(note?.note_id);
                                     }}
-                                    className={`w-8 h-4 flex items-center rounded-full  transition duration-300 ease-in-out ${
+                                    className={`relative w-10 h-5 flex items-center rounded-full transition-colors duration-300 ${
                                         note?.note_visibility
                                             ? "bg-green-500"
                                             : "bg-gray-400"
                                     }`}
                                     aria-pressed={note?.note_visibility}
                                 >
-                                    <div
-                                        className={`bg-white w-4 h-4 rounded-full shadow-md transform transition-transform duration-300 ${
+                                    <span
+                                        className={`w-5 h-5 bg-white rounded-full shadow-md transform transition-transform duration-300 ${
                                             note?.note_visibility
-                                                ? "translate-x-4"
+                                                ? "translate-x-5"
                                                 : "translate-x-0"
                                         }`}
-                                    ></div>
+                                    />
                                 </button>
-                            </>
-                        )}
-                    </div>
-                )}
+                            </div>
+                        ))}
+                </div>
 
                 {/* Note Content */}
-                <div className="pt-3 pr-24">
-                    <h2 className="text-xl font-bold text-blue-700">
-                        {note?.note_title}
-                    </h2>
-                    <p className="text-gray-600 mt-1 line-clamp-2 overflow-hidden">
+                <div className="pt-2">
+                    <p className="text-gray-700 mt-1 line-clamp-2">
                         {note?.note_content}
                     </p>
                 </div>
