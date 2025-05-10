@@ -1,28 +1,49 @@
-import { useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { useUserContext } from "../Components/Context/UserContext";
+import { Link } from "react-router-dom";
+import { useChannelContext } from "../Components/Context/ChannelContext";
 
-export default function NotePage({ note }) {
-    const { channelId } = useParams();
+export default function NotePage({ note, onClose }) {
+    const { channel } = useChannelContext();
     const { user } = useUserContext();
-    console.log(note);
+    const location = useLocation();
+    const isProfilePage = location.pathname.includes("/channel");
+
 
     return (
-        <div className="max-w-[500px] p-3 h-[500px] mt-[10%] mx-auto border-[2px] shadow-2xl border-gray-300 rounded-lg">
-            {user?.user_id !== channelId && (
-                <div className="flex gap-3">
-                    <img src={user?.user_avatar} alt="avatar" className="w-12 h-12"/>
+        <div className="relative bg-white rounded-xl shadow-xl p-6 w-[40%] z-50">
+            <button
+                onClick={onClose}
+                className="absolute top-2 right-3 text-2xl text-gray-700 hover:text-black"
+            >
+                ×
+            </button>
+            <Link to={`/channel/${note.note_ownerId}`}>
+                <div className="flex items-center gap-4 mb-4">
+                    <img
+                        src={note.avatar}
+                        alt="Avatar"
+                        className="w-12 h-12 rounded-full border border-gray-300"
+                    />
                     <div>
-                        <div>
-                            {user?.user_firstName} {user?.lastName}
-                        </div>
-                        <div>{user?.user_name}</div>
+                        <p className="font-semibold text-gray-800 text-lg">
+                            @{note.userName}
+                        </p>
+                        <p className="text-gray-500 text-sm">
+                            {note.firstName} {note.lastName}
+                        </p>
                     </div>
                 </div>
-            )}
-            <div className="border-b border-gray-400 pb-2">
-                {note?.note_title}
-            </div>
-            <div className="h-full overflow-y-scroll">{note?.note_content}</div>
+            </Link>
+            <h2 className="text-2xl font-bold text-blue-700 mb-2">
+                {note.note_title}
+            </h2>
+            <p className="text-gray-800 text-md whitespace-pre-line">
+                {note.note_content}
+            </p>
+            <p className="text-gray-400 text-sm mt-4">
+                Last updated: {new Date(note.note_updatedAt).toLocaleString()}
+            </p>
         </div>
     );
 }
