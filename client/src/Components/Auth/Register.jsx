@@ -15,6 +15,7 @@ export default function Register() {
         lastName: "",
         email: "",
         password: "",
+        confirmPassword: "",
         coverImage: "",
         avatar: "",
         contact: "",
@@ -27,6 +28,7 @@ export default function Register() {
         lastName: "",
         email: "",
         password: "",
+        confirmPassword: "",
         coverImage: "",
         avatar: "",
         contact: "",
@@ -126,6 +128,13 @@ export default function Register() {
             label: "Email",
         },
         {
+            type: "text",
+            name: "contact",
+            id: "contact",
+            required: true,
+            label: "Contact",
+        },
+        {
             type: "password",
             name: "password",
             id: "password",
@@ -133,11 +142,11 @@ export default function Register() {
             label: "Password",
         },
         {
-            type: "text",
-            name: "contact",
-            id: "contact",
+            type: "password",
+            name: "confirmPassword",
+            id: "confirmPassword",
             required: true,
-            label: "Contact",
+            label: "Confirm Password",
         },
     ];
 
@@ -157,8 +166,16 @@ export default function Register() {
                     className="w-full border-gray-400 shadow-md rounded-md outline-none p-[5px] indent-2"
                 />
             </div>
+            {field.name === "confirmPassword" &&
+                inputs?.password !== inputs?.confirmPassword && (
+                    <div className="text-red-600 text-xs mt-1">
+                        Confirm Password doesn't match with your password.
+                    </div>
+                )}
             {error?.[field.name] && (
-                <div className="text-red-600 text-xs mt-1">{error[field.name]}</div>
+                <div className="text-red-600 text-xs mt-1">
+                    {error[field.name]}
+                </div>
             )}
         </div>
     ));
@@ -196,7 +213,9 @@ export default function Register() {
                 />
             </div>
             {error?.[field.name] && (
-                <div className="text-red-600 mt-1 text-xs">{error[field.name]}</div>
+                <div className="text-red-600 mt-1 text-xs">
+                    {error[field.name]}
+                </div>
             )}
         </div>
     ));
