@@ -16,8 +16,8 @@ const updateChannelDetails = async (inputs) => {
         `${url}/users/update-channel`,
         "PATCH",
         "include",
-        { "Content-Type": "application/json" },
-        JSON.stringify(inputs)
+        {},
+        inputs
     );
 };
 
@@ -27,8 +27,8 @@ const updatePersonalDetails = async (inputs) => {
         `${url}/users/update-personal`,
         "PATCH",
         "include",
-        { "Content-Type": "application/json" },
-        JSON.stringify(inputs)
+        {},
+        inputs
     );
 };
 
@@ -38,8 +38,8 @@ const updatePassword = async (inputs) => {
         `${url}/users/update-password`,
         "PATCH",
         "include",
-        { "Content-Type": "application/json" },
-        JSON.stringify(inputs)
+        {},
+        inputs
     );
 };
 
@@ -49,8 +49,34 @@ const deleteAccount = async (password) => {
         `${url}/users/delete-account`,
         "DELETE",
         "include",
-        { "Content-Type": "application/json" },
-        JSON.stringify({ password })
+        {},
+        { password }
+    );
+};
+
+const updateAvatar = async (avatar) => {
+    const formdata = new FormData();
+    formdata.append("avatar", avatar);
+    return tryCatch(
+        "updateAvatar",
+        `${url}/users/update-avatar`,
+        "PATCH",
+        "include",
+        {},
+        formdata
+    );
+};
+
+const updateCoverImage = async (coverImage) => {
+    const formdata = new FormData();
+    formdata.append("coverImage", coverImage);
+    return tryCatch(
+        "updateCoverImage",
+        `${url}/users/update-coverImage`,
+        "PATCH",
+        "include",
+        {},
+        formdata
     );
 };
 
@@ -59,5 +85,7 @@ export {
     updateChannelDetails,
     updatePassword,
     updatePersonalDetails,
+    updateAvatar,
+    updateCoverImage,
     deleteAccount,
 };

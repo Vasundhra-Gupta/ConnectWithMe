@@ -7,11 +7,13 @@ export const tryCatch = async (
     body
 ) => {
     try {
+        const isFormData = body instanceof FormData;
+
         const res = await fetch(url, {
             method,
             credentials,
-            headers,
-            body,
+            headers: isFormData ? headers : { "Content-Type": "application/json", ...headers },
+            body: isFormData? body: JSON.stringify(body),
         });
 
         const response = await res.json();
