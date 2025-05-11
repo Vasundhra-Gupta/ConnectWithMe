@@ -19,11 +19,11 @@ export default function SettingPage() {
     ];
 
     return (
-        <div className="flex relative min-h-screen bg-gray-100">
-            {/* Left Sidebar (Profile Info) */}
-            <div className="w-1/4 bg-gray-200 p-6 rounded-lg ml-3 shadow-lg">
+        <div className="flex flex-col md:flex-row relative min-h-screen bg-gray-100">
+            {/* Left Sidebar (Profile Info) - Now appears on top on mobile */}
+            <div className="w-full md:w-1/4 bg-gray-200 p-4 md:p-6 rounded-lg md:ml-3 shadow-lg">
                 <div className="flex flex-col items-center">
-                    <div className="w-full rounded-lg overflow-hidden h-36 relative">
+                    <div className="w-full rounded-lg overflow-hidden h-32 md:h-36 relative">
                         {user?.user_coverImage && (
                             <img
                                 src={user.user_coverImage}
@@ -43,7 +43,7 @@ export default function SettingPage() {
                             ⬆
                         </button>
                     </div>
-                    <div className="absolute top-[130px]  w-28 h-28 rounded-full overflow-hidden border-4 border-gray-300">
+                    <div className="relative md:-mt-0 md:absolute -top-6 md:top-[130px] w-24 h-24 md:w-28 md:h-28 rounded-full overflow-hidden border-4 border-gray-300">
                         {user?.user_avatar && (
                             <img
                                 src={user.user_avatar}
@@ -63,13 +63,13 @@ export default function SettingPage() {
                             ⬆
                         </button>
                     </div>
-                    <div className="text-xl font-bold mt-[4.75rem]">
+                    <div className="text-xl font-bold -mt-2 md:mt-[4.75rem]">
                         @{user?.user_name}
                     </div>
                     <div className="text-gray-600 mb-1">
                         {user?.user_firstName} {user?.user_lastName}
                     </div>
-                    <div className="mb-2">{user?.user_bio}</div>
+                    <div className="mb-2 text-center px-2">{user?.user_bio}</div>
                     <Button
                         BtnText={"Delete Account"}
                         onClick={() =>
@@ -84,18 +84,20 @@ export default function SettingPage() {
             </div>
 
             {/* Right Section (Settings & Tabs) */}
-            <div className="w-2/3 p-6">
-                {/* Tabs */}
-                <div className="flex space-x-6 border-b pb-2">
+            <div className=" md:w-3/4 p-4 md:p-6">
+                {/* Tabs - Made scrollable for mobile */}
+                <div className="flex space-x-4 md:space-x-6 border-b pb-2 ">
                     {tabs.map((tab) => (
                         <NavLink
                             end
                             key={tab.name}
                             to={tab.to}
                             className={({ isActive }) =>
-                                isActive
-                                    ? "px-4 py-2 font-medium text-blue-500 border-b-2 border-blue-500 transition-all"
-                                    : "px-4 py-2  border-b-2 border-transparent transition-all font-medium text-gray-700"
+                                `whitespace-nowrap px-3 py-2 text-sm md:text-base md:px-4 border-b-2 ${
+                                    isActive
+                                        ? "font-medium text-blue-500 border-blue-500"
+                                        : "border-transparent font-medium text-gray-700"
+                                }`
                             }
                         >
                             {tab.name}
@@ -104,12 +106,14 @@ export default function SettingPage() {
                 </div>
 
                 {/* Page Content */}
-                <div className="mt-6">
+                <div className="mt-4 md:mt-6">
                     <Outlet />
                 </div>
             </div>
+            
+            {/* Popups - Adjusted for mobile */}
             {showPopup.avatar && (
-                <div className="fixed inset-0 text-center rounded-lg bg-black h-[30%] w-[60%] md:w-[20%] mt-[60%] md:mt-[20%] mx-auto bg-opacity-30 backdrop-blur-sm flex justify-center items-center z-50">
+                <div className="fixed inset-0 text-center rounded-lg bg-black h-[40%] w-[90%] md:w-[60%] lg:w-[40%] xl:w-[20%] mt-[40%] md:mt-[20%] mx-auto bg-opacity-30 backdrop-blur-sm flex justify-center items-center z-50">
                     <UpdateAvatar
                         onClose={() =>
                             setShowPopup((prev) => ({ ...prev, avatar: false }))
@@ -118,7 +122,7 @@ export default function SettingPage() {
                 </div>
             )}
             {showPopup.coverImage && (
-                <div className="fixed inset-0 text-center rounded-lg bg-black h-[30%] w-[60%] md:w-[20%] mt-[60%] md:mt-[20%] mx-auto bg-opacity-30 backdrop-blur-sm flex justify-center items-center z-50">
+                <div className="fixed inset-0 text-center rounded-lg bg-black h-[40%] w-[90%] md:w-[60%] lg:w-[40%] xl:w-[20%] mt-[40%] md:mt-[20%] mx-auto bg-opacity-30 backdrop-blur-sm flex justify-center items-center z-50">
                     <UpdateCoverImage
                         onClose={() =>
                             setShowPopup((prev) => ({

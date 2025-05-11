@@ -6,10 +6,11 @@ import NoteCard from "./NoteCard";
 
 export default function PrivateNotes() {
     const { user } = useUserContext();
-    const [privateNotes, setPrivateNotes] = useState();
+    const [privateNotes, setPrivateNotes] = useState([]);
 
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+    
     useEffect(() => {
         (async () => {
             try {
