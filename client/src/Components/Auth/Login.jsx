@@ -99,7 +99,7 @@ export default function Login() {
                 onChange={handleChange}
                 onBlur={handleBlur}
                 placeholder={field.placeholder}
-                className="w-full px-4 py-2 border outline-none border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                className="w-full px-4 py-2 border outline-none border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
             />
             {error?.[field.name] && (
                 <div className="text-red-600 ml-1 text-xs mt-1">
@@ -122,7 +122,7 @@ export default function Login() {
                 <div className="text-center m-2">
                     <Button
                         type="submit"
-                        className={`w-full transition-all bg-purple-600 hover:bg-purple-700 text-white`}
+                        className={`w-full transition-all  text-white`}
                         BtnText={loading ? "Loading" : "Login"}
                         disabled={disabled}
                         onMouseOver={handleMouseOver}
@@ -132,7 +132,7 @@ export default function Login() {
                     Don't have an account?{" "}
                     <Link
                         to={"/register"}
-                        className="text-purple-600 font-medium hover:underline"
+                        className="text-blue-500 font-medium hover:underline"
                     >
                         Register here
                     </Link>
