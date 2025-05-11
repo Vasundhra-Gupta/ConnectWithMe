@@ -1,7 +1,7 @@
 //error handling
 export const verify = (name, value, setError) => {
     switch (name) {
-        case "userName": {
+        case "userName": case "searchInput": {
             const regex = /^[a-zA-Z0-9_]{3,16}$/;
             if (!regex.test(value)) {
                 setError((prev) => ({

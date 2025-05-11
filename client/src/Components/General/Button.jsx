@@ -10,7 +10,7 @@ export default function Button({
             {...props}
             type={type}
             disabled={disabled}
-            className={`bg-blue-500  hover:bg-blue-400 rounded-md font-semibold px-4 py-1 overflow-hidden disabled:cursor-not-allowed ${className}`}
+            className={`bg-blue-500 hover:bg-blue-400 rounded-md font-semibold px-4 py-1 overflow-hidden disabled:bg-gray-300 disabled:cursor-not-allowed ${className}`}
         >
             {BtnText}
         </button>

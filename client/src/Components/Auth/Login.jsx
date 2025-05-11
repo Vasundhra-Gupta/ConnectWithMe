@@ -3,11 +3,16 @@ import { loginUser } from "../../Services/authService.js";
 import { Link, useNavigate } from "react-router-dom";
 import Button from "../General/Button.jsx";
 import { useUserContext } from "../Context/UserContext.jsx";
+import { verify } from "../../utils/errorHandling.js";
 
 export default function Login() {
     const { setUser } = useUserContext();
     const [disabled, setDisabled] = useState(false);
-    const [error, setError] = useState(null);
+    const [error, setError] = useState({
+        searchInput: "",
+        password: "",
+        root: "",
+    });
     const [inputs, setInputs] = useState({
         searchInput: "",
         password: "",
@@ -43,7 +48,7 @@ export default function Login() {
                 navigate("/");
             } else {
                 setUser(null);
-                setError(res.message);
+                setError((prev) => ({ ...prev, root: res.message }));
             }
         } catch (err) {
             console.log("server error", err);
@@ -54,59 +59,81 @@ export default function Login() {
         }
     };
 
-    return (
-        <div className="flex justify-center items-center">
-            <form
-                className="shadow-lg px-5 py-3 w-[270px]"
-                onSubmit={handleSubmit}
+    const handleBlur = (e) => {
+        const { name, value } = e.target;
+        verify(name, value, setError);
+    };
+
+    const inputFields = [
+        {
+            type: "text",
+            name: "searchInput",
+            id: "searchInput",
+            required: true,
+            label: "Username",
+            placeholder: "Enter your username",
+        },
+        {
+            type: "password",
+            name: "password",
+            id: "password",
+            required: true,
+            label: "Password",
+            placeholder: "Create a password",
+        },
+    ];
+
+    const inputElements = inputFields.map((field) => (
+        <div key={field.name} className="mb-4">
+            <label
+                htmlFor={field.name}
+                className="block text-sm font-medium text-gray-700 mb-1"
             >
-                {error && (
+                {field.label}
+            </label>
+            <input
+                type={field.type}
+                name={field.name}
+                id={field.id}
+                required={field.required}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                placeholder={field.placeholder}
+                className="w-full px-4 py-2 border outline-none border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+            />
+            {error?.[field.name] && (
+                <div className="text-red-600 ml-1 text-xs mt-1">
+                    {error[field.name]}
+                </div>
+            )}
+        </div>
+    ));
+
+    return (
+        <div className="flex justify-center items-center ">
+            <form className="shadow-lg px-5 py-3" onSubmit={handleSubmit}>
+                {error?.root && (
                     <div className="text-red-500 text-center text-sm mb-3">
-                        {error}
+                        {error.root}
                     </div>
                 )}
-                <div>
-                    <div>
-                        <label htmlFor="searchInput" className="font-semibold">
-                            Username or Email:
-                        </label>
-                    </div>
-                    <input
-                        type="text"
-                        name="searchInput"
-                        id="searchInput"
-                        onChange={handleChange}
-                        className="w-full border-gray-400 shadow-md rounded-md outline-none p-[5px] indent-2"
-                        required
-                    />
-                </div>
-                <div>
-                    <div>
-                        <label htmlFor="password" className="font-semibold">
-                            Password:
-                        </label>
-                    </div>
-                    <input
-                        type="password"
-                        name="password"
-                        id="password"
-                        onChange={handleChange}
-                        className="w-full border-gray-400 shadow-md rounded-md outline-none p-[5px] indent-2"
-                        required
-                    />
-                </div>
+                {inputElements}
+
                 <div className="text-center m-2">
                     <Button
                         type="submit"
-                        className="bg-violet-400"
+                        className={`w-full transition-all bg-purple-600 hover:bg-purple-700 text-white`}
                         BtnText={loading ? "Loading" : "Login"}
                         disabled={disabled}
                         onMouseOver={handleMouseOver}
                     ></Button>
                 </div>
-                <div className="text-sm">
+                <div className="text-center text-sm text-gray-600 mt-4">
                     Don't have an account?{" "}
-                    <Link to={"/register"} className="text-blue-500">
+                    <Link
+                        to={"/register"}
+                        className="text-purple-600 font-medium hover:underline"
+                    >
                         Register here
                     </Link>
                 </div>
