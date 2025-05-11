@@ -6,7 +6,10 @@ import {
     NOT_FOUND,
 } from "../constants/errorCodes.js";
 import { User } from "../models/User.model.js";
-import { deleteFromCloudinary } from "../utils/cloudinary.js";
+import {
+    deleteFromCloudinary,
+    uploadOnCloudinary,
+} from "../utils/cloudinary.js";
 import { getUser } from "../utils/functions.js";
 
 const updateChannelDetails = async (req, res) => {
@@ -151,6 +154,27 @@ const updatePassword = async (req, res) => {
 
 const updateAvatar = async (req, res) => {
     try {
+        const avatar = req.file.path;
+        if (!avatar) {
+            return res.status(BAD_REQUEST).json({ message: "missing fields" });
+        }
+        const avatarURL = await uploadOnCloudinary(avatar);
+        await User.updateOne(
+            {
+                user_id: req.user?.user_id,
+            },
+            {
+                $set: {
+                    user_avatar: avatarURL,
+                },
+            },
+            {
+                $new: true,
+            }
+        );
+        return res.status(OK).json({
+            message: "avatar updated successfully",
+        });
     } catch (err) {
         return res.status(SERVER_ERROR).json({
             message: "something went wrong while updating avatar",
@@ -159,7 +183,39 @@ const updateAvatar = async (req, res) => {
     }
 };
 
-const updateCoverImage = async (req, res) => {};
+const updateCoverImage = async (req, res) => {
+    try {
+        const coverImage = req.file.path;
+        if (!coverImage) {
+            return res.status(BAD_REQUEST).json({ message: "missing fields" });
+        }
+
+        const coverImageURL = await uploadOnCloudinary(coverImage);
+
+        await User.updateOne(
+            {
+                user_id: req.user?.user_id,
+            },
+            {
+                $set: {
+                    user_coverImage: coverImageURL,
+                },
+            },
+            {
+                $new: true,
+            }
+        );
+        return res.status(OK).json({
+            message: "coverImage updated successfully",
+        });
+    } catch (err) {
+        return res.status(SERVER_ERROR).json({
+            message: "something went wrong while updating coverImage",
+            error: err.message,
+        });
+    }
+};
+
 
 const deleteAccount = async (req, res) => {
     try {
