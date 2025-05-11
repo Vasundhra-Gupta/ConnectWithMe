@@ -22,7 +22,7 @@ export default function UpdatePassword() {
     };
 
     const handleMouseOver = () => {
-        if (!inputs.oldPassword || !inputs.newPassword) {
+        if (!inputs?.oldPassword || !inputs?.newPassword) {
             setDisabled(true);
         } else {
             setDisabled(false);
@@ -37,6 +37,7 @@ export default function UpdatePassword() {
             const res = await updatePassword(inputs);
             if (res && res.message === "password updated successfully") {
                 setMessage(res.message);
+                console.log(message);
             } else {
                 setInputs(null);
             }
@@ -101,7 +102,7 @@ export default function UpdatePassword() {
     ));
 
     return (
-        <form className="w-[600px] p-10" onSubmit={handleSubmit}>
+        <form className="w-[600px] px-10" onSubmit={handleSubmit}>
             {message}
             {inputElements}
             <Button

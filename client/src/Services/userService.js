@@ -1,105 +1,57 @@
 import { url } from ".";
+import { tryCatch } from "../utils/tryCatchWrap";
 
 const getChannelProfile = async (channelId) => {
-    try {
-        const response = await fetch(`${url}/users/channel/${channelId}`, {
-            method: "GET",
-            credentials: "include",
-        })
+    return tryCatch(
+        "getChannelProfile",
+        `${url}/users/channel/${channelId}`,
+        "GET",
+        "include"
+    );
+};
 
-        if(response.status===500){
-            throw new Error(res.message);
-        }
-        const res = await response.json();
-        return res;
-    } catch (error) {
-        console.log("error in updateChannelDetails service", error);
-        throw error;
-    }
-}
 const updateChannelDetails = async (inputs) => {
-    try {
-        const res = await fetch(`${url}/users/update-channel`, {
-            method: "PATCH",
-            credentials: "include",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(inputs),
-        });
-        if (res.status === 500) {
-            throw new Error(res.message);
-        }
-        const response = res.json();
-        return response;
-    } catch (error) {
-        console.log("error in updateChannelDetails service", error);
-        throw error;
-    }
+    return tryCatch(
+        "updateChannelDetails",
+        `${url}/users/update-channel`,
+        "PATCH",
+        "include",
+        { "Content-Type": "application/json" },
+        JSON.stringify(inputs)
+    );
 };
 
 const updatePersonalDetails = async (inputs) => {
-    try {
-        const res = await fetch(`${url}/users/update-personal`, {
-            method: "PATCH",
-            credentials: "include",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(inputs),
-        });
-        if (res.status === 500) {
-            throw new Error(res.message);
-        }
-        const response = res.json();
-        return response;
-    } catch (error) {
-        console.log("error in updatePersonalDetails service", error);
-        throw error;
-    }
+    return tryCatch(
+        "updatePersonalDetails",
+        `${url}/users/update-personal`,
+        "PATCH",
+        "include",
+        { "Content-Type": "application/json" },
+        JSON.stringify(inputs)
+    );
 };
 
 const updatePassword = async (inputs) => {
-    try {
-        const res = await fetch(`${url}/users/update-password`, {
-            method: "PATCH",
-            credentials: "include",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(inputs),
-        });
-        console.log(res);
-        if (res.status === 500) {
-            throw new Error(res.message);
-        }
-        const response = res.json();
-        return response;
-    } catch (error) {
-        console.log("error in updatePassword service", error);
-        throw error;
-    }
+    return tryCatch(
+        "updatePassword",
+        `${url}/users/update-password`,
+        "PATCH",
+        "include",
+        { "Content-Type": "application/json" },
+        JSON.stringify(inputs)
+    );
 };
 
 const deleteAccount = async (password) => {
-    try {
-        const res = await fetch(`${url}/users/delete-account`, {
-            method: "DELETE",
-            credentials: "include",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ password }),
-        });
-        if (res.status === 500) {
-            throw new Error(res.message);
-        }
-        const response = res.json();
-        return response;
-    } catch (error) {
-        console.log("error in deleteAccount service", error);
-        throw error;
-    }
+    return tryCatch(
+        "deleteAccount",
+        `${url}/users/delete-account`,
+        "DELETE",
+        "include",
+        { "Content-Type": "application/json" },
+        JSON.stringify({ password })
+    );
 };
 
 export {

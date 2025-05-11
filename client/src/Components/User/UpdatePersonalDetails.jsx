@@ -122,7 +122,7 @@ export default function UpdatePersonalDetails() {
     ));
 
     return (
-        <form className="w-[600px] p-10" onSubmit={handleSubmit}>
+        <form className="w-[600px] px-10" onSubmit={handleSubmit}>
             {message}
             {inputElements}
             <Button
