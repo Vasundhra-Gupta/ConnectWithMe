@@ -31,6 +31,8 @@ import {
     AddNote,
     PublicNotes,
     PrivateNotes,
+    UpdateAvatar,
+    UpdateCoverImage,
 } from "./Components/index.js";
 import {
     UserContextProvider,
@@ -65,6 +67,14 @@ const router = createBrowserRouter(
                 <Route
                     path="update-password"
                     element={<UpdatePassword />}
+                ></Route>
+                <Route
+                    path="update-avatar"
+                    element={<UpdateAvatar />}
+                ></Route>
+                <Route
+                    path="update-coverImage"
+                    element={<UpdateCoverImage />}
                 ></Route>
             </Route>
             <Route path="/note" element={<NotePage />}></Route>

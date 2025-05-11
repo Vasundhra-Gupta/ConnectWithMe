@@ -37,3 +37,6 @@ export const demoContext = createContext();
 </demoContext>
 //Now this demoContext act as a provider for each of these components!!! means these components have access to all states and data provided by demoContext
 ```
+
+- useRef is used to reference other object, we shouldnt read or write refs instead we can do so in evenet handlers or useEffects kinda...
+- return an object with curent property
