@@ -1,4 +1,5 @@
 import { url } from ".";
+import { tryCatch } from "../utils/tryCatchWrap";
 const getUser = async () => {
     try {
         const response = await fetch(`${url}/users/current-user`, {
@@ -40,33 +41,18 @@ const loginUser = async (loginInputs) => {
 };
 
 const registerUser = async (inputs) => {
-    try {
-        const formData = new FormData();
-        Object.entries(inputs).forEach(([key, value]) => {
-            formData.append(key, value);
-        });
-        const response = await fetch(`${url}/users/register`, {
-            method: "POST",
-            credentials: "include",
-            body: formData,
-        });
-        const res = await response.json();
-        if (res.status === 500) {
-            console.log(res.message);
-            throw new Error(res.message);
-        }else if(res.status === 400){
-            return res;
-        }else{
-            const data = await loginUser({
-                searchInput: inputs.userName,
-                password: inputs.password,
-            });
-            return data;
-        }
-    } catch (err) {
-        console.log(`error in logic service ${err}`);
-        throw err;
-    }
+    const formData = new FormData();
+    Object.entries(inputs).forEach(([key, value]) => {
+        formData.append(key, value);
+    });
+    return tryCatch(
+        "registerUser",
+        `${url}/users/register`,
+        "POST",
+        "include",
+        {},
+        formData
+    );
 };
 
 const logoutUser = async () => {
