@@ -3,11 +3,23 @@ import { registerUser } from "../../Services/authService.js";
 import { Link, useNavigate } from "react-router-dom";
 import Button from "../General/Button.jsx";
 import { useUserContext } from "../Context/UserContext.jsx";
+import { verify } from "../../utils/errorHandling.js";
+import { fileRestrictions } from "../../utils/fileRestrictions.js";
 
 export default function Register() {
     const { setUser } = useUserContext();
     const [disabled, setDisabled] = useState(false);
-    const [error, setError] = useState(null);
+    const [error, setError] = useState({
+        userName: "",
+        firstName: "",
+        lastName: "",
+        email: "",
+        password: "",
+        coverImage: "",
+        avatar: "",
+        contact: "",
+        root: "",
+    });
     const navigate = useNavigate();
     const [inputs, setInputs] = useState({
         userName: "",
@@ -44,7 +56,7 @@ export default function Register() {
         if (
             Object.entries(inputs).some(
                 ([key, value]) => !value && !allowedEmptyFields.includes(key)
-            ) 
+            )
         ) {
             setDisabled(true);
         } else {
@@ -64,7 +76,7 @@ export default function Register() {
                 navigate("/");
             } else {
                 setUser(null);
-                setError(res.message);
+                setError((prev) => ({ ...prev, root: res.message }));
             }
         } catch (err) {
             console.log("server error", err.message);
@@ -72,6 +84,17 @@ export default function Register() {
             setLoading(false);
             setDisabled(false);
         }
+    };
+
+    const handleBlur = (e) => {
+        const { name, value } = e.target;
+        verify(name, value, setError);
+    };
+
+    const handleFileRestrictions = (e) => {
+        const { name, files } = e.target;
+        const file = files[0];
+        fileRestrictions(name, file, setError);
     };
 
     const inputFields = [
@@ -130,9 +153,13 @@ export default function Register() {
                     id={field.id}
                     required={field.required}
                     onChange={handleChange}
+                    onBlur={handleBlur}
                     className="w-full border-gray-400 shadow-md rounded-md outline-none p-[5px] indent-2"
                 />
             </div>
+            {error?.[field.name] && (
+                <div className="text-red-600 text-xs mt-1">{error[field.name]}</div>
+            )}
         </div>
     ));
 
@@ -151,6 +178,7 @@ export default function Register() {
             label: "Cover Image",
         },
     ];
+
     const fileElements = fileFields.map((field) => (
         <div key={field.name}>
             <div>
@@ -162,22 +190,23 @@ export default function Register() {
                     name={field.name}
                     id={field.id}
                     required={field.required}
+                    onBlur={handleFileRestrictions}
                     onChange={handleFileChange}
                     className="w-full border-gray-400 shadow-md rounded-md outline-none p-[5px] indent-2"
                 />
             </div>
+            {error?.[field.name] && (
+                <div className="text-red-600 mt-1 text-xs">{error[field.name]}</div>
+            )}
         </div>
     ));
 
     return (
         <div className="min-h-screen w-screen flex justify-center items-center">
-            <form
-                className="shadow-lg px-6 py-3 w-[270px]"
-                onSubmit={handleSubmit}
-            >
-                {error && (
+            <form className="shadow-lg px-6 py-3 " onSubmit={handleSubmit}>
+                {error?.root && (
                     <div className="text-red-500 text-center text-sm mb-3">
-                        {error}
+                        {error.root}
                     </div>
                 )}
                 {inputElements}
