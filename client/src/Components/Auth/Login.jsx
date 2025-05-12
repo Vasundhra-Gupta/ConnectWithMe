@@ -29,7 +29,11 @@ export default function Login() {
     };
 
     const handleMouseOver = () => {
-        if (!inputs.searchInput || !inputs.password) {
+        if (
+            !inputs.searchInput ||
+            !inputs.password ||
+            Object.entries(error).some(([_, err]) => err)
+        ) {
             setDisabled(true);
         } else {
             setDisabled(false);

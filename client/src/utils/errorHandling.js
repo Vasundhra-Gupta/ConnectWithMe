@@ -1,7 +1,8 @@
 //error handling
 export const verify = (name, value, setError) => {
     switch (name) {
-        case "userName": case "searchInput": {
+        case "userName":
+        case "searchInput": {
             const regex = /^[a-zA-Z0-9_]{3,16}$/;
             if (!regex.test(value)) {
                 setError((prev) => ({
@@ -77,5 +78,19 @@ export const verify = (name, value, setError) => {
             }
             break;
         }
+        // case "bio": {
+        //     if (value.length < 6) {
+        //         setError((prev) => ({
+        //             ...prev,
+        //             [name]: "Too small bio.",
+        //         }));
+        //     } else {
+        //         setError((prev) => ({
+        //             ...prev,
+        //             [name]: "",
+        //         }));
+        //     }
+        //     break;
+        // }
     }
 };

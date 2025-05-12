@@ -3,6 +3,7 @@ import Button from "../General/Button";
 import { updateChannelDetails } from "../../Services/userService";
 import { useNavigate } from "react-router-dom";
 import { useUserContext } from "../Context/UserContext";
+import { verify } from "../../utils/errorHandling";
 
 export default function UpdateChannelDetails() {
     const { user } = useUserContext();
@@ -29,9 +30,10 @@ export default function UpdateChannelDetails() {
 
     const handleMouseOver = () => {
         if (
-            inputs.bio === user.user_bio &&
-            inputs.userName === user.user_name &&
-            !inputs.password
+            (inputs.bio === user.user_bio &&
+                inputs.userName === user.user_name &&
+                !inputs.password) ||
+            Object.entries(error).some(([_, err]) => err)
         ) {
             setDisabled(true);
         } else {
