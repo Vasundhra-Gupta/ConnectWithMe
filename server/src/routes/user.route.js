@@ -9,14 +9,17 @@ import {
     updateAvatar,
     updateCoverImage,
 } from "../controllers/user.controller.js";
-import { verifyToken, optionalVerifyToken } from "../middlewares/authentication.js";
-import { uploads } from "../middlewares/multer.js";
 import {
     getCurrentUser,
     loginUser,
     logoutUser,
     registerUser,
 } from "../controllers/auth.controller.js";
+import {
+    verifyToken,
+    optionalVerifyToken,
+} from "../middlewares/authentication.js";
+import { uploads } from "../middlewares/multer.js";
 
 userRouter.route("/register").post(
     uploads.fields([
@@ -34,7 +37,9 @@ userRouter.route("/register").post(
 
 userRouter.route("/login").post(loginUser);
 
-userRouter.route("/channel/:channelId").get(optionalVerifyToken, getChannelProfile);
+userRouter
+    .route("/channel/:channelId")
+    .get(optionalVerifyToken, getChannelProfile);
 
 userRouter.use(verifyToken);
 userRouter.route("/current-user").get(getCurrentUser);
