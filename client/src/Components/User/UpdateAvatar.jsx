@@ -43,6 +43,7 @@ export default function UpdateAvatar({ onClose }) {
             navigate("/error");
         } finally {
             setLoading(false);
+            navigate(0);
         }
     };
     return (
@@ -61,7 +62,11 @@ export default function UpdateAvatar({ onClose }) {
                         <img
                             src={preview}
                             alt="preview"
-                            className="w-32 h-32 rounded-full object-cover"
+                            className={`w-32 h-32 rounded-full object-cover border-[3px] ${
+                                error?.["avatar"]
+                                    ? "border-red-500"
+                                    : "border-green-600"
+                            }`}
                             onClick={() => fileRef.current.click()}
                         />
                     }
@@ -80,7 +85,7 @@ export default function UpdateAvatar({ onClose }) {
                     {error?.["avatar"] && error["avatar"]}
                 </div>
                 <Button
-                    disabled={loading||error?.["avatar"]}
+                    disabled={loading || error?.["avatar"]}
                     BtnText={loading ? "Loading..." : "Upload"}
                 />
             </form>

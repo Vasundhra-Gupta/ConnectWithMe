@@ -43,6 +43,7 @@ export default function UpdateCoverImage({ onClose }) {
             navigate("/error");
         } finally {
             setLoading(false);
+            navigate(0)
         }
     };
     return (
@@ -61,7 +62,11 @@ export default function UpdateCoverImage({ onClose }) {
                         <img
                             src={preview}
                             alt="preview"
-                            className="w-full h-32 rounded-lg object-cover"
+                            className={`w-32 h-32 rounded-full object-cover border-[3px] ${
+                                error?.["avatar"]
+                                    ? "border-red-500"
+                                    : "border-green-600"
+                            }`}
                             onClick={() => fileRef.current.click()}
                         />
                     }

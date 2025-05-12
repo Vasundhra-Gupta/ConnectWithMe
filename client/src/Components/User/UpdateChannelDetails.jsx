@@ -12,6 +12,12 @@ export default function UpdateChannelDetails() {
         bio: user?.user_bio,
         password: "",
     });
+    const [error, setError] = useState({
+        userName: "",
+        bio: "",
+        password: "",
+        root: "",
+    });
     const [loading, setLoading] = useState(false);
     const [disabled, setDisabled] = useState(false);
     const [message, setMessage] = useState("");
@@ -53,6 +59,11 @@ export default function UpdateChannelDetails() {
             setLoading(false);
             setDisabled(false);
         }
+    };
+
+    const handleBlur = (e) => {
+        const { name, value } = e.target;
+        verify(name, value, setError);
     };
 
     const inputFields = [
@@ -101,16 +112,22 @@ export default function UpdateChannelDetails() {
                     id={field.id}
                     defaultValue={field.defaultValue}
                     placeholder={field.placeholder}
+                    onBlur={handleBlur}
                     onChange={handleChange}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 text-gray-900 bg-white"
                 />
+                {error?.[field.name] && (
+                    <div className="text-red-600 ml-1 text-xs mt-1">
+                        {error[field.name]}
+                    </div>
+                )}
             </div>
         </div>
     ));
 
     return (
         <form className="lg:w-[60%] p-10" onSubmit={handleSubmit}>
-            {message}
+            <p className="mb-3 text-gray-700">{message}</p>
             {inputElements}
             <Button
                 type={"submit"}
