@@ -107,7 +107,7 @@ export default function ChannelProfilePage() {
                     </div>
 
                     {/* Page Content */}
-                    <div className="md:px-8 py-2">
+                    <div className="md:px-8 py-2 md:py-6">
                         <Outlet />
                     </div>
                 </div>
