@@ -18,13 +18,13 @@ export const tryCatch = async (
 
         const response = await res.json();
         
-        console.log(response);
         if (response.status === 500) {
+            console.log(res.message);
             throw new Error(res.message);
         }
         return response;
     } catch (error) {
-        console.log(`error in ${operation} service`, error);
+        console.log(`error in ${operation} service`, error.message);
         throw error;
     }
 };

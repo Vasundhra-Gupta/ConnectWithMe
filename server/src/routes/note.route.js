@@ -13,11 +13,11 @@ import { verifyToken } from "../middlewares/authentication.js";
 export const noteRouter = express.Router();
 
 noteRouter.route("/all").get(getAllPublicNotes);
+noteRouter.route("/public/:ownerId").get(getPublicNotes); //getNotes
 
 noteRouter.use(verifyToken);
 
 noteRouter.route("/note/:noteId").get(getANote);
-noteRouter.route("/public/:ownerId").get(getPublicNotes); //getNotes
 noteRouter.route("/private").get(getPrivateNotes); //getNotes
 noteRouter.route("/add").post(addNote);
 noteRouter.route("/delete/:noteId").delete(deleteNote);
