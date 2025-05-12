@@ -30,9 +30,9 @@ export default function Header() {
             {/* Navigation Buttons */}
             {user ? (
                 <div className="flex items-center gap-4">
-                    {/* <Link to={"/add"}>
+                    <Link to={"/add"}>
                         <Button BtnText={"+"} />
-                    </Link> */}
+                    </Link>
                     {/* <Link to={"/chat"}>
                         <Button BtnText={"Chat"} />
                     </Link> */}

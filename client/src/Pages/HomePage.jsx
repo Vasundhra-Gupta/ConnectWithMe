@@ -34,9 +34,7 @@ export default function HomePage() {
     return (
         <div className="flex flex-col items-center w-full min-h-screen px-6">
             {loading ? (
-                <p className="text-lg font-semibold text-gray-700">
-                    Loading...
-                </p>
+                <p className="flex justify-center text-lg font-semibold items-center min-h-screen">Loading...</p>
             ) : notes ? (
                 <div>
                     <div className="w-full grid sm:grid-cols-1 mt-3 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-4">
