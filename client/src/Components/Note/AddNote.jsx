@@ -92,6 +92,7 @@ export default function AddNote() {
         } finally {
             setLoading(false);
             setDisabled(false);
+            navigate(0);
         }
     };
 
@@ -101,7 +102,9 @@ export default function AddNote() {
                 className="shadow-lg border border-gray-400 rounded-lg p-4 bg-white"
                 onSubmit={handleSubmit}
             >
-                <p className="font-semibold text-center my-2 text-xl">Add a note</p>
+                <p className="font-semibold text-center my-2 text-xl">
+                    Add a note
+                </p>
                 {error && (
                     <div className="text-red-500 text-sm mb-3 text-center">
                         {error}

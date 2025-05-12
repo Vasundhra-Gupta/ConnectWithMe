@@ -59,6 +59,7 @@ export default function EditNotePage({ note, setNotes }) {
         } finally {
             setLoading(false);
             setDisabled(false);
+            navigate(0);
         }
     };
 

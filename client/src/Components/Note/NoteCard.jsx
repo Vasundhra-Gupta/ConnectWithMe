@@ -8,7 +8,7 @@ import { useUserContext } from "../Context/UserContext";
 import { toggleVisibility } from "../../Services/noteService";
 import { NotePage } from "../../Pages";
 
-export default function NoteCard({ note, setNotes }) {
+export default function NoteCard({ note, setNotes , notes}) {
     const { channel } = useChannelContext();
     const { user } = useUserContext();
     const [editing, setEditing] = useState(false);
@@ -26,16 +26,23 @@ export default function NoteCard({ note, setNotes }) {
     const isProfilePage = location.pathname.startsWith("/channel");
 
     const handleToggleVisibility = async (noteId) => {
-        try {
-            const res = await toggleVisibility(noteId);
-            if (res && res.message === "note visibility toggled successfully") {
-                setNotes((prev) => [...prev]);
-            }
-        } catch (error) {
-            console.log(error.message);
-            navigate("/error");
-        }
-    };
+  try {
+    const res = await toggleVisibility(noteId); // Returns { message: "..." }
+    if (res.message === "note visibility toggled successfully") {
+      // Manually toggle visibility in the frontend state
+      setNotes(prevNotes => 
+        prevNotes.map(note => 
+          note.note_id === noteId 
+            ? { ...note, note_visibility: !note.note_visibility } 
+            : note
+        )
+      );
+    }
+  } catch (error) {
+    console.error("Toggle failed:", error);
+    navigate("/error");
+  }
+};
 
     if (!note) return null;
 
