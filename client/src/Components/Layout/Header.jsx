@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import Button from "../General/Button";
 import Logout from "../Auth/Logout";
 import { useUserContext } from "../Context/UserContext";
-import { LOGO } from "../../Assets/.js";
+import { LOGO } from "../../Assets/logo.js";
 
 export default function Header() {
     const { user } = useUserContext();
