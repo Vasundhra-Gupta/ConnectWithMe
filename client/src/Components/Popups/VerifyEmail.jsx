@@ -26,7 +26,7 @@ export default function VerifyEmail({ email }) {
                 toast("Email verified successfully");
                 setTimeout(() => {
                     navigate("/login")
-                },1000);
+                },1100);
             }
         } catch (error) {
             toast(error.message);
