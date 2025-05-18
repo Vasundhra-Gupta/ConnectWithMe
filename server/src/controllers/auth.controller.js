@@ -4,6 +4,7 @@ import { v4 as uuid } from "uuid";
 import { User } from "../models/User.model.js";
 import {
     BAD_REQUEST,
+    FORBIDDEN,
     NOT_FOUND,
     OK,
     SERVER_ERROR,
@@ -127,7 +128,7 @@ const verifyEmail = async (req, res) => {
 
         const user = await getUser(email);
         if (!user) {
-            return res.status(BAD_REQUEST).json({ message: "user not found" });
+            return res.status(NOT_FOUND).json({ message: "user not found" });
         }
         if (user?.user_isVerified) {
             return res
@@ -178,6 +179,10 @@ const loginUser = async (req, res) => {
             return res
                 .status(BAD_REQUEST)
                 .json({ message: "wrong credentials" });
+        }
+
+        if(!user.user_isVerified){
+            return res.status(FORBIDDEN).json({message: "please verify your email before logging in."})
         }
         //token fn generates a promise so frst let it resolve
         const token = await generateToken(user);
