@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import Button from "../General/Button";
 import Logout from "../Auth/Logout";
 import { useUserContext } from "../Context/UserContext";
-import { LOGO } from "../../Assets/logo.js";
 
 export default function Header() {
     const { user } = useUserContext();
@@ -12,14 +11,12 @@ export default function Header() {
             <Link to={"/"} className="flex justify-center gap-3 items-center">
                 <div>
                     <img
-                        src={LOGO}
+                        src="https://higherlogicdownload.s3.amazonaws.com/HIGHERLOGICTHEMES/2e523b2b-3434-4811-9245-9ea01a2f0b6b/UploadedImages/HL_Theme_Demo_Images/connect.png"
                         alt="Logo"
                         className="h-9 w-9 rounded-full border border-gray-500"
                     />
                 </div>
-                <p className="hidden md:block text-xl font-bold">
-                    connectWithMe
-                </p>
+                <p className="hidden md:block text-xl font-bold">connectWithMe</p>
             </Link>
 
             {/* Searchbar */}
