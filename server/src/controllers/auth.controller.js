@@ -15,6 +15,9 @@ import {
     deleteFromCloudinary,
     uploadOnCloudinary,
 } from "../utils/cloudinary.js";
+import { sendRegisterationMail } from "../utils/sendMail.js";
+import { BADRESP } from "dns";
+import { Verification } from "../models/Verification.model.js";
 
 const getCurrentUser = async (req, res) => {
     return res.status(OK).json(req.user);
@@ -35,7 +38,7 @@ const registerUser = async (req, res) => {
             avatar: req.files?.avatar?.[0].path,
             contact,
         };
-        console.log(data.avatar)
+        console.log(data.avatar);
 
         const allowedEmptyFields = ["lastName", "coverImage", "contact"];
         if (
@@ -84,7 +87,11 @@ const registerUser = async (req, res) => {
             //token
         });
         await user.save();
-
+        const code = sendRegisterationMail(email, userName);
+        await Verification.create({
+            user_email: email,
+            user_code: code,
+        });
         const { user_password, ...createdUser } = user.toObject();
 
         return res.status(OK).json(createdUser);
@@ -98,6 +105,48 @@ const registerUser = async (req, res) => {
         return res.status(SERVER_ERROR).json({
             message: "Something went wrong while registering user",
             error: err.message,
+        });
+    }
+};
+
+const verifyEmail = async (req, res) => {
+    try {
+        const { email, code } = req.body;
+        if (!email || !code) {
+            return res
+                .status(BAD_REQUEST)
+                .json({ message: "email and code are required" });
+        }
+        const verification = await Verification.findOne({
+            user_email: email,
+        });
+        if (!verification) {
+            return res
+                .status(BAD_REQUEST)
+                .json({ message: "issue in email verify" });
+        }
+
+        const user = await getUser(email);
+        if (!user) {
+            return res.status(BAD_REQUEST).json({ message: "user not found" });
+        }
+        if (user?.user_isVerified) {
+            return res
+                .status(BAD_REQUEST)
+                .json({ message: "email already verified" });
+        }
+        if (code !== verification?.user_code) {
+            return res
+                .status(BAD_REQUEST)
+                .json({ message: "invalid or expired code" });
+        }
+        user.user_isVerified = true;
+        await user.save();
+        return res.status(OK).json({ message: "email verified sucessfully." });
+    } catch (error) {
+        return res.status(SERVER_ERROR).json({
+            message: "something went wrong while verifying email",
+            error: error.message,
         });
     }
 };
@@ -176,4 +225,4 @@ const logoutUser = async (req, res) => {
     }
 };
 
-export { getCurrentUser, registerUser, loginUser, logoutUser };
+export { getCurrentUser, registerUser, verifyEmail, loginUser, logoutUser };

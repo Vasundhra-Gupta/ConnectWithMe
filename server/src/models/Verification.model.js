@@ -19,5 +19,5 @@ const verificationSchema = new Schema({
 });
 
 // TTL(Time to leave) Index: document expires automatically after `user_expiry`
-verificationSchema.index({user_expiry:1},{expireAfterSeconds:0})
+verificationSchema.index({ user_expiry: 1 }, { expireAfterSeconds: 0 });
 export const Verification = model("Verification", verificationSchema);

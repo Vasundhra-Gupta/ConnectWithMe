@@ -35,7 +35,7 @@ userRouter.route("/register").post(
     ]),
     registerUser
 );
-userRouter.route("/verify-email").post(verifyEmail);
+userRouter.route("/verify-email").patch(verifyEmail);
 
 userRouter.route("/login").post(loginUser);
 
