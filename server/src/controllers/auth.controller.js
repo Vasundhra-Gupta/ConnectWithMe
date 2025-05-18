@@ -16,7 +16,6 @@ import {
     uploadOnCloudinary,
 } from "../utils/cloudinary.js";
 import { sendRegisterationMail } from "../utils/sendMail.js";
-import { BADRESP } from "dns";
 import { Verification } from "../models/Verification.model.js";
 
 const getCurrentUser = async (req, res) => {
@@ -140,8 +139,17 @@ const verifyEmail = async (req, res) => {
                 .status(BAD_REQUEST)
                 .json({ message: "invalid or expired code" });
         }
-        user.user_isVerified = true;
-        await user.save();
+        await User.updateOne(
+            {
+                user_email: email,
+            },
+            {
+                $set: {
+                    user_isVerified: true,
+                },
+            },
+            { new: true }
+        );
         return res.status(OK).json({ message: "email verified sucessfully." });
     } catch (error) {
         return res.status(SERVER_ERROR).json({
