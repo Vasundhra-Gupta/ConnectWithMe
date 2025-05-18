@@ -136,9 +136,10 @@ const verifyEmail = async (req, res) => {
                 .json({ message: "email already verified" });
         }
         if (code !== verification?.user_code) {
-            return res
-                .status(BAD_REQUEST)
-                .json({ message: "invalid or expired code" });
+            return res.status(BAD_REQUEST).json({ message: "invalid code" });
+        }
+        if (Date.now() > verification?.user_expiry) {
+            return res.status(BAD_REQUEST).json({ message: "expired code" });
         }
         await User.updateOne(
             {
@@ -151,7 +152,7 @@ const verifyEmail = async (req, res) => {
             },
             { new: true }
         );
-        return res.status(OK).json({ message: "email verified sucessfully." });
+        return res.status(OK).json({ message: "email verified sucessfully" });
     } catch (error) {
         return res.status(SERVER_ERROR).json({
             message: "something went wrong while verifying email",
@@ -181,8 +182,10 @@ const loginUser = async (req, res) => {
                 .json({ message: "wrong credentials" });
         }
 
-        if(!user.user_isVerified){
-            return res.status(FORBIDDEN).json({message: "please verify your email before logging in."})
+        if (!user.user_isVerified) {
+            return res.status(FORBIDDEN).json({
+                message: "please verify your email before logging in.",
+            });
         }
         //token fn generates a promise so frst let it resolve
         const token = await generateToken(user);

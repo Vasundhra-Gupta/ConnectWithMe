@@ -55,6 +55,18 @@ const registerUser = async (inputs) => {
     );
 };
 
+const verifyEmail = async (inputs) => {
+    console.log(inputs)
+    return tryCatch(
+        "verifyEmail",
+        `${url}/users/verify-email`,
+        "PATCH",
+        "omit",
+        {},
+        inputs
+    );
+};
+
 const logoutUser = async () => {
     try {
         const response = await fetch(`${url}/users/logout`, {
@@ -73,4 +85,4 @@ const logoutUser = async () => {
     }
 };
 
-export { getUser, loginUser, logoutUser, registerUser };
+export { getUser, loginUser, logoutUser, registerUser, verifyEmail };

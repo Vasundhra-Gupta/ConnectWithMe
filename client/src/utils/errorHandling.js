@@ -17,8 +17,7 @@ export const verify = (name, value, setError) => {
             }
             break;
         }
-        case "firstName":
-        case "lastName": {
+        case "firstName": {
             const regex = /^[a-zA-Z]{3,16}$/;
             if (!regex.test(value)) {
                 setError((prev) => ({
@@ -35,7 +34,7 @@ export const verify = (name, value, setError) => {
         }
         case "contact": {
             const regex = /^[0-9]{10}$/;
-            if (!regex.test(value)) {
+            if (value.length && !regex.test(value)) {
                 setError((prev) => ({
                     ...prev,
                     [name]: "Invalid contact number.",

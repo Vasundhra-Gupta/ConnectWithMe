@@ -1,14 +1,17 @@
 import { useState } from "react";
 import { registerUser } from "../../Services/authService.js";
 import { Link, useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
 import Button from "../General/Button.jsx";
 import { useUserContext } from "../Context/UserContext.jsx";
 import { verify } from "../../utils/errorHandling.js";
 import { fileRestrictions } from "../../utils/fileRestrictions.js";
+import VerifyEmail from "../Popups/VerifyEmail.jsx";
 
 export default function Register() {
-    const { setUser } = useUserContext();
+    const { user, setUser } = useUserContext();
     const [disabled, setDisabled] = useState(false);
+    const [showVerifyEmail, setShowVerifyEmail] = useState(false);
     const [error, setError] = useState({
         userName: "",
         firstName: "",
@@ -21,7 +24,7 @@ export default function Register() {
         contact: "",
         root: "",
     });
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
     const [inputs, setInputs] = useState({
         userName: "",
         firstName: "",
@@ -33,7 +36,7 @@ export default function Register() {
         avatar: "",
         contact: "",
     });
-    const allowedEmptyFields = ["lastName", "coverImage"];
+    const allowedEmptyFields = ["lastName", "coverImage", "contact"];
     const [loading, setLoading] = useState(false);
 
     const handleChange = (e) => {
@@ -59,9 +62,7 @@ export default function Register() {
             Object.entries(inputs).some(
                 ([key, value]) => !value && !allowedEmptyFields.includes(key)
             ) ||
-            Object.entries(error).some(
-                ([_, err]) => err 
-            )
+            Object.entries(error).some(([_, err]) => err)
         ) {
             setDisabled(true);
         } else {
@@ -77,8 +78,9 @@ export default function Register() {
             setError(null);
             const res = await registerUser(inputs);
             if (res && !res.message) {
+                toast("A verification mail has been sent to your email.");
                 setUser(res);
-                navigate("/");
+                setShowVerifyEmail(true);
             } else {
                 setUser(null);
                 setError((prev) => ({ ...prev, root: res.message }));
@@ -138,7 +140,6 @@ export default function Register() {
             type: "text",
             name: "contact",
             id: "contact",
-            required: true,
             label: "Contact",
             placeholder: "Enter your phone number",
         },
@@ -252,6 +253,7 @@ export default function Register() {
 
     return (
         <div className="absolute z-20 top-0 left-0 w-full min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 flex flex-col items-center justify-center p-4">
+            <ToastContainer />
             <div className="w-full max-w-md">
                 <div className="text-center mb-8">
                     <h1 className="text-3xl font-bold text-blue-500 mb-2">
@@ -297,6 +299,11 @@ export default function Register() {
                     </form>
                 </div>
             </div>
+            {showVerifyEmail && (
+                <div className="fixed inset-0 bg-black bg-opacity-40 backdrop-blur-sm flex justify-center items-center z-50">
+                    <VerifyEmail email={user.user_email} />
+                </div>
+            )}
         </div>
     );
 }

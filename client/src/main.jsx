@@ -38,6 +38,7 @@ import {
     UserContextProvider,
     ChannelContextProvider,
 } from "./Components/Context/index.js";
+import VerifyEmail from "./Components/Popups/VerifyEmail.jsx";
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -45,6 +46,7 @@ const router = createBrowserRouter(
             <Route path="/" element={<HomePage />}></Route>
             <Route path="/login" element={<LoginPage />}></Route>
             <Route path="/register" element={<RegisterPage />}></Route>
+            <Route path="/verify-email" element={<VerifyEmail/>}/>
             <Route path="/error" element={<ErrorPage />}></Route>
             <Route path="/about" element={<AboutPage />}></Route>
             <Route path="/channel/:channelId" element={<ChannelProfilePage />}>
