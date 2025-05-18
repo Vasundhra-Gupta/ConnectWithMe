@@ -1,5 +1,6 @@
 import { model, Schema } from "mongoose";
 import bcryptjs from "bcryptjs";
+import { type } from "os";
 const userSchema = new Schema({
     user_id: {
         type: String,
@@ -32,6 +33,7 @@ const userSchema = new Schema({
     user_email: {
         type: String,
         required: true,
+        unique: true,
     },
     user_contact: {
         type: String,
@@ -43,6 +45,11 @@ const userSchema = new Schema({
     user_bio: {
         type: String,
         default: "",
+    },
+    user_isVerified: {
+        type: Boolean,
+        default: false,
+        required: true,
     },
     user_createdAt: {
         type: Date,
@@ -62,7 +69,7 @@ userSchema.pre("save", async function (next) {
             this.user_password = await bcryptjs.hash(this.user_password, 10);
         next();
     } catch (error) {
-        throw err;
+        throw error;
     }
 });
 
