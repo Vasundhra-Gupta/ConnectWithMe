@@ -1,0 +1,1 @@
+export const LOGO = "https://higherlogicdownload.s3.amazonaws.com/HIGHERLOGICTHEMES/2e523b2b-3434-4811-9245-9ea01a2f0b6b/UploadedImages/HL_Theme_Demo_Images/connect.png"

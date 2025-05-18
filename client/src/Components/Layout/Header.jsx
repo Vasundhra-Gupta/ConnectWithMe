@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import Button from "../General/Button";
 import Logout from "../Auth/Logout";
 import { useUserContext } from "../Context/UserContext";
+import { LOGO } from "../../Assets/logo";
 
 export default function Header() {
     const { user } = useUserContext();
@@ -11,12 +12,14 @@ export default function Header() {
             <Link to={"/"} className="flex justify-center gap-3 items-center">
                 <div>
                     <img
-                        src="https://images.pexels.com/photos/674010/pexels-photo-674010.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                        src={LOGO}
                         alt="Logo"
-                        className="h-9 w-9 rounded-full"
+                        className="h-9 w-9 rounded-full border border-gray-500"
                     />
                 </div>
-                <p className="hidden md:block text-xl font-bold">connectWithMe</p>
+                <p className="hidden md:block text-xl font-bold">
+                    connectWithMe
+                </p>
             </Link>
 
             {/* Searchbar */}
