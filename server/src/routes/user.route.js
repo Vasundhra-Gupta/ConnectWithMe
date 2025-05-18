@@ -14,6 +14,7 @@ import {
     loginUser,
     logoutUser,
     registerUser,
+    verifyEmail,
 } from "../controllers/auth.controller.js";
 import {
     verifyToken,
@@ -34,6 +35,7 @@ userRouter.route("/register").post(
     ]),
     registerUser
 );
+userRouter.route("/verify-email").post(verifyEmail);
 
 userRouter.route("/login").post(loginUser);
 

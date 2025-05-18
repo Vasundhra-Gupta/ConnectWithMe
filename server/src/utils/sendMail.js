@@ -21,8 +21,11 @@ const sendRegisterationMail = (email, username) => {
                 We noticed a new registeration from your email. Kindly fill the
                 code below to complete your registeration.
             </p>
-            <p>
+            <strong>
                 ${code}
+            </strong>
+            <p>
+                This code will get expired in 3 minutes.
             </p>
         </div>`;
     const mailOptions = {
