@@ -9,10 +9,10 @@ export default function VerifyEmail({ email }) {
     const [code, setCode] = useState(new Array(6).fill(""));
     const [disabled, setDisabled] = useState(false);
     const navigate = useNavigate();
-    function handleMouseOver(){
-        if(!code || !email){
+    function handleMouseOver() {
+        if (!code || !email) {
             setDisabled(true);
-        }else{
+        } else {
             setDisabled(false);
         }
     }
@@ -24,7 +24,9 @@ export default function VerifyEmail({ email }) {
             const res = await verifyEmail({ email, code: code.join("") });
             if (res && res.message === "email verified sucessfully") {
                 toast("Email verified successfully");
-                navigate("/login");
+                setTimeout(() => {
+                    navigate("/login")
+                },200);
             }
         } catch (error) {
             toast(error.message);
@@ -78,7 +80,9 @@ export default function VerifyEmail({ email }) {
                         />
                     ))}
                 </div>
-                <p className="text-xs text-gray-500 mb-3">The code will expire in 3 minutes!</p>
+                <p className="text-xs text-gray-500 mb-3">
+                    The code will expire in 3 minutes!
+                </p>
                 <div className="text-center">
                     <Button
                         type={"submit"}
