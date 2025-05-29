@@ -11,7 +11,7 @@ app.use(
         origin: [
             "http://localhost:5173",
             "https://connectwithme-vatb.onrender.com",
-            "https://connect-with-me-umber.vercel.app/",
+            "https://connect-with-me-umber.vercel.app",
         ],
         credentials: true,
     })
