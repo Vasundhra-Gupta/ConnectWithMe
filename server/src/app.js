@@ -8,7 +8,7 @@ app.use(express.urlencoded({ extended: false })); // for form data
 app.use(cookieParser()); // to parse cookie
 app.use(
     cors({
-        origin: [ "http://localhost:5173", "https://connectwithme-vatb.onrender.com"],
+        origin: [ "http://localhost:5173", "https://connectwithme-vatb.onrender.com, https://connect-with-me-umber.vercel.app/"],
         credentials: true,
     })
 );
