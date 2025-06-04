@@ -7,6 +7,7 @@ import { useUserContext } from "../Context/UserContext.jsx";
 import { verify } from "../../utils/errorHandling.js";
 import { fileRestrictions } from "../../utils/fileRestrictions.js";
 import VerifyEmail from "../Popups/VerifyEmail.jsx";
+import ImageCropper from "../General/Cropper.jsx";
 
 export default function Register() {
     const { user, setUser } = useUserContext();
@@ -30,9 +31,8 @@ export default function Register() {
         confirmPassword: "",
         avatar: "",
     });
-
+    const [preview, setPreview] = useState(null); //preview of image cropper
     const [loading, setLoading] = useState(false);
-
     const handleChange = (e) => {
         const { name, value } = e.target;
         setInputs((prev) => ({
@@ -42,13 +42,13 @@ export default function Register() {
     };
 
     const handleFileChange = (e) => {
-        const { name, files } = e.target;
-        if (files && files[0]) {
-            setInputs((prev) => ({
-                ...prev,
-                [name]: files[0],
-            }));
-        }
+        const file = e.target.files?.[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = () => {
+            setPreview(reader.result);
+        };
+        reader.readAsDataURL(file);
     };
 
     const handleMouseOver = () => {
@@ -188,13 +188,6 @@ export default function Register() {
             label: "Profile Picture",
             accept: "image/*",
         },
-        // {
-        //     type: "file",
-        //     name: "coverImage",
-        //     id: "coverImage",
-        //     label: "Cover Image (optional)",
-        //     accept: "image/*",
-        // },
     ];
 
     const fileElements = fileFields.map((field) => (
@@ -278,6 +271,16 @@ export default function Register() {
                     </form>
                 </div>
             </div>
+
+            {preview && (
+                <div className="fixed inset-0 bg-black bg-opacity-40 backdrop-blur-sm flex justify-center items-center z-50">
+                    <ImageCropper
+                        imagesrc={preview}
+                        setInputs={setInputs}
+                        setPreview={setPreview}
+                    />
+                </div>
+            )}
             {showVerifyEmail && (
                 <div className="fixed inset-0 bg-black bg-opacity-40 backdrop-blur-sm flex justify-center items-center z-50">
                     <VerifyEmail email={user.user_email} />

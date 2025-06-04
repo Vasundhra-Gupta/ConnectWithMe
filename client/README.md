@@ -40,3 +40,8 @@ export const demoContext = createContext();
 
 - useRef is used to reference other object, we shouldnt read or write refs instead we can do so in evenet handlers or useEffects kinda...
 - return an object with curent property
+
+### Canvas 
+
+### Promises
+
