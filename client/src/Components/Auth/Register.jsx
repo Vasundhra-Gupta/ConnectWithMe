@@ -20,7 +20,7 @@ export default function Register() {
         confirmPassword: "",
         avatar: "",
         root: "",
-    }
+    };
     const [error, setError] = useState(initialErrorState);
     const [inputs, setInputs] = useState({
         userName: "",
@@ -86,6 +86,7 @@ export default function Register() {
     };
 
     const handleBlur = (e) => {
+        setError((prev) => ({ ...prev, root: "" }));
         const { name, value } = e.target;
         verify(name, value, setError);
     };
