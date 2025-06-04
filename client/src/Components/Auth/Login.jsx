@@ -83,7 +83,7 @@ export default function Login() {
             id: "password",
             required: true,
             label: "Password",
-            placeholder: "Create a password",
+            placeholder: "Enter your password",
         },
     ];
 
@@ -117,7 +117,7 @@ export default function Login() {
         <div className="flex justify-center items-center ">
             <form className="shadow-lg px-5 py-3" onSubmit={handleSubmit}>
                 {error?.root && (
-                    <div className="text-red-500 text-center text-sm mb-3">
+                    <div className="text-red-500 text-center text-sm mb-4 p-2 bg-red-50 rounded-lg">
                         {error.root}
                     </div>
                 )}

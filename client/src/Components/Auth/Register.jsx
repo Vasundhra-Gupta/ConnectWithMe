@@ -12,31 +12,25 @@ export default function Register() {
     const { user, setUser } = useUserContext();
     const [disabled, setDisabled] = useState(false);
     const [showVerifyEmail, setShowVerifyEmail] = useState(false);
-    const [error, setError] = useState({
+    const initialErrorState = {
         userName: "",
-        firstName: "",
-        lastName: "",
+        fullName: "",
         email: "",
         password: "",
         confirmPassword: "",
-        coverImage: "",
         avatar: "",
-        contact: "",
         root: "",
-    });
-    // const navigate = useNavigate();
+    }
+    const [error, setError] = useState(initialErrorState);
     const [inputs, setInputs] = useState({
         userName: "",
-        firstName: "",
-        lastName: "",
+        fullName: "",
         email: "",
         password: "",
         confirmPassword: "",
-        coverImage: "",
         avatar: "",
-        contact: "",
     });
-    const allowedEmptyFields = ["lastName", "coverImage", "contact"];
+
     const [loading, setLoading] = useState(false);
 
     const handleChange = (e) => {
@@ -59,9 +53,7 @@ export default function Register() {
 
     const handleMouseOver = () => {
         if (
-            Object.entries(inputs).some(
-                ([key, value]) => !value && !allowedEmptyFields.includes(key)
-            ) ||
+            Object.entries(inputs).some(([_, value]) => !value) ||
             Object.entries(error).some(([_, err]) => err)
         ) {
             setDisabled(true);
@@ -75,10 +67,10 @@ export default function Register() {
         try {
             setLoading(true);
             setDisabled(true);
-            setError(null);
+            setError(initialErrorState);
             const res = await registerUser(inputs);
             if (res && !res.message) {
-                toast("A verification mail has been sent to your email.");
+                toast.info("A verification mail has been sent to your email.");
                 setUser(res);
                 setShowVerifyEmail(true);
             } else {
@@ -115,18 +107,11 @@ export default function Register() {
         },
         {
             type: "text",
-            name: "firstName",
-            id: "firstName",
+            name: "fullName",
+            id: "fullName",
             required: true,
-            label: "First Name",
-            placeholder: "Enter your first name",
-        },
-        {
-            type: "text",
-            name: "lastName",
-            id: "lastName",
-            label: "Last Name",
-            placeholder: "Enter your last name (optional)",
+            label: "Full Name",
+            placeholder: "Enter your Full name",
         },
         {
             type: "email",
@@ -135,13 +120,6 @@ export default function Register() {
             required: true,
             label: "Email",
             placeholder: "Enter your email",
-        },
-        {
-            type: "text",
-            name: "contact",
-            id: "contact",
-            label: "Contact",
-            placeholder: "Enter your phone number",
         },
         {
             type: "password",
@@ -209,13 +187,13 @@ export default function Register() {
             label: "Profile Picture",
             accept: "image/*",
         },
-        {
-            type: "file",
-            name: "coverImage",
-            id: "coverImage",
-            label: "Cover Image (optional)",
-            accept: "image/*",
-        },
+        // {
+        //     type: "file",
+        //     name: "coverImage",
+        //     id: "coverImage",
+        //     label: "Cover Image (optional)",
+        //     accept: "image/*",
+        // },
     ];
 
     const fileElements = fileFields.map((field) => (

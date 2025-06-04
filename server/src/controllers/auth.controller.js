@@ -26,64 +26,44 @@ const getCurrentUser = async (req, res) => {
 const registerUser = async (req, res) => {
     let coverImageURL, avatarURL;
     try {
-        const { userName, firstName, lastName, email, password, contact } =
-            req.body;
+        const { userName, fullName, email, password } = req.body;
         const data = {
             userName,
-            firstName,
-            lastName,
+            fullName,
             email,
             password,
-            coverImage: req.files?.coverImage?.[0].path,
             avatar: req.files?.avatar?.[0].path,
-            contact,
         };
         console.log(data.avatar);
 
-        const allowedEmptyFields = ["lastName", "coverImage", "contact"];
-        if (
-            Object.entries(data).some(
-                ([key, value]) => !value && !allowedEmptyFields.includes(key)
-            )
-        ) {
+        if (Object.entries(data).some(([key, value]) => !value)) {
             if (data.avatar) {
                 fs.unlinkSync(data.avatar);
-            }
-            if (data.coverImage) {
-                fs.unlinkSync(data.coverImage);
             }
             return res.status(BAD_REQUEST).json({ message: "missing fields" });
         }
 
-        const existingUser = await getUser(userName);
-        if (existingUser) {
+        const existingUserByUserName = await getUser(userName);
+        const existingUserByEmail = await getUser(email);
+        if (existingUserByUserName|| existingUserByEmail) {
             if (data.avatar) {
                 fs.unlinkSync(data.avatar);
             }
-            if (data.coverImage) {
-                fs.unlinkSync(data.coverImage);
-            }
             return res
                 .status(BAD_REQUEST)
-                .json({ message: "user already exists" });
+                .json({ message: "user with this email or username already exists" });
         }
 
         data.avatar = await uploadOnCloudinary(data.avatar);
         avatarURL = data.avatar;
-        if (data.coverImage) {
-            data.coverImage = await uploadOnCloudinary(data.coverImage);
-            coverImageURL = data.coverImage;
-        }
+        
         const user = await User.create({
             user_id: uuid(),
             user_name: userName,
-            user_firstName: firstName,
-            user_lastName: lastName,
+            user_fullName: fullName,
             user_password: password,
             user_avatar: avatarURL,
             user_email: email,
-            user_contact: contact,
-            user_coverImage: coverImageURL,
             //token
         });
         await user.save();

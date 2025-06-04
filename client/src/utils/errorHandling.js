@@ -17,27 +17,12 @@ export const verify = (name, value, setError) => {
             }
             break;
         }
-        case "firstName": {
-            const regex = /^[a-zA-Z]{3,16}$/;
+        case "fullName": {
+            const regex = /^[a-zA-Z ]{8,24}$/;
             if (!regex.test(value)) {
                 setError((prev) => ({
                     ...prev,
-                    [name]: `${name} must be 3-16 characters including only alphabets.`,
-                }));
-            } else {
-                setError((prev) => ({
-                    ...prev,
-                    [name]: "",
-                }));
-            }
-            break;
-        }
-        case "contact": {
-            const regex = /^[0-9]{10}$/;
-            if (value.length && !regex.test(value)) {
-                setError((prev) => ({
-                    ...prev,
-                    [name]: "Invalid contact number.",
+                    [name]: `${name} must be 8-24 characters including only alphabets.`,
                 }));
             } else {
                 setError((prev) => ({

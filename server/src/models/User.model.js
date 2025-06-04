@@ -11,12 +11,9 @@ const userSchema = new Schema({
         type: String,
         required: true,
     },
-    user_firstName: {
+    user_fullName: {
         type: String,
         required: true,
-    },
-    user_lastName: {
-        type: String,
     },
     user_password: {
         type: String,
@@ -34,9 +31,6 @@ const userSchema = new Schema({
         type: String,
         required: true,
         unique: true,
-    },
-    user_contact: {
-        type: String,
     },
     user_token: {
         type: String,
