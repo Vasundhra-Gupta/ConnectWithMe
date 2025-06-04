@@ -1,1 +1,1 @@
-# A Full Stack Project - A chat app
+# A Full Stack Project 
