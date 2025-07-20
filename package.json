@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "dev": "concurrently \"npm run dev --prefix client\" \"npm run dev --prefix server\""
+    "dev": "concurrently \"npm run dev --prefix client\" \"npm run dev --prefix server\"",
+    "build": "npm i && npm i --prefix client && npm i --prefix server"
   },
   "dependencies": {
     "concurrently": "^9.1.2"
